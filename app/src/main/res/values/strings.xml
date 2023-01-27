@@ -4,6 +4,4 @@
     <string name="navbar_insights">Insights</string>
     <string name="navbar_transactions">Transactions</string>
     <string name="navbar_products">Products</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

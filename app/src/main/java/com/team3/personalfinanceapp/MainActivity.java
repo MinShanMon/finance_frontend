@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 InsightsFragment insightsFragment = new InsightsFragment();
                 commitTransaction(insightsFragment);
                 return true;
+            case R.id.transactions_item:
+                TransactionsFragment transactionsFragment = new TransactionsFragment();
+                commitTransaction(transactionsFragment);
+                return true;
         }
         return false;
     }
