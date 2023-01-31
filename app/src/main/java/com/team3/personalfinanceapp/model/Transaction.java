@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 
 public class Transaction implements Serializable {
     private long id;
@@ -56,5 +58,10 @@ public class Transaction implements Serializable {
 
     public double getAmount() {
         return amount;
+    }
+
+    public Month getMonth() {
+        LocalDateTime dateTime = LocalDateTime.parse(date);
+        return dateTime.getMonth();
     }
 }

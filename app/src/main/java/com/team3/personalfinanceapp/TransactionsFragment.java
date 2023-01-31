@@ -60,13 +60,16 @@ public class TransactionsFragment extends Fragment {
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
+                TextView title = view.findViewById(R.id.latest_transaction_title);
+
                 if (response.body() == null) {
                     call.cancel();
+                    title.setText(R.string.empty_transaction_message);
                 }
                 transactions = new ArrayList<>(response.body());
                 Transaction latest_transaction = transactions.get(0);
 
-                TextView title = view.findViewById(R.id.latest_transaction_title);
+
                 title.setText(latest_transaction.getTitle());
 
                 TextView amount = view.findViewById(R.id.latest_transaction_amount);
