@@ -4,4 +4,6 @@
     <string name="navbar_insights">Insights</string>
     <string name="navbar_transactions">Transactions</string>
     <string name="navbar_products">Products</string>
+    <string name="latest_transaction_header">Latest Transaction</string>
+    <string name="view_all_btn">View All</string>
 </resources>
