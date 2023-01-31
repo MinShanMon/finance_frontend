@@ -59,7 +59,7 @@ public class InsightsFragment extends Fragment {
     /** Retrieve all transactions and display the pie chart **/
     private void getTransactionsAndCreateInsights(View view) {
         apiInterface = APIClient.getClient().create(APIInterface.class);
-        Call<List<Transaction>> transactionsCall = apiInterface.transList(1);
+        Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(1);
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {

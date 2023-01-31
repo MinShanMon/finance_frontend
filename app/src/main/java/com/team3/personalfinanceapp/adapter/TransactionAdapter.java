@@ -26,7 +26,9 @@ public class TransactionAdapter extends ArrayAdapter<Object> {
         this.context = context;
         this.transactions = transactions;
 
-        addAll(new Object[transactions.size()]);
+        if (transactions != null) {
+            addAll(new Object[transactions.size()]);
+        }
     }
 
     @NonNull

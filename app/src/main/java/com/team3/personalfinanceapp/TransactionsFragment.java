@@ -46,7 +46,6 @@ public class TransactionsFragment extends Fragment {
         TextView viewAllBtn = view.findViewById(R.id.view_all_btn);
         viewAllBtn.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), TransactionsActivity.class);
-            intent.putExtra("transactions", transactions);
             startActivity(intent);
         });
         getTransactionsAndSetLatest(view);
@@ -56,7 +55,7 @@ public class TransactionsFragment extends Fragment {
     /** Retrieve all transactions and display the latest transaction **/
     private void getTransactionsAndSetLatest(View view) {
         apiInterface = APIClient.getClient().create(APIInterface.class);
-        Call<List<Transaction>> transactionsCall = apiInterface.transList(1);
+        Call<List<Transaction>> transactionsCall = apiInterface.getTransactionsByMonth(1, 2);
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
