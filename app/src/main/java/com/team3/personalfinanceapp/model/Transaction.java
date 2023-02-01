@@ -2,6 +2,10 @@ package com.team3.personalfinanceapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -16,23 +20,12 @@ public class Transaction implements Serializable {
     private String title;
     private String description;
 
-    private String date;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate date;
 
     private String category;
     private double amount;
-
-    private String user;
-
-
-    public Transaction(long id, String title, String description, String date, String category, double amount, String user) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.date = date;
-        this.category = category;
-        this.amount = amount;
-        this.user = user;
-    }
 
     public Transaction() {}
 
@@ -48,7 +41,7 @@ public class Transaction implements Serializable {
         return description;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -60,8 +53,23 @@ public class Transaction implements Serializable {
         return amount;
     }
 
-    public Month getMonth() {
-        LocalDateTime dateTime = LocalDateTime.parse(date);
-        return dateTime.getMonth();
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 }

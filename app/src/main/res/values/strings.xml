@@ -5,6 +5,12 @@
     <string name="navbar_transactions">Transactions</string>
     <string name="navbar_products">Products</string>
     <string name="latest_transaction_header">Latest Transaction</string>
-    <string name="view_all_btn">View All</string>
+    <string name="view_all_btn">View others</string>
+    <string name="add_transaction">Add Transaction</string>
+    <string name="sync_bankacct">Sync Bank Account</string>
+    <string-array name="transaction_types_array">
+        <item>Spending</item>
+        <item>Income</item>
+    </string-array>
     <string name="empty_transaction_message">No transactions found. Please add one, or sync with your bank account.</string>
 </resources>

@@ -110,6 +110,7 @@ public class InsightsFragment extends Fragment {
         PieDataSet dataSet = new PieDataSet(entries, "Spending By Category");
         dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
 
+
         PieData data = new PieData(dataSet);
         pieChart.setData(data);
         pieChart.invalidate();
@@ -123,12 +124,12 @@ public class InsightsFragment extends Fragment {
         Month currMonth = Month.FEBRUARY;
 
         Map<String, Double> currMonthCategorySpending =
-                transactions.stream().filter( t-> t.getMonth().equals(currMonth) )
+                transactions.stream().filter( t-> t.getDate().getMonth().equals(currMonth) )
                         .collect(Collectors.groupingBy(Transaction::getCategory,
                                 Collectors.summingDouble(Transaction::getAmount)));
 
         Map<String, Double> prevMonthCategorySpending =
-                transactions.stream().filter( t-> t.getMonth().equals(currMonth.minus(1)) )
+                transactions.stream().filter( t-> t.getDate().getMonth().equals(currMonth.minus(1)) )
                         .collect(Collectors.groupingBy(Transaction::getCategory,
                                 Collectors.summingDouble(Transaction::getAmount)));
 
@@ -145,7 +146,7 @@ public class InsightsFragment extends Fragment {
         }
 
         if (prevMonthSpendingMap.containsKey(category)) {
-            prevMonthSpend = currMonthSpendingMap.get(category);
+            prevMonthSpend = prevMonthSpendingMap.get(category);
         }
 
         return category + "\n"
@@ -154,11 +155,11 @@ public class InsightsFragment extends Fragment {
                 + "Change: " + pctChangeVsPrevMonth(currMonthSpend, prevMonthSpend);
     }
 
-    private double pctChangeVsPrevMonth(double currMonthSpend, double prevMonthSpend) {
+    private int pctChangeVsPrevMonth(double currMonthSpend, double prevMonthSpend) {
         if (prevMonthSpend == 0) {
             return 100;
         }
-        return currMonthSpend / prevMonthSpend * 100 - 100;
+        return (int) (currMonthSpend / prevMonthSpend * 100 - 100);
     }
 
 
