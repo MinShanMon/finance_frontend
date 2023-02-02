@@ -7,6 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -25,9 +26,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 @Table(name = "enquiries")
-@JsonIgnoreProperties({"ticket"})
 public class Enquiry {
     @Id
+    @Column(name="enquiry_id",nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
@@ -39,11 +40,7 @@ public class Enquiry {
     @Enumerated(EnumType.STRING)
     private SalutationEnum title;
 
-    @Column(name = "given_name")
-    private String givenName;
-
-    @Column(name = "surname")
-    private String surName;
+    private String name;
 
     private String email;
 
@@ -54,25 +51,26 @@ public class Enquiry {
 
     
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime dateTime;
+    private LocalDateTime enquiry_dateTime;
     
-    private int star;
+    private int rating;
 
-    @OneToOne 
+    @JsonIgnoreProperties({"ticket"})
+    @OneToOne
+    @JoinColumn(name="ticket_id")
     private Ticket ticket;
 
-    public Enquiry(EnquiryTypeEnum enquiryType,SalutationEnum title, String givenName,String surName,String email,
-    String phoneNum,String question, LocalDateTime dateTime,int star,Ticket ticket){ 
+    public Enquiry(EnquiryTypeEnum enquiryType,SalutationEnum title, String name,String email,
+    String phoneNum,String question, LocalDateTime enquiry_dateTime,int rating,Ticket ticket){ 
 
         this.enquiryType= enquiryType;
         this.title = title;
-        this.givenName = givenName;
-        this.surName = surName;
+        this.name = name;
         this.email = email;
         this.phoneNum = phoneNum;
         this.question = question;
-        this.dateTime = dateTime;
-        this.star = star;
+        this.enquiry_dateTime = enquiry_dateTime;
+        this.rating = rating;
         this.ticket = ticket;
     }
 }

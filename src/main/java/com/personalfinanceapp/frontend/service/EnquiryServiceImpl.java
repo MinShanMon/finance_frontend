@@ -19,7 +19,6 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 
 import java.util.logging.Logger;
 
-import javax.annotation.Resource;
 
 @Service
 public class EnquiryServiceImpl implements EnquiryService {
@@ -62,4 +61,50 @@ public class EnquiryServiceImpl implements EnquiryService {
 
         return enquiries.collectList().block();
     }
+
+    public List<Enquiry> getOpenEnquiry(){
+        Flux<Enquiry> openEnquiries = webClient.get()
+                .uri("/enquiries/open")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchangeToFlux(response -> {
+                    if (response.statusCode().equals(HttpStatus.OK)) {
+                        return response.bodyToFlux(Enquiry.class);
+                    } else {
+                        return response.createException().flatMapMany(Flux::error);
+                    }
+                });
+
+        return openEnquiries.collectList().block();
+    }
+
+    public List<Enquiry> getClosedEnquiry(){
+        Flux<Enquiry> closedEnquiries = webClient.get()
+                .uri("/enquiries/closed")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchangeToFlux(response -> {
+                    if (response.statusCode().equals(HttpStatus.OK)) {
+                        return response.bodyToFlux(Enquiry.class);
+                    } else {
+                        return response.createException().flatMapMany(Flux::error);
+                    }
+                });
+
+        return closedEnquiries.collectList().block();
+    }
+
+    @Override
+    public Enquiry getOneEnquiry(Integer id) {
+        Mono<Enquiry> enq = webClient.get()
+                .uri("/reply/{id}", id)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchangeToMono(response -> {
+                    if (response.statusCode().equals(HttpStatus.OK)) {
+                        return response.bodyToMono(Enquiry.class);
+                    } else {
+                        return response.createException().flatMap(Mono::error);
+                    }
+                });
+        return enq.block();
+    }
+
 }

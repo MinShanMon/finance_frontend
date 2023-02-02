@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,21 +35,22 @@ public class Ticket {
 
     private String reply;
     
-    @Column(name="ticketType",nullable = false, columnDefinition = "ENUM('OPEN','CLOSED')")
+    @Column(name="status",nullable = false, columnDefinition = "ENUM('OPEN','CLOSED')")
     @Enumerated(EnumType.STRING)
     private TicketStatusEnum tikStatus;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime dateTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
+    private LocalDateTime reply_dateTime;
 
-    @OneToOne (mappedBy = "ticket")
+    @JsonIgnore
+    @OneToOne(mappedBy = "ticket")
     private Enquiry enquiry;
    
-    public Ticket(String reply,TicketStatusEnum tikStatus, LocalDateTime dateTime){ 
+    public Ticket(String reply,TicketStatusEnum tikStatus, LocalDateTime reply_dateTime){ 
 
         this.reply= reply;
         this.tikStatus = tikStatus;
-        this.dateTime = dateTime;
+        this.reply_dateTime = reply_dateTime;
     }
 }
 
