@@ -39,6 +39,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 
 @Controller
+@RequestMapping(value = "/admin")
 public class RegisteredUsersController {
 
     @Autowired
@@ -77,22 +78,19 @@ public class RegisteredUsersController {
         DecodedJWT decodedJWT = verifier.verify(tk.getAccess_token());
         String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
 
-        for(int i=0; i< roles.length; i++){
-
-        }
         if(Arrays.stream(roles).anyMatch("Admin"::contains)){
             UserSession userSession = new UserSession();
             userSession.setToken(tk);
     
             RegisteredUsers user = registeredUsersService.addAdminToSession(lg.getEmail(), tk.getAccess_token());
             userSession.setRegisteredUsers(user);
-            userSession.setTokentime(System.currentTimeMillis()+ 50 * 60 * 1000);
+            userSession.setTokentime(System.currentTimeMillis()+ 10 * 1000);
             session.setAttribute("usersession", userSession);
             
-            return "redirect:/welcome";
+            return "redirect:/admin/welcome";
         }
         else{
-            return "redirect:/login";
+            return "redirect:/admin/login";
         }
        
     }
@@ -100,17 +98,6 @@ public class RegisteredUsersController {
     @GetMapping("/welcome")
     public String welcome(Model model, HttpSession session){
         UserSession user =(UserSession) session.getAttribute("usersession");
-        // if(user == null){
-        //     return "redirect:/login";
-        // }
-        // User userRole = user.getUser();
-        // if(userRole.getRoleIds().contains("Admin")){
-        //     return "welcomePage";
-        // }
-        // else{
-        //     return "notAllow";
-        // }
-        // return "redirect:/login"; 
 
         
         RegisteredUsers rUser = user.getRegisteredUsers();
@@ -120,6 +107,14 @@ public class RegisteredUsersController {
 
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        
+        UserSession user =(UserSession) session.getAttribute("usersession");
+        registeredUsersService.logout(user.getRegisteredUsers().getEmail(), user.getToken().getAccess_token());
+        session.invalidate();
+        return "redirect:/admin/login";
+    }
 
     
 }

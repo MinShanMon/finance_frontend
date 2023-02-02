@@ -32,7 +32,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
     
     String uri = request.getRequestURI();
     
-    if (uri.equalsIgnoreCase("/login")) {
+    if (uri.equalsIgnoreCase("/admin/login")) {
       return true;
     }
 
@@ -47,7 +47,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
 
 
     if (userSession == null) {
-      response.sendRedirect("/login");
+      response.sendRedirect("/admin/login");
       return false;
     }
 
@@ -61,7 +61,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         registeredUsersService.checkToken(email, token);
       }
       catch(Exception e){
-        response.sendRedirect("/login");
+        response.sendRedirect("/admin/login");
         return false;
       }
     }

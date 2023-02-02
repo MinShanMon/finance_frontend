@@ -76,7 +76,8 @@ public class RegisteredUsersServiceImpl implements RegisteredUsersService {
     public RegisteredUsers addAdminToSession(String email, String token) {
         // TODO Auto-generated method stub
         Mono<RegisteredUsers> getUser = webClient.get() // http request call
-                .uri("/user/addSessionAdmin?email=" + email).header("Authorization", "Bearer "+token)
+                .uri("/user/addSessionAdmin?email=" + email)
+                .header("Authorization", "Bearer "+token)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToMono(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {
@@ -91,8 +92,8 @@ public class RegisteredUsersServiceImpl implements RegisteredUsersService {
     @Override
     public Long checkToken(String email, String token){
         Mono<Long> checkToken = webClient.get()
-                                .uri("/user/checkToken?email=" + email).header("Authorization", "Bearer "+token)
-                                .accept(MediaType.APPLICATION_JSON)
+                                .uri("/user/checkToken?email=" + email)
+                                .header("Authorization", "Bearer "+token)
                                 .exchangeToMono(response -> {
                                     if (response.statusCode().equals(HttpStatus.OK)) {
                                         return response.bodyToMono(Long.class);
@@ -105,6 +106,22 @@ public class RegisteredUsersServiceImpl implements RegisteredUsersService {
         return checkToken.block();
                                 
     }
+
+    @Override
+    public Long logout(String email, String token){
+        Mono<Long> deleteToken = webClient.get()
+                                .uri("/user/deleteToken?email="+email)
+                                .header("Authorization", "Bearer "+token)
+                                .exchangeToMono(response -> {
+                                    if (response.statusCode().equals(HttpStatus.OK)) {
+                                        return response.bodyToMono(Long.class);
+                                    } else {
+                                        return response.createException().flatMap(Mono::error);
+                                    }
+                                });
+
+        return deleteToken.block();
+    }   
 
     @Override
     public Token refreshToken(String token){
@@ -120,4 +137,5 @@ public class RegisteredUsersServiceImpl implements RegisteredUsersService {
                 });
         return getUser.block();
     }
+
 }

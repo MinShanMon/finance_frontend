@@ -12,4 +12,6 @@ public interface RegisteredUsersService {
     Long checkToken(String email, String token);
 
     Token refreshToken(String token);
+
+    Long logout(String email, String token);
 }

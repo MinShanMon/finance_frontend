@@ -16,7 +16,7 @@
         <div class="row w-75 d-flex aligns-items-center justify-content-center">
             <div class="col-md-6 col-md-offset-3">
                 <h1>Login page</h1>
-                <form th:action="@{/login}" method="post" th:object="${user}">
+                <form th:action="@{/admin/login}" method="post" th:object="${user}">
                     <div th:if="${param.error}">
                         <div class="alert alert-danger">
                             Invalid username or password.
