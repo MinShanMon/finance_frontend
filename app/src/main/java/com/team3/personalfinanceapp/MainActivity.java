@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 commitTransaction(homeFragment);
                 return true;
             case R.id.insights_item:
-                InsightsFragment insightsFragment = new InsightsFragment();
+                InsightsViewPagerFragment insightsFragment = new InsightsViewPagerFragment();
                 commitTransaction(insightsFragment);
                 return true;
             case R.id.transactions_item:

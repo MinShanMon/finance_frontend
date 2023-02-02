@@ -32,7 +32,9 @@ public class TransactionsActivity extends AppCompatActivity {
     }
 
 
-    /** Retrieve all transactions and display all transactions **/
+    /**
+     * Retrieve all transactions and display all transactions
+     **/
     private void getAllTransactionsAndDisplay() {
         apiInterface = APIClient.getClient().create(APIInterface.class);
         Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(1);

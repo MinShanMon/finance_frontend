@@ -6,7 +6,46 @@
     android:layout_height="match_parent"
     tools:context=".TransactionsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/transaction_fragment_month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/this_month" />
+
+    <TextView
+        android:id="@+id/money_in_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/money_in"
+        app:layout_constraintTop_toBottomOf="@id/transaction_fragment_month"/>
+
+    <TextView
+        android:id="@+id/money_in_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/money_in_header" />
+
+    <TextView
+        android:id="@+id/money_out_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/money_out"
+        app:layout_constraintTop_toBottomOf="@id/money_in_amount" />
+
+    <TextView
+        android:id="@+id/money_out_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/money_out_header" />
+
+    <TextView
+        android:id="@+id/total_amount_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/money_out_amount" />
+
+
+
     <TextView
         android:id="@+id/latest_transaction_header"
         android:layout_width="wrap_content"
@@ -57,10 +96,10 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <Button
-        android:id="@+id/sync_bankacct_btn"
+        android:id="@+id/link_bank_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sync_bankacct"
+        android:text="@string/link_bankacct"
         app:layout_constraintTop_toBottomOf="@+id/add_transaction_btn"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

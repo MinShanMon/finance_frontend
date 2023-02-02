@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.team3.personalfinanceapp.model.Transaction;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,14 +41,18 @@ public class TransactionsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
         View view = getView();
+        getTransactionsAndDisplayData(view);
+
+        TextView currentMonthHeader = view.findViewById(R.id.transaction_fragment_month);
+        currentMonthHeader.setText(LocalDate.now().getMonth().toString());
+
+
         TextView viewAllBtn = view.findViewById(R.id.view_all_btn);
         viewAllBtn.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), TransactionsActivity.class);
             startActivity(intent);
         });
-        getTransactionsAndSetLatest(view);
 
         Button addTransactionBtn = view.findViewById(R.id.add_transaction_btn);
         addTransactionBtn.setOnClickListener(v -> {
@@ -57,8 +62,10 @@ public class TransactionsFragment extends Fragment {
     }
 
 
-    /** Retrieve all transactions and display the latest transaction **/
-    private void getTransactionsAndSetLatest(View view) {
+    /**
+     * Retrieve all transactions and display the data
+     **/
+    private void getTransactionsAndDisplayData(View view) {
         apiInterface = APIClient.getClient().create(APIInterface.class);
         Call<List<Transaction>> transactionsCall = apiInterface.getTransactionsByMonth(1, 2);
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
@@ -69,16 +76,12 @@ public class TransactionsFragment extends Fragment {
                 if (response.body() == null) {
                     call.cancel();
                     title.setText(R.string.empty_transaction_message);
+                    return;
                 }
                 transactions = new ArrayList<>(response.body());
-                Transaction latest_transaction = transactions.get(0);
-
-
-                title.setText(latest_transaction.getTitle());
-
-                TextView amount = view.findViewById(R.id.latest_transaction_amount);
-                String amountStr = "$" + latest_transaction.getAmount();
-                amount.setText(amountStr);
+                displayLatestTransaction(view, transactions);
+                displayMoneyIn(view, transactions);
+                displayMoneyOut(view, transactions);
             }
 
             @Override
@@ -87,4 +90,30 @@ public class TransactionsFragment extends Fragment {
             }
         });
     }
+
+    private void displayLatestTransaction(View view, ArrayList<Transaction> transactions) {
+        Transaction latest_transaction = transactions.get(0);
+        TextView title = view.findViewById(R.id.latest_transaction_title);
+        title.setText(latest_transaction.getTitle());
+        TextView amount = view.findViewById(R.id.latest_transaction_amount);
+        String amountStr = "$" + latest_transaction.getAmount();
+        amount.setText(amountStr);
+    }
+
+    private void displayMoneyIn(View view, ArrayList<Transaction> transactions) {
+        Double sum = transactions.stream().filter(t -> t.getAmount() > 0)
+                .mapToDouble(Transaction::getAmount)
+                .reduce(Double::sum).orElse(0);
+        TextView moneyInView = view.findViewById(R.id.money_in_amount);
+        moneyInView.setText(sum.toString());
+    }
+
+    private void displayMoneyOut(View view, ArrayList<Transaction> transactions) {
+        Double sum = transactions.stream().filter(t -> t.getAmount() < 0)
+                .mapToDouble(Transaction::getAmount)
+                .reduce(Double::sum).orElse(0);
+        TextView moneyOutView = view.findViewById(R.id.money_out_amount);
+        moneyOutView.setText(sum.toString());
+    }
+
 }
