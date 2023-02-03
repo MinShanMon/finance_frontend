@@ -18,4 +18,6 @@
         android:title="@string/navbar_products"
         android:icon="@drawable/ic_products_foreground" />
 
+
+
 </menu>
