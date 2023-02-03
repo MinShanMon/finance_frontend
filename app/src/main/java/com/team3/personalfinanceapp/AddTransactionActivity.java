@@ -59,7 +59,7 @@ public class AddTransactionActivity extends AppCompatActivity {
                         break;
                     case 1:
                         transactionType = TYPE_INCOME;
-                        categoryField.setVisibility(View.INVISIBLE);
+                        categoryField.setVisibility(View.GONE);
                         break;
                 }
             }

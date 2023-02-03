@@ -75,7 +75,7 @@ public class InsightsViewPagerFragment extends Fragment {
 
     private void getAllTransactionsAndSetCharts(View view) {
         apiInterface = APIClient.getClient().create(APIInterface.class);
-        Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(1);
+        Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(1); //hardcoded userid
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
