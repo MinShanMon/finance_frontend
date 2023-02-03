@@ -11,6 +11,9 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.team3.personalfinanceapp.Fragment.HomeFragment;
+import com.team3.personalfinanceapp.Fragment.InsightsFragment;
+import com.team3.personalfinanceapp.Fragment.ProductsFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
 
@@ -44,9 +47,15 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 InsightsFragment insightsFragment = new InsightsFragment();
                 commitTransaction(insightsFragment);
                 return true;
+
+            case R.id.products_item:
+                ProductsFragment productsFragment = new ProductsFragment();
+                commitTransaction(productsFragment);
+                return true;
         }
         return false;
     }
+
     private void commitTransaction(Fragment fragment) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction trans = fm.beginTransaction();

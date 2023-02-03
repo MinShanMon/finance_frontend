@@ -1,4 +1,4 @@
-package com.team3.personalfinanceapp;
+package com.team3.personalfinanceapp.Fragment;
 
 import android.os.Bundle;
 
@@ -8,9 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class InsightsFragment extends Fragment {
+import com.team3.personalfinanceapp.R;
 
-    public InsightsFragment() {
+public class EtfFragment extends Fragment {
+
+    public EtfFragment() {
         // Required empty public constructor
     }
 
@@ -18,6 +20,6 @@ public class InsightsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_insights, container, false);
+        return inflater.inflate(R.layout.fragment_etf, container, false);
     }
 }
