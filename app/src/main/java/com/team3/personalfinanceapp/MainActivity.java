@@ -8,14 +8,17 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
 
+    private TransactionsFragment transactionsFragment = new TransactionsFragment();
     private HomeFragment homeFragment = new HomeFragment();
-    private InsightsFragment insightsFragment = new InsightsFragment();
+    private InsightsViewPagerFragment insightsFragment = new InsightsViewPagerFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +49,16 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
                 commitTransaction(insightsFragment);
                 return true;
+            case R.id.transactions_item:
+                
+                commitTransaction(transactionsFragment);
+                return true;
         }
         return false;
     }
+
     private void commitTransaction(Fragment fragment) {
+
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction trans = fm.beginTransaction();
         trans.replace(R.id.fragment_container, fragment);
