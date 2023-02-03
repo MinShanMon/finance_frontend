@@ -14,6 +14,8 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
 
+    private HomeFragment homeFragment = new HomeFragment();
+    private InsightsFragment insightsFragment = new InsightsFragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,11 +39,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
         switch (itemId) {
             case R.id.home_item:
-                HomeFragment homeFragment = new HomeFragment();
+
                 commitTransaction(homeFragment);
                 return true;
             case R.id.insights_item:
-                InsightsFragment insightsFragment = new InsightsFragment();
+
                 commitTransaction(insightsFragment);
                 return true;
         }
