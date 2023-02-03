@@ -17,8 +17,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/money_in_card"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/transactions_card_width"
+        android:layout_height="@dimen/transactions_card_height"
         app:cardCornerRadius="@dimen/card_radius"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -50,8 +50,9 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/money_out_card"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/transactions_card_width"
+        android:layout_height="@dimen/transactions_card_height"
+        android:layout_marginTop="@dimen/margin_top"
         app:cardCornerRadius="@dimen/card_radius"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -84,8 +85,9 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/balance_amt_card"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/transactions_card_width"
+        android:layout_height="@dimen/transactions_card_height"
+        android:layout_marginTop="@dimen/margin_top"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/money_out_card">
@@ -116,8 +118,9 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/latest_transaction_card"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/transactions_card_width"
+        android:layout_height="@dimen/transactions_card_height"
+        android:layout_marginTop="@dimen/margin_top"
         app:cardCornerRadius="@dimen/card_radius"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -132,7 +135,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/latest_transaction_header"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="0.3"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -163,7 +165,6 @@
                 android:layout_marginLeft="50dp"
                 android:text="@string/view_all_btn"
                 android:textColor="#0096FF"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/latest_transaction_header"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -175,6 +176,7 @@
         android:id="@+id/add_transaction_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top"
         android:text="@string/add_transaction"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

@@ -133,7 +133,7 @@ public class TransactionsFragment extends Fragment {
                 .mapToDouble(Transaction::getAmount)
                 .reduce(Double::sum).orElse(0);
         TextView moneyInView = view.findViewById(R.id.money_in_amount);
-        moneyInView.setText(sum.toString());
+        moneyInView.setText("$" + sum);
     }
 
     private void displayMoneyOut(View view, ArrayList<Transaction> transactions) {
@@ -141,7 +141,7 @@ public class TransactionsFragment extends Fragment {
                 .mapToDouble(Transaction::getAmount)
                 .reduce(Double::sum).orElse(0);
         TextView moneyOutView = view.findViewById(R.id.money_out_amount);
-        moneyOutView.setText(sum.toString());
+        moneyOutView.setText("$" + sum);
     }
 
 }

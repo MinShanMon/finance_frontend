@@ -15,10 +15,9 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
 
-    private final TransactionsFragment transactionsFragment1 = new TransactionsFragment();
+    private TransactionsFragment transactionsFragment = new TransactionsFragment();
     private HomeFragment homeFragment = new HomeFragment();
     private InsightsViewPagerFragment insightsFragment = new InsightsViewPagerFragment();
-    private TransactionsFragment transactionsFragment = transactionsFragment1;
 
 
     @Override

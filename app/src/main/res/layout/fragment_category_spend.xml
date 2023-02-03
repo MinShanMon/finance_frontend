@@ -31,8 +31,8 @@
 
             <TextView
                 android:id="@+id/food_insights"
-                android:layout_width="@dimen/card_width"
-                android:layout_height="@dimen/card_height" />
+                android:layout_width="@dimen/spending_card_width"
+                android:layout_height="@dimen/spending_card_height" />
 
         </LinearLayout>
 
@@ -62,8 +62,8 @@
 
             <TextView
                 android:id="@+id/transport_insights"
-                android:layout_width="@dimen/card_width"
-                android:layout_height="@dimen/card_height" />
+                android:layout_width="@dimen/spending_card_width"
+                android:layout_height="@dimen/spending_card_height" />
 
         </LinearLayout>
 
@@ -93,8 +93,8 @@
 
             <TextView
                 android:id="@+id/others_insights"
-                android:layout_width="@dimen/card_width"
-                android:layout_height="@dimen/card_height" />
+                android:layout_width="@dimen/spending_card_width"
+                android:layout_height="@dimen/spending_card_height" />
 
         </LinearLayout>
 
