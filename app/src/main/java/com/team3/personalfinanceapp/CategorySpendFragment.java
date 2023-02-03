@@ -29,11 +29,14 @@ import retrofit2.Response;
 
 public class CategorySpendFragment extends Fragment {
 
-    private APIInterface apiInterface;
     private ArrayList<Transaction> transactions;
 
     public CategorySpendFragment() {
         // Required empty public constructor
+    }
+
+    public CategorySpendFragment(ArrayList<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
 
@@ -49,33 +52,8 @@ public class CategorySpendFragment extends Fragment {
         super.onStart();
         View view = getView();
 
-        getTransactionsAndCreateSpendingByCategory(view);
+        createSpendingByCategory(view);
     }
-
-    /**
-     * Retrieve all transactions and display the spending by category
-     **/
-    private void getTransactionsAndCreateSpendingByCategory(View view) {
-        apiInterface = APIClient.getClient().create(APIInterface.class);
-        Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(1);
-        transactionsCall.enqueue(new Callback<List<Transaction>>() {
-            @Override
-            public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
-                if (response.body() == null) {
-                    call.cancel();
-                    return;
-                }
-                transactions = new ArrayList<>(response.body());
-                createSpendingByCategory(view);
-            }
-
-            @Override
-            public void onFailure(Call<List<Transaction>> call, Throwable t) {
-                call.cancel();
-            }
-        });
-    }
-
 
     private void createSpendingByCategory(View view) {
         TextView foodInsights = view.findViewById(R.id.food_insights);
@@ -109,17 +87,14 @@ public class CategorySpendFragment extends Fragment {
             prevMonthSpend = prevMonthSpendingMap.get(category);
         }
 
-        return category + "\n"
-                + "Current Month: " + currMonthSpend + "\n"
-                + "Prev Month: " + prevMonthSpend + "\n"
-                + "Change: " + pctChangeVsPrevMonth(currMonthSpend, prevMonthSpend);
+        return "This Month: " + "$" + Math.abs(currMonthSpend) + "\n"
+                + "Last Month: " + "$" + Math.abs(prevMonthSpend) + "\n"
+                + "Change: " + changeVsPrevMonth(currMonthSpend, prevMonthSpend);
     }
 
-    private int pctChangeVsPrevMonth(double currMonthSpend, double prevMonthSpend) {
-        if (prevMonthSpend == 0) {
-            return 100;
-        }
-        return (int) (currMonthSpend / prevMonthSpend * 100 - 100);
+    private double changeVsPrevMonth(double currMonthSpend, double prevMonthSpend) {
+
+        return Math.abs(currMonthSpend) - Math.abs(prevMonthSpend);
     }
 
 

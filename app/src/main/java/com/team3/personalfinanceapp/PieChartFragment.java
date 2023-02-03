@@ -30,10 +30,14 @@ import retrofit2.Response;
 
 public class PieChartFragment extends Fragment {
 
-    private APIInterface apiInterface;
     private ArrayList<Transaction> transactions;
+
     public PieChartFragment() {
         // Required empty public constructor
+    }
+
+    public PieChartFragment(ArrayList<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
     @Override
@@ -48,31 +52,7 @@ public class PieChartFragment extends Fragment {
         super.onStart();
 
         View view = getView();
-        getTransactionsAndDisplayPieChart(view);
-    }
-
-    /**
-     * Retrieve all transactions and display the pie chart
-     **/
-    private void getTransactionsAndDisplayPieChart(View view) {
-        apiInterface = APIClient.getClient().create(APIInterface.class);
-        Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(1);
-        transactionsCall.enqueue(new Callback<List<Transaction>>() {
-            @Override
-            public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
-                if (response.body() == null) {
-                    call.cancel();
-                    return;
-                }
-                transactions = new ArrayList<>(response.body());
-                createPieChart(view);
-            }
-
-            @Override
-            public void onFailure(Call<List<Transaction>> call, Throwable t) {
-                call.cancel();
-            }
-        });
+        createPieChart(view);
     }
 
     /**

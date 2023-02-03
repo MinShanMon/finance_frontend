@@ -5,11 +5,18 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.team3.personalfinanceapp.CategorySpendFragment;
+import com.team3.personalfinanceapp.ErrorFragment;
 import com.team3.personalfinanceapp.PieChartFragment;
+import com.team3.personalfinanceapp.model.Transaction;
+
+import java.util.ArrayList;
 
 public class InsightsViewPagerAdapter extends FragmentStateAdapter {
-    public InsightsViewPagerAdapter(@NonNull Fragment fragment) {
+
+    private ArrayList<Transaction> transactions;
+    public InsightsViewPagerAdapter(@NonNull Fragment fragment, ArrayList<Transaction> transactions) {
         super(fragment);
+        this.transactions = transactions;
     }
 
     @NonNull
@@ -17,11 +24,11 @@ public class InsightsViewPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new PieChartFragment();
+                return new PieChartFragment(transactions);
             case 1:
-                return new CategorySpendFragment();
+                return new CategorySpendFragment(transactions);
         }
-        return null;
+        return new ErrorFragment();
     }
 
     @Override

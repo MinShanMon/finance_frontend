@@ -103,8 +103,7 @@ public class AddTransactionActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Transaction> call, Response<Transaction> response) {
                 if (response.isSuccessful()) {
-                    Intent intent = new Intent(AddTransactionActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    finish();
                 }
             }
             @Override

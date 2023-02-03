@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.team3.personalfinanceapp.model.BankResponse;
 import com.team3.personalfinanceapp.model.Transaction;
 
 import java.time.LocalDate;
@@ -26,6 +27,8 @@ public class TransactionsFragment extends Fragment {
 
     private ArrayList<Transaction> transactions;
     private APIInterface apiInterface;
+
+    private BankAPIInterface bankAPIInterface;
 
     public TransactionsFragment() {
         // Required empty public constructor
@@ -43,6 +46,7 @@ public class TransactionsFragment extends Fragment {
         super.onStart();
         View view = getView();
         getTransactionsAndDisplayData(view);
+        getAvailableBalanceAndDisplay(view);
 
         TextView currentMonthHeader = view.findViewById(R.id.transaction_fragment_month);
         currentMonthHeader.setText(LocalDate.now().getMonth().toString());
@@ -86,6 +90,30 @@ public class TransactionsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Transaction>> call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
+    /**
+     * Retrieve available balance from OCBC API and display
+     **/
+    private void getAvailableBalanceAndDisplay(View view) {
+        bankAPIInterface = APIClient.getBankClient().create(BankAPIInterface.class);
+        Call<BankResponse> bankResponseCall = bankAPIInterface.getAccountDetails(getString(R.string.ocbc_auth_header));
+        bankResponseCall.enqueue(new Callback<BankResponse>() {
+            @Override
+            public void onResponse(Call<BankResponse> call, Response<BankResponse> response) {
+                BankResponse bankResponse = response.body();
+
+                double balance = bankResponse.getAvailableBalance();
+                TextView balanceTextView = view.findViewById(R.id.available_balance_amt);
+                balanceTextView.setText("$" + balance);
+
+            }
+
+            @Override
+            public void onFailure(Call<BankResponse> call, Throwable t) {
                 call.cancel();
             }
         });
