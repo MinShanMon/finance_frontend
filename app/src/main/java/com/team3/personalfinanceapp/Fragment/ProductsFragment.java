@@ -1,14 +1,18 @@
 package com.team3.personalfinanceapp.Fragment;
 
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.transition.TransitionInflater;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.team3.personalfinanceapp.R;
 
@@ -26,6 +30,10 @@ public class ProductsFragment extends Fragment {
         View v =  inflater.inflate(R.layout.fragment_products, container, false);
 
 
+        TransitionInflater tInflater = TransitionInflater.from(requireContext());
+        setEnterTransition(tInflater.inflateTransition(R.transition.slide_right));
+
+
         v.findViewById(R.id.bank).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,15 +44,15 @@ public class ProductsFragment extends Fragment {
             }
         });
 
-        v.findViewById(R.id.etf).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                EtfFragment etfFragment = new EtfFragment();
-                commitTransaction(etfFragment);
-
-            }
-        });
+//        v.findViewById(R.id.etf).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                EtfFragment etfFragment = new EtfFragment();
+//                commitTransaction(etfFragment);
+//
+//            }
+//        });
 
         v.findViewById(R.id.stock).setOnClickListener(new View.OnClickListener() {
             @Override

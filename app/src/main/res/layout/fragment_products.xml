@@ -8,34 +8,50 @@
     android:padding="10dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+
         android:orientation="vertical"
-        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        >
 
-        <Button
+
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bank"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="155dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg1"
             android:text="Bank Fixed depostie"
-            />
+            android:textSize="25dp"
+            android:textStyle="italic"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/etf"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ETFs"/>
+            android:layout_height="155dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg1"
+            android:text="ETFs"
+            android:textSize="25dp"
+            android:textStyle="italic"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/stock"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Stock"/>
+            android:layout_height="155dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg1"
+            android:text="Stock"
+            android:textSize="25dp"
+            android:textStyle="italic"/>
 
     </LinearLayout>
 

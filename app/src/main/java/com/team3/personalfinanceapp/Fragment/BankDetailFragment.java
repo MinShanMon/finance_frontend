@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import androidx.fragment.app.Fragment;
+import androidx.transition.TransitionInflater;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -38,11 +39,17 @@ public class BankDetailFragment extends Fragment {
     }
     private List<FixedDeposits> fixedList;
 
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_bank_detail, container, false);
+
+        TransitionInflater tInflater = TransitionInflater.from(requireContext());
+        setEnterTransition(tInflater.inflateTransition(R.transition.slide_right));
 
 
         int id = getArguments().getInt("deposists");
@@ -71,8 +78,6 @@ public class BankDetailFragment extends Fragment {
                     Toast.makeText(getContext(),"unsuccressful",Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                Toast.makeText(getContext(),"successful",Toast.LENGTH_SHORT).show();
 
                 fixedList= response.body();
                 FixedDeposits item =fixedList.get(id);
@@ -136,19 +141,6 @@ public class BankDetailFragment extends Fragment {
                             addbtn.setText("remove");
                         }
                         compare.setText("comapre "+Integer.toString(fixedIdMap2.size()) + " items");
-
-//                        if(!pref.contains("fixedId-"+Long.toString(item.getId()))){
-//                            editor.putLong ("fixedId-"+Long.toString(item.getId()),item.getId());
-//                            editor.commit();
-//                        }else {
-//                            editor.remove("fixedId-"+Long.toString(item.getId()));
-//                            compare.setText(Integer.toString(fixedIdMap.size()));
-//                        }
-
-
-
-
-
 
                     }
                 });

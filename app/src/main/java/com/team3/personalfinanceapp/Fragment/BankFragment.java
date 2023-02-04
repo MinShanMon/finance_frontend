@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.transition.TransitionInflater;
+
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,9 +37,7 @@ public class BankFragment extends Fragment {
     }
     private List<FixedDeposits> fixedList;
 
-    String[] items = {"one", "two", "three", "four"};
-    AutoCompleteTextView autoCompleteTextView;
-    ArrayAdapter<String> adapterItem;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,7 +45,10 @@ public class BankFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_bank, container, false);
 
 
-        getActivity().setTitle("all fixed deposists ");
+        TransitionInflater tInflater = TransitionInflater.from(requireContext());
+        setEnterTransition(tInflater.inflateTransition(R.transition.slide_right));
+
+
         APIclient api = new APIclient();
 
         fixedDeposistsServics fs = api.getRetrofit().create(fixedDeposistsServics.class);

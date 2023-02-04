@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import com.team3.personalfinanceapp.Models.FixedDeposits;
 
 import java.util.List;
+import java.util.Locale;
 
 public class ListAdapter extends ArrayAdapter<Object> {
 
@@ -36,10 +37,15 @@ public class ListAdapter extends ArrayAdapter<Object> {
             view = inflater.inflate(R.layout.row, parent, false);
         }
 
-        String bankName = fixedList.get(pos).getBank().getBankName();
+        String bankName = fixedList.get(pos).getBank().getBankName().toUpperCase(Locale.ROOT);
         String months = Integer.toString(fixedList.get(pos).getTenure());
-        TextView textView = view.findViewById(R.id.textView);
-        textView.setText(bankName + "  " + months);
+        String interest = Double.toString(fixedList.get(pos).getInterestRate());
+        TextView bank = view.findViewById(R.id.whichbank);
+        TextView period = view.findViewById(R.id.period);
+        TextView minterest = view.findViewById(R.id.whatinterest);
+        bank.setText(bankName);
+        period.setText(months+"months");
+        minterest.setText(interest+"%");
 
         return view;
     }
