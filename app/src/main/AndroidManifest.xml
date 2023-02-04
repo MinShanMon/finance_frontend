@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" >
+<<<<<<< HEAD
 
     <uses-permission android:name="android.permission.INTERNET" />
+=======
+>>>>>>> oscar
 
     <application
         android:allowBackup="true"
@@ -16,15 +19,37 @@
         android:theme="@style/Theme.PersonalFinanceApp"
         tools:targetApi="31" >
         <activity
+<<<<<<< HEAD
             android:name=".AddTransactionActivity"
             android:exported="false" >
 
+=======
+            android:name=".ui.login.LoginActivity"
+            android:exported="true" >
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
+
+
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+>>>>>>> oscar
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
+<<<<<<< HEAD
             android:name=".TransactionsActivity"
+=======
+            android:name=".ui.register.RegisterActivity"
+            android:exported="false" >
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ui.verify_account.VerifyAccountActivity"
+>>>>>>> oscar
             android:exported="false" >
             <meta-data
                 android:name="android.app.lib_name"
@@ -32,13 +57,21 @@
         </activity>
         <activity
             android:name=".MainActivity"
+<<<<<<< HEAD
             android:exported="true" >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+=======
+            android:exported="false" >
+>>>>>>> oscar
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
 
             <meta-data
                 android:name="android.app.lib_name"
