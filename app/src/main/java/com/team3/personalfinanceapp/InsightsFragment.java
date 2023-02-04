@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.team3.personalfinanceapp.R;
+
 public class InsightsFragment extends Fragment {
 
     public InsightsFragment() {

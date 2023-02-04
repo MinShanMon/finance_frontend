@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         BottomNavigationView btmNavBar = findViewById(R.id.btm_navbar);
         btmNavBar.setOnItemSelectedListener(this);
         btmNavBar.setSelectedItemId(R.id.home_item);
-
     }
 
     @Override
