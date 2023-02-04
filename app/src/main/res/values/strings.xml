@@ -4,6 +4,21 @@
     <string name="navbar_insights">Insights</string>
     <string name="navbar_transactions">Transactions</string>
     <string name="navbar_products">Products</string>
+    <string name="latest_transaction_header">Latest Transaction</string>
+    <string name="view_all_btn">View others</string>
+    <string name="add_transaction">Add Transaction</string>
+    <string name="link_bankacct">Link Bank Account</string>
+    <string-array name="transaction_types_array">
+        <item>Spending</item>
+        <item>Income</item>
+    </string-array>
+    <string name="empty_transaction_message">No transactions found. Please add one, or sync with your bank account.</string>
+    <string name="this_month">This Month</string>
+    <string name="money_in">Money In:</string>
+    <string name="money_out">Money Out:</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_message">Error! Please restart the app.</string>
+    <string name="last_month">Last Month</string>
+    <string name="ocbc_auth_header">Bearer 686560f4-ce07-3cdf-a609-103ba0d261d7</string>
 </resources>
