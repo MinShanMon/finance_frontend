@@ -9,12 +9,12 @@ import com.team3.personalfinanceapp.ErrorFragment;
 import com.team3.personalfinanceapp.PieChartFragment;
 import com.team3.personalfinanceapp.model.Transaction;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class InsightsViewPagerAdapter extends FragmentStateAdapter {
 
-    private ArrayList<Transaction> transactions;
-    public InsightsViewPagerAdapter(@NonNull Fragment fragment, ArrayList<Transaction> transactions) {
+    private List<Transaction> transactions;
+    public InsightsViewPagerAdapter(@NonNull Fragment fragment, List<Transaction> transactions) {
         super(fragment);
         this.transactions = transactions;
     }
@@ -22,11 +22,10 @@ public class InsightsViewPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        switch (position) {
-            case 0:
-                return new PieChartFragment(transactions);
-            case 1:
-                return new CategorySpendFragment(transactions);
+        if (position == 0) {
+            return new PieChartFragment(transactions);
+        } else if (position == 1) {
+            return new CategorySpendFragment(transactions);
         }
         return new ErrorFragment();
     }

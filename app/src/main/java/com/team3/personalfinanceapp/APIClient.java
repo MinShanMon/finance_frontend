@@ -6,6 +6,11 @@ import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class APIClient {
+
+    private APIClient() {
+        throw new IllegalStateException("Utility class");
+    }
+
     static final String BASE_URL = "http://10.0.2.2:80/api/";
     static final String BANK_URL = "https://api.ocbc.com:8243/transactional/account/1.0/";
 

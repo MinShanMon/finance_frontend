@@ -26,9 +26,6 @@ import retrofit2.Response;
 public class TransactionsFragment extends Fragment {
 
     private ArrayList<Transaction> transactions;
-    private APIInterface apiInterface;
-
-    private BankAPIInterface bankAPIInterface;
 
     public TransactionsFragment() {
         // Required empty public constructor
@@ -47,22 +44,12 @@ public class TransactionsFragment extends Fragment {
         View view = getView();
         getTransactionsAndDisplayData(view);
         getAvailableBalanceAndDisplay(view);
+        setViewOthersButton(view);
+        setAddTransactionButton(view);
 
         TextView currentMonthHeader = view.findViewById(R.id.transaction_fragment_month);
         currentMonthHeader.setText(LocalDate.now().getMonth().toString());
 
-
-        TextView viewAllBtn = view.findViewById(R.id.view_all_btn);
-        viewAllBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), TransactionsActivity.class);
-            startActivity(intent);
-        });
-
-        Button addTransactionBtn = view.findViewById(R.id.add_transaction_btn);
-        addTransactionBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), AddTransactionActivity.class);
-            startActivity(intent);
-        });
     }
 
 
@@ -70,7 +57,7 @@ public class TransactionsFragment extends Fragment {
      * Retrieve all transactions and display the data
      **/
     private void getTransactionsAndDisplayData(View view) {
-        apiInterface = APIClient.getClient().create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
         Call<List<Transaction>> transactionsCall = apiInterface.getTransactionsByMonth(1, 2);
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
@@ -95,11 +82,31 @@ public class TransactionsFragment extends Fragment {
         });
     }
 
+    /** Set view other transactions button **/
+    private void setViewOthersButton(View view) {
+
+        TextView viewAllBtn = view.findViewById(R.id.view_all_btn);
+        viewAllBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), TransactionsActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    /** Set add transaction button **/
+    private void setAddTransactionButton(View view) {
+        Button addTransactionBtn = view.findViewById(R.id.add_transaction_btn);
+        addTransactionBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), AddTransactionActivity.class);
+            startActivity(intent);
+        });
+    }
+
+
     /**
      * Retrieve available balance from OCBC API and display
      **/
     private void getAvailableBalanceAndDisplay(View view) {
-        bankAPIInterface = APIClient.getBankClient().create(BankAPIInterface.class);
+        BankAPIInterface bankAPIInterface = APIClient.getBankClient().create(BankAPIInterface.class);
         Call<BankResponse> bankResponseCall = bankAPIInterface.getAccountDetails(getString(R.string.ocbc_auth_header));
         bankResponseCall.enqueue(new Callback<BankResponse>() {
             @Override
@@ -120,11 +127,11 @@ public class TransactionsFragment extends Fragment {
     }
 
     private void displayLatestTransaction(View view, ArrayList<Transaction> transactions) {
-        Transaction latest_transaction = transactions.get(0);
+        Transaction latestTransaction = transactions.get(0);
         TextView title = view.findViewById(R.id.latest_transaction_title);
-        title.setText(latest_transaction.getTitle());
+        title.setText(latestTransaction.getTitle());
         TextView amount = view.findViewById(R.id.latest_transaction_amount);
-        String amountStr = "$" + latest_transaction.getAmount();
+        String amountStr = "$" + latestTransaction.getAmount();
         amount.setText(amountStr);
     }
 

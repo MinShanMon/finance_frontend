@@ -30,13 +30,13 @@ import retrofit2.Response;
 
 public class PieChartFragment extends Fragment {
 
-    private ArrayList<Transaction> transactions;
+    private List<Transaction> transactions;
 
     public PieChartFragment() {
         // Required empty public constructor
     }
 
-    public PieChartFragment(ArrayList<Transaction> transactions) {
+    public PieChartFragment(List<Transaction> transactions) {
         this.transactions = transactions;
     }
 
@@ -82,7 +82,7 @@ public class PieChartFragment extends Fragment {
     /**
      * Add data set and respective colors to pie chart
      **/
-    private void setPieChartData(PieChart pieChart, ArrayList<Transaction> transactions) {
+    private void setPieChartData(PieChart pieChart, List<Transaction> transactions) {
         List<PieEntry> entries = new ArrayList<>();
         Map<String, Double> categoryTotalSpendMap =
                 transactions.stream().collect(Collectors.groupingBy(Transaction::getCategory,

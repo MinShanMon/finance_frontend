@@ -22,10 +22,8 @@ import retrofit2.Response;
 
 public class AddTransactionActivity extends AppCompatActivity {
 
-    private APIInterface apiInterface;
-
-    private final int TYPE_SPENDING = 0;
-    private final int TYPE_INCOME = 1;
+    private static final int TYPE_SPENDING = 0;
+    private static final int TYPE_INCOME = 1;
 
     private int transactionType;
 
@@ -37,9 +35,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         setTransactionTypeDropdown();
 
         Button addBtn = findViewById(R.id.add_btn);
-        addBtn.setOnClickListener( v-> {
-            addTransaction();
-        });
+        addBtn.setOnClickListener(v -> addTransaction());
     }
 
     private void setTransactionTypeDropdown() {
@@ -52,24 +48,26 @@ public class AddTransactionActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 EditText categoryField = findViewById(R.id.add_transaction_category);
-                switch (position) {
-                    case 0:
-                        transactionType = TYPE_SPENDING;
-                        categoryField.setVisibility(View.VISIBLE);
-                        break;
-                    case 1:
-                        transactionType = TYPE_INCOME;
-                        categoryField.setVisibility(View.GONE);
-                        break;
+                if (position == 0) {
+                    transactionType = TYPE_SPENDING;
+                    categoryField.setVisibility(View.VISIBLE);
+                } else {
+                    transactionType = TYPE_INCOME;
+                    categoryField.setVisibility(View.GONE);
                 }
             }
+
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+                EditText categoryField = findViewById(R.id.add_transaction_category);
+                transactionType = TYPE_SPENDING;
+                categoryField.setVisibility(View.VISIBLE);
+            }
         });
     }
 
     private void addTransaction() {
-        apiInterface = APIClient.getClient().create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
         Transaction newTransaction = new Transaction();
 
         EditText category = findViewById(R.id.add_transaction_category);
@@ -98,6 +96,8 @@ public class AddTransactionActivity extends AppCompatActivity {
         newTransaction.setCategory(category.getText().toString());
 
         Call<Transaction> addTransactionCall = apiInterface.addTransaction(1, newTransaction);
+
+
         System.out.println(addTransactionCall.request());
         addTransactionCall.enqueue(new Callback<Transaction>() {
             @Override
@@ -106,6 +106,7 @@ public class AddTransactionActivity extends AppCompatActivity {
                     finish();
                 }
             }
+
             @Override
             public void onFailure(Call<Transaction> call, Throwable t) {
                 call.cancel();
@@ -113,8 +114,6 @@ public class AddTransactionActivity extends AppCompatActivity {
         });
 
     }
-
-
 
 
 }

@@ -12,10 +12,6 @@ import android.view.ViewGroup;
 
 public class ErrorFragment extends Fragment {
 
-
-    // TODO: Rename and change types of parameters
-
-
     public ErrorFragment() {
         // Required empty public constructor
     }

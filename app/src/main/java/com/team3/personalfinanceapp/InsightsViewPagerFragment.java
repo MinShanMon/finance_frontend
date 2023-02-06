@@ -31,15 +31,7 @@ public class InsightsViewPagerFragment extends Fragment {
 
     private ViewPager2 viewPager;
 
-    private FragmentStateAdapter insightsPagerAdapter;
-
     private ArrayList<Transaction> transactions;
-
-    private APIInterface apiInterface;
-
-    private TabLayout tabLayout;
-
-    private TabLayoutMediator tabLayoutMediator;
 
 
     public InsightsViewPagerFragment() {
@@ -58,10 +50,10 @@ public class InsightsViewPagerFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        tabLayout = view.findViewById(R.id.insights_tablayout);
+        TabLayout tabLayout = view.findViewById(R.id.insights_tablayout);
         viewPager = view.findViewById(R.id.insights_viewpager);
         viewPager.setAdapter(new InsightsViewPagerAdapter(this, new ArrayList<>()));
-        tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager,
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> {
                     if (position == 0)
                         tab.setText("Pie Chart");
@@ -70,11 +62,11 @@ public class InsightsViewPagerFragment extends Fragment {
                 }
         );
         tabLayoutMediator.attach();
-        getAllTransactionsAndSetCharts(view);
+        getAllTransactionsAndSetCharts();
     }
 
-    private void getAllTransactionsAndSetCharts(View view) {
-        apiInterface = APIClient.getClient().create(APIInterface.class);
+    private void getAllTransactionsAndSetCharts() {
+        APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
         Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(1); //hardcoded userid
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
@@ -92,7 +84,7 @@ public class InsightsViewPagerFragment extends Fragment {
     }
 
     private void setPieChartAndCategorySpending() {
-        insightsPagerAdapter = new InsightsViewPagerAdapter(InsightsViewPagerFragment.this, transactions);
+        InsightsViewPagerAdapter insightsPagerAdapter = new InsightsViewPagerAdapter(InsightsViewPagerFragment.this, transactions);
         viewPager.setAdapter(insightsPagerAdapter);
     }
 

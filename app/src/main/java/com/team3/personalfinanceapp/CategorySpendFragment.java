@@ -29,13 +29,13 @@ import retrofit2.Response;
 
 public class CategorySpendFragment extends Fragment {
 
-    private ArrayList<Transaction> transactions;
+    private List<Transaction> transactions;
 
     public CategorySpendFragment() {
         // Required empty public constructor
     }
 
-    public CategorySpendFragment(ArrayList<Transaction> transactions) {
+    public CategorySpendFragment(List<Transaction> transactions) {
         this.transactions = transactions;
     }
 

@@ -3,16 +3,26 @@ package com.team3.personalfinanceapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.team3.personalfinanceapp.adapter.TransactionAdapter;
 import com.team3.personalfinanceapp.model.Transaction;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,8 +36,7 @@ public class TransactionsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transactions);
-
+        setContentView(R.layout.activity_transactionslist);
         getAllTransactionsAndDisplay();
     }
 
@@ -46,8 +55,8 @@ public class TransactionsActivity extends AppCompatActivity {
                     call.cancel();
                 }
                 transactions = new ArrayList<>(response.body());
-                ListView transactionsListView = findViewById(R.id.transactions_listview);
-                transactionsListView.setAdapter(new TransactionAdapter(TransactionsActivity.this, transactions));
+                Map<LocalDate, List<Transaction>> transactionsByDate = groupTransactionsByDate(transactions);
+                displayTransactions(transactionsByDate);
             }
 
             @Override
@@ -55,6 +64,52 @@ public class TransactionsActivity extends AppCompatActivity {
                 call.cancel();
             }
         });
+    }
+
+    private SortedMap<LocalDate, List<Transaction>> groupTransactionsByDate(List<Transaction> transactions) {
+        return transactions.stream().collect(
+                Collectors.groupingBy(
+                        Transaction::getDate,
+                        (Supplier<SortedMap<LocalDate, List<Transaction>>>) () ->
+                                new TreeMap(Comparator.reverseOrder()),
+                        Collectors.toList()
+                )
+        );
+    }
+
+    private void displayTransactions(Map<LocalDate, List<Transaction>> transactionsByDate) {
+        LinearLayout linearLayout = findViewById(R.id.transactions_list_linearlayout);
+
+        transactionsByDate.forEach( (date, transactions) -> {
+            TextView dateText = new TextView(this);
+            dateText.setText(date.toString());
+            dateText.setTypeface(null, Typeface.BOLD);
+            dateText.setBackgroundColor(Color.parseColor("#DCDCDC"));
+            linearLayout.addView(dateText);
+
+            transactions.forEach( t -> {
+                TextView transactionText = new TextView(this);
+                String transStr = t.getTitle() + "\n"
+                        + t.getCategory() + "\n"
+                        + t.getAmount();
+                transactionText.setText(transStr);
+                transactionText.setOnClickListener( v -> {
+                    Intent intent = new Intent(this, EditTransactionActivity.class);
+                    intent.putExtra("transactionId", t.getId());
+                    startActivity(intent);
+                });
+
+                linearLayout.addView(transactionText);
+
+                View viewDivider = new View(this);
+                viewDivider.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1));
+                viewDivider.setBackgroundColor(Color.parseColor("#000000"));
+                linearLayout.addView(viewDivider);
+
+            });
+
+        });
+
     }
 
 }

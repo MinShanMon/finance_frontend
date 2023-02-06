@@ -1,18 +1,12 @@
 package com.team3.personalfinanceapp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
 
 public class Transaction implements Serializable {
     private long id;
@@ -27,7 +21,9 @@ public class Transaction implements Serializable {
     private String category;
     private double amount;
 
-    public Transaction() {}
+    public Transaction() {
+        // default constructor for Jackson
+    }
 
     public long getId() {
         return id;

@@ -33,10 +33,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (item != null) {
-            return replaceFragment(item.getItemId());
-        }
-        return false;
+        return replaceFragment(item.getItemId());
     }
 
     private boolean replaceFragment(int itemId) {
@@ -51,11 +48,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 commitTransaction(insightsFragment);
                 return true;
             case R.id.transactions_item:
-                
+
                 commitTransaction(transactionsFragment);
                 return true;
+            default:
+                return false;
         }
-        return false;
     }
 
     private void commitTransaction(Fragment fragment) {
