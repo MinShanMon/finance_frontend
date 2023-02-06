@@ -21,7 +21,9 @@
 
         <activity
             android:name=".ui.ChangePasswordActivity"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -52,7 +54,8 @@
         </activity>
         <activity
             android:name=".ui.ForgetPasswordActivity"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -66,7 +69,9 @@
         </activity>
         <activity
             android:name=".ui.LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -79,7 +84,8 @@
         </activity>
         <activity
             android:name=".ui.RegisterActivity"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -93,7 +99,8 @@
         </activity>
         <activity
             android:name=".ui.VerifyAccountActivity"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -108,7 +115,9 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            >
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->

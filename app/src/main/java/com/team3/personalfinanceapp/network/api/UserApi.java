@@ -35,6 +35,12 @@ public interface UserApi {
     @POST("/api/user/resetpassword")
     Call<Object> resetPassword(@Query("email") String email, @Query("password") String password, @Query("otp") String otp, @Header("Authorization")String token);
 
+    @POST("/api/user/loginWithFb")
+    Call<RegisteredUsers> regFbUser(@Body RegisteredUsers user);
+
+    @GET("/api/user/checkTokenAndroid")
+    Call<Object> checkToken(@Query("id") Integer id,  @Header("Authorization")String token);
+
 
 
 }

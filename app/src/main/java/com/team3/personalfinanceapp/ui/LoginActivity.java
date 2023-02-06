@@ -7,23 +7,32 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.facebook.share.Share;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
 import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.RegisteredUsers;
 import com.team3.personalfinanceapp.model.Token;
 import com.team3.personalfinanceapp.network.api.UserApi;
 import com.team3.personalfinanceapp.util.APIClient;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -43,21 +52,34 @@ public class LoginActivity extends AppCompatActivity {
     UserApi apiInterface;
     TextView error;
     SharedPreferences pref;
+    SharedPreferences pref_rember;
     SharedPreferences.Editor editor;
+    SharedPreferences.Editor editor_rember;
+    CheckBox checkBox;
+    String username;
+    String password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         init();
 
-        SharedPreferences pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+        pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+        pref_rember = getSharedPreferences("remember_password", MODE_PRIVATE);
 
-        if (pref.contains("token"))
-        {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-//            //STEP 2 Read from shared Preferences
+
+        if (pref_rember.contains("email") && pref_rember.contains("password")) {
+            txtUsername.setText(pref_rember.getString("email", ""));
+            txtPassword.setText(pref_rember.getString("password", ""));
+            checkBox.setChecked(pref_rember.getBoolean("check", false));
+        }
+
+        if(pref.contains("token") && pref.contains("userid")){
+            checkToken(pref.getInt("userid",0),pref.getString("token",""));
+        }
+
+
+            //STEP 2 Read from shared Preferences
 //            boolean loginOk = logIn(pref.getString("username", ""), pref.getString("password", ""));
 //
 //            if (loginOk)
@@ -65,9 +87,9 @@ public class LoginActivity extends AppCompatActivity {
 //                startProtectedActivity();
 //            }
 
-        }
 
-        login();
+
+
         txtForgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,21 +97,50 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clickedLogin();
             }
         });
+
+
         signUp.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) { register();
             }
         });
+
+
+        login();
         LoginWithFacebook.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile"));
+            }
+        });
+
+    }
+
+    private void checkToken(Integer uid, String token){
+        Call<Object> userLoginCall = apiInterface.checkToken(uid, "Bearer " + token);
+        userLoginCall.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+
+//                pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+//                editor = pref.edit();
+//                editor.putInt("userid", response.body().getId());
+//                editor.putString("username", response.body().getFullName());
+//                editor.putString("token", response.body().getJwtToken());
+//                editor.commit();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            }
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+
             }
         });
     }
@@ -98,6 +149,7 @@ public class LoginActivity extends AppCompatActivity {
         txtUsername = findViewById(R.id.txtLoginUsername);
         txtPassword = findViewById(R.id.txtLoginPassword);
         btnLogin = findViewById(R.id.btnLogin);
+        checkBox = findViewById(R.id.remember_checkbox);
         error = findViewById(R.id.error_msg);
         signUp = findViewById(R.id.txtSignUp);
         LoginWithFacebook = findViewById(R.id.LoginWithFacebook);
@@ -114,12 +166,13 @@ public class LoginActivity extends AppCompatActivity {
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
+                            Log.i("here", "fb");
+//                        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+//                        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
-                        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-                        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+                        loginfb();
 
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish();
+
                     }
 
                     @Override
@@ -134,6 +187,73 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+
+    private void loginfb(){
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        GraphRequest request = GraphRequest.newMeRequest(
+                accessToken, new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(
+                            JSONObject object,
+                            GraphResponse response) {
+                        // Application code 1319406795267973
+                        Gson gson = new Gson();
+                        String json = gson.toJson(response);
+                        Log.i("response",json);
+
+                        try {
+                            String fullname = object.getString("name");
+                            String fbid = object.getString("id");
+//                            SharedPreferences pref = getPreferences()
+//                            //setting profile picture
+//                            String url = object.getJSONObject("picture").getJSONObject("data").getString("url");
+//                            Picasso.get().load(url).into(imageView);
+//                            txt.setText(fullname);
+                            RegisteredUsers user = new RegisteredUsers();
+                            user.setFbid(fbid);
+                            user.setFullName(fullname);
+                            register(user);
+                            Log.i("response",fullname);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,link, picture.type(large)");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
+    private void register(RegisteredUsers ruser){
+
+        RegisteredUsers user = new RegisteredUsers();
+
+        user.setFullName(ruser.getFullName());
+        user.setFbid(ruser.getFbid());
+
+        Call<RegisteredUsers> userLoginCall = apiInterface.regFbUser(user);
+        userLoginCall.enqueue(new Callback<RegisteredUsers>() {
+            @Override
+            public void onResponse(Call<RegisteredUsers> call, Response<RegisteredUsers> response) {
+
+                pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+                editor = pref.edit();
+                editor.putInt("userid", response.body().getId());
+                editor.putString("username", response.body().getFullName());
+                editor.putString("token", response.body().getJwtToken());
+                editor.commit();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            }
+            @Override
+            public void onFailure(Call<RegisteredUsers> call, Throwable t) {
+
+            }
+        });
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -146,13 +266,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void clickedLogin() {
+
+//        boolean chk = !checkBox.isChecked();
+//        String c = String.valueOf(chk);
+//        Log.i("check", c);
+        username = txtUsername.getText().toString();
+        password = txtPassword.getText().toString();
         if(txtPassword.getText().toString().isEmpty() && txtUsername.getText().toString().isEmpty()){
             error.setText("Field cannot empty");
             return;
         }
-        String username = txtUsername.getText().toString();
-        String password = txtPassword.getText().toString();
-
         Call<Token> login = apiInterface.userLogin(username, password);
         login.enqueue(new Callback<Token>() {
             @Override
@@ -163,10 +286,22 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
                 editor = pref.edit();
-                editor.putString("email",username);
-                editor.putString("password",password);
                 editor.putString("token", response.body().refresh_token);
                 editor.commit();
+
+                pref_rember = getSharedPreferences("remember_password", MODE_PRIVATE);
+                editor_rember = pref_rember.edit();
+                if(checkBox.isChecked()){
+                    editor_rember.putString("email",username);
+                    editor_rember.putString("password",password);
+                    editor_rember.putBoolean("check", true);
+                    editor_rember.commit();
+                }
+                else{
+                    editor_rember.clear();
+                    editor_rember.commit();
+                }
+
                 fetchUserId(response.body().refresh_token, username);
             }
 
@@ -197,7 +332,6 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
-
             }
 
             @Override

@@ -126,8 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
 
-//                editor.putString("token", response.body().access_token);
-
+//                editor.putString("token", response.body().access_token)
 
 
                 Intent intent = new Intent(RegisterActivity.this, VerifyAccountActivity.class);

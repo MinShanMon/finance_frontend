@@ -10,6 +10,9 @@
     <string name="add_transaction">Add Transaction</string>
     <string name="link_bankacct">Link Bank Account</string>
     <string name="sendOTP">Send OTP</string>
+    <string name="logout">Log Out</string>
+    <string name="profile">Profile</string>
+
     <string-array name="transaction_types_array">
         <item>Spending</item>
         <item>Income</item>
@@ -49,6 +52,7 @@
     <string name="facebook_app_id">711073860425774</string>
     <string name="fb_login_protocol_scheme">fb1234</string>
     <string name="facebook_client_token">0efb9672865c8554c2f47d1a129c21a1</string>
+    <string name="remember_password">Remember Password</string>
 
 
 </resources>
