@@ -10,4 +10,6 @@ public class Token {
     public String access_token;
     @SerializedName("refresh_token")
     public String refresh_token;
+    @SerializedName("status")
+    public String status;
 }

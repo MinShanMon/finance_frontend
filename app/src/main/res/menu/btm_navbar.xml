@@ -17,5 +17,8 @@
         android:id="@+id/products_item"
         android:title="@string/navbar_products"
         android:icon="@drawable/ic_products_foreground" />
-
+    <item
+        android:id="@+id/manage_profile"
+        android:title="@string/navbar_profile"
+        android:icon="@drawable/ic_baseline_tag_faces_24" />
 </menu>

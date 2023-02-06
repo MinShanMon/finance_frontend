@@ -2,7 +2,6 @@ package com.team3.personalfinanceapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,6 +11,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.team3.personalfinanceapp.model.Transaction;
+import com.team3.personalfinanceapp.network.api.APIInterface;
+import com.team3.personalfinanceapp.util.APIClient;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

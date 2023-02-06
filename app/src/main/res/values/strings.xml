@@ -4,10 +4,12 @@
     <string name="navbar_insights">Insights</string>
     <string name="navbar_transactions">Transactions</string>
     <string name="navbar_products">Products</string>
+    <string name="navbar_profile">Profile</string>
     <string name="latest_transaction_header">Latest Transaction</string>
     <string name="view_all_btn">View others</string>
     <string name="add_transaction">Add Transaction</string>
     <string name="link_bankacct">Link Bank Account</string>
+    <string name="sendOTP">Send OTP</string>
     <string-array name="transaction_types_array">
         <item>Spending</item>
         <item>Income</item>
@@ -21,9 +23,12 @@
     <string name="error_message">Error! Please restart the app.</string>
     <string name="last_month">Last Month</string>
     <string name="ocbc_auth_header">Bearer 686560f4-ce07-3cdf-a609-103ba0d261d7</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm">Confirm</string>
 
     <string name="loginEng">Login</string>
-    <string name="username">Full Name</string>
+    <string name="username">User Name</string>
     <string name="password">Password</string>
     <string name="forget_password">Forget Password</string>
     <string name="login">Login</string>
@@ -40,5 +45,10 @@
 
 
     <string name="sign_up">Sign Up</string>
+
+    <string name="facebook_app_id">711073860425774</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">0efb9672865c8554c2f47d1a129c21a1</string>
+
 
 </resources>

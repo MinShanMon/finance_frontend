@@ -13,10 +13,11 @@ import android.widget.TextView;
 
 import com.team3.personalfinanceapp.model.BankResponse;
 import com.team3.personalfinanceapp.model.Transaction;
+import com.team3.personalfinanceapp.network.api.APIInterface;
+import com.team3.personalfinanceapp.util.APIClient;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;

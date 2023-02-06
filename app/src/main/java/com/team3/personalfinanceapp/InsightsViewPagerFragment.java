@@ -18,6 +18,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.team3.personalfinanceapp.adapter.InsightsViewPagerAdapter;
 import com.team3.personalfinanceapp.model.Transaction;
+import com.team3.personalfinanceapp.network.api.APIInterface;
+import com.team3.personalfinanceapp.util.APIClient;
 
 import java.util.ArrayList;
 import java.util.List;

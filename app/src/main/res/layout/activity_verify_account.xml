@@ -49,7 +49,7 @@
                 tools:text="@string/please_type_verification_code" />
 
             <TextView
-                android:id="@+id/txtVerifyPhone"
+                android:id="@+id/txtVerifyEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/to_phone_no"
@@ -65,87 +65,39 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="@id/constraintLayout"
                 app:layout_constraintStart_toStartOf="@id/constraintLayout"
-                app:layout_constraintTop_toBottomOf="@id/txtVerifyPhone">
-
-                <EditText
-                    android:id="@+id/edtCodeOne"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/grey_round_corner"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:maxLength="1" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <EditText
-                    android:id="@+id/edtCodeTwo"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/grey_round_corner"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:maxLength="1" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <EditText
-                    android:id="@+id/edtCodeThree"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/grey_round_corner"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:maxLength="1" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <EditText
-                    android:id="@+id/edtCodeFour"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/grey_round_corner"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:maxLength="1" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <EditText
-                    android:id="@+id/edtCodeFive"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/grey_round_corner"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:maxLength="1" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+                app:layout_constraintTop_toBottomOf="@id/txtVerifyEmail">
 
                 <EditText
                     android:id="@+id/edtCodeSix"
-                    android:layout_width="50dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/grey_round_corner"
+                    android:letterSpacing="2"
                     android:gravity="center"
                     android:inputType="number"
-                    android:maxLength="1" />
+                    android:maxLength="6" />
+
+
             </LinearLayout>
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/requestOtp"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:gravity="center"-->
+<!--                android:orientation="horizontal"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/verify_layout">-->
+<!--                <TextView-->
+<!--                    android:id="@+id/txtGetVerify"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textStyle="bold"-->
+<!--                    tools:text="@string/get_verify_code"-->
+<!--                     />-->
+
+<!--            </LinearLayout>-->
 
             <TextView
                 android:id="@+id/txtGetVerify"
@@ -153,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:textStyle="bold"
-                tools:text="@string/get_verify_code"
+                android:text="@string/get_verify_code"
                 app:layout_constraintStart_toStartOf="@+id/verify_layout"
                 app:layout_constraintTop_toBottomOf="@+id/verify_layout" />
 
@@ -167,7 +119,9 @@
                 app:layout_constraintEnd_toEndOf="@+id/verify_layout"
                 app:layout_constraintTop_toBottomOf="@+id/verify_layout">
 
+
                 <TextView
+                    android:id="@+id/verify_account"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/verify"
@@ -178,7 +132,27 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/next_arrow" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnVerify_layout">
+
+                <TextView
+                    android:id="@+id/error_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red"
+                    android:textAllCaps="true" />
+            </LinearLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 

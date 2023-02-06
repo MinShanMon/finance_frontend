@@ -2,14 +2,13 @@ package com.team3.personalfinanceapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.team3.personalfinanceapp.adapter.TransactionAdapter;
 import com.team3.personalfinanceapp.model.Transaction;
+import com.team3.personalfinanceapp.network.api.APIInterface;
+import com.team3.personalfinanceapp.util.APIClient;
 
 import java.util.ArrayList;
 import java.util.List;

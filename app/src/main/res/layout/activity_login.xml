@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -38,14 +36,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
-                    android:hint="@string/username"
+                    android:hint="@string/phone_number"
                     app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
                     app:layout_constraintStart_toStartOf="@+id/constraintLayout"
                     app:layout_constraintTop_toBottomOf="@+id/txtLogin">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/txtLoginUsername"
-                        android:inputType="number"
+                        android:inputType="textEmailAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
@@ -107,6 +105,20 @@
                     app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
                     app:layout_constraintStart_toStartOf="@+id/constraintLayout"
                     app:layout_constraintTop_toBottomOf="@+id/txtForgetPassword" />
+
+                <TextView
+                    android:id="@+id/error_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="true"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+                    app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/LoginWithFacebook" />
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -120,7 +132,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
 
-                <TextView
+                <Button
                     android:layout_marginTop="10dp"
                     android:id="@+id/txtSignUp"
                     android:layout_width="wrap_content"
