@@ -42,7 +42,7 @@ public class Ticket {
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     private LocalDateTime reply_dateTime;
 
-    @JsonIgnore
+    //@JsonIgnore
     @OneToOne(mappedBy = "ticket")
     private Enquiry enquiry;
    

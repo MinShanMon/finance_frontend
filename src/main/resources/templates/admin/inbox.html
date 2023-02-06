@@ -444,7 +444,7 @@
             <td>
               <div
               th:if="${#strings.equals(enquiry.ticket.tikStatus, 'OPEN')}">
-                  <a th:href="@{/admin/reply/}+${enquiry.id}">OPEN</a>
+                  <a th:href="@{/admin/view/}+${enquiry.id}">OPEN</a>
               </div>
               <div
                 th:if="${#strings.equals(enquiry.ticket.tikStatus, 'CLOSED')}" th:text="${enquiry.ticket.tikStatus}">

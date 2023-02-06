@@ -62,6 +62,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         return enquiries.collectList().block();
     }
 
+    @Override
     public List<Enquiry> getOpenEnquiry(){
         Flux<Enquiry> openEnquiries = webClient.get()
                 .uri("/enquiries/open")
@@ -77,6 +78,7 @@ public class EnquiryServiceImpl implements EnquiryService {
         return openEnquiries.collectList().block();
     }
 
+    @Override
     public List<Enquiry> getClosedEnquiry(){
         Flux<Enquiry> closedEnquiries = webClient.get()
                 .uri("/enquiries/closed")
@@ -95,7 +97,7 @@ public class EnquiryServiceImpl implements EnquiryService {
     @Override
     public Enquiry getOneEnquiry(Integer id) {
         Mono<Enquiry> enq = webClient.get()
-                .uri("/reply/{id}", id)
+                .uri("/view/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToMono(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {
