@@ -42,7 +42,7 @@ public class Ticket {
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     private LocalDateTime reply_dateTime;
 
-    //@JsonIgnore
+    @JsonIgnore
     @OneToOne(mappedBy = "ticket")
     private Enquiry enquiry;
    
@@ -51,6 +51,10 @@ public class Ticket {
         this.reply= reply;
         this.tikStatus = tikStatus;
         this.reply_dateTime = reply_dateTime;
+    }
+
+    public Ticket(String reply){
+        this.reply = reply;
     }
 }
 

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import reactor.core.publisher.Mono;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
@@ -14,7 +13,6 @@ import java.util.logging.Logger;
 import java.time.Duration;
 
 import com.personalfinanceapp.frontend.model.Ticket;
-
 
 @Service
 public class TicketServiceImpl implements TicketService {
@@ -63,18 +61,17 @@ public class TicketServiceImpl implements TicketService {
     }
 
 
-    // @PostMapping("/reply/{id}")
-    // public ResponseEntity<?> replyEmail(@PathVariable int id) throws MessagingException, UnsupportedEncodingException{
-    // {
-    //     boolean result = this.tikService.sendEmail(id);
+    @Override
+    public boolean sendEmail(Integer id){
+    Mono<Boolean> sendemail = webClient.post()
+            .uri("/sendmail/{id}",id)
+            .retrieve()
+            .bodyToMono(Boolean.class);
+        return sendemail.block();
+    }
+}    
 
-    //     if(result){
 
-    //         return  ResponseEntity.ok("Email Sent Successfully.");
 
-    //     }else{
-
-    //         return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Email Sending Fails");
-    //     }
-    // }
-}   
+ 
+   

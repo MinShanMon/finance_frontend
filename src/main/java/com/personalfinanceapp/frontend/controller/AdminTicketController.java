@@ -7,22 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 
 import com.personalfinanceapp.frontend.model.Enquiry;
 import com.personalfinanceapp.frontend.model.Ticket;
 import com.personalfinanceapp.frontend.model.TicketStatusEnum;
 import com.personalfinanceapp.frontend.service.EnquiryService;
 import com.personalfinanceapp.frontend.service.TicketService;
-import javax.validation.*;
+
 import java.time.LocalDateTime;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 @Controller
 @RequestMapping("/admin")
@@ -32,11 +28,6 @@ public class AdminTicketController {
 
     @Autowired
     private TicketService tikService;
-
-    // @InitBinder("tik")
-    // private void initLeaveBinder(WebDataBinder binder) {
-    //     binder.addValidators(tikValidator);
-    // }
 
     @GetMapping("/enquiries")
     public String viewEnquiries(Model model) {
@@ -68,46 +59,47 @@ public class AdminTicketController {
     }
 
     @PostMapping("/save")
-    public String saveMember(@Valid @ModelAttribute("tik") Ticket tik, BindingResult result) {
-        if (result.hasErrors()) {
-            return "admin/reply";
-        }
+    public String saveTik(String reply) {
+        // if (result.hasErrors()) {
+        //     return "admin/reply";
+        // }
 
-        Ticket newTik = new Ticket();
-        newTik.setTikStatus(tik.getTikStatus());
-        newTik.setReply(tik.getReply());
-        newTik.setReply_dateTime(LocalDateTime.now());
+        Ticket newTik = new Ticket(reply,TicketStatusEnum.OPEN,LocalDateTime.now());
+        
         tikService.create(newTik);
 
-        return "redirect:/admin/inbox";
+        return "redirect:/admin/enquiries/";
     }
 
     @GetMapping("/view/{id}")
     public String replyEnq(@PathVariable int id, Model model){
         Enquiry enquiry = enqService.getOneEnquiry(id);
         model.addAttribute("enquiry", enquiry);
-        model.addAttribute("tik", tikService.update(enquiry.getTicket()));
+       // model.addAttribute("ticket", enquiry.getTicket());
+        model.addAttribute("ticket", enquiry.getTicket());
         return "admin/reply";
     }
+    
+    @PostMapping("/update")
+    public String reply(String id, String reply,Model model) {
 
-    @PutMapping("/update")
-    public String reply(@Valid @ModelAttribute("tik") Ticket tik, BindingResult result, Model model, RedirectAttributes redirectAttrs) {
+        // if (result.hasErrors()) {
+        //     return "admin/reply";
+        // }
 
-        if (result.hasErrors()) {
-            return "admin/reply";
-        }
-        tikService.update(tik);
-        return "redirect:/admin/inbox";
+        Ticket currticket = enqService.getOneEnquiry(Integer.parseInt(id)).getTicket();
+
+        currticket.setReply(reply);
+        currticket.setReply_dateTime(LocalDateTime.now());
+        // currticket.setTikStatus(TicketStatusEnum.CLOSED);
+
+        tikService.update(currticket);
+
+        //sendEmail(Integer.parseInt(id));
+        tikService.sendEmail(Integer.parseInt(id));
+
+        return "redirect:/admin/enquiries/";
     }
-
-
-    // @PostMapping("/reply/{id}")
-    // public String approveOrRejectCourse(@ModelAttribute("tik") @Valid Ticket tik, BindingResult result,
-    //  @PathVariable Integer id,Model model){
-        
-    //     return "redirect:/admin/inbox";
-    // }   
- 
 
     // @PostMapping("/reply/{id}")
     // public String editTikStatus(@ModelAttribute("status") @Valid CloseTicket close, BindingResult result,
