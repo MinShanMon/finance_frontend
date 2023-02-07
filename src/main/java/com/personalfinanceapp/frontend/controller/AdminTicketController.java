@@ -101,24 +101,4 @@ public class AdminTicketController {
         return "redirect:/admin/enquiries/";
     }
 
-    // @PostMapping("/reply/{id}")
-    // public String editTikStatus(@ModelAttribute("status") @Valid CloseTicket close, BindingResult result,
-    // @PathVariable Integer id){
-    //     if(result.hasErrors()){
-    //         return "admin/reply";
-    //     }
-
-    //     Ticket tik = tikService.getLeaveWithLeaveId(id);
-    //     if(close.getDecision().trim().equalsIgnoreCase(TicketStatusEnum.CLOSED.toString())){
-    //         tik.setTikStatus(TicketStatusEnum.CLOSED);            
-    //         //tik.setReason(close.getReason());
-    //     }
-    //     else{
-    //         tik.setTikStatus(TicketStatusEnum.OPEN);
-    //        // l.setReason(approve.getReason());
-    //     }
-    //     tikService.approvLeave(tik);
-    //     return "redirect:/admin/inbox";
-    // }
-
 }
