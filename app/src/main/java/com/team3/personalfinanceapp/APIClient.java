@@ -17,10 +17,15 @@ public class APIClient {
 
     static Retrofit getClient() {
         return new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl("http://10.0.2.2:80/api/")
                 .client(client)
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build();
+    }
+
+    static UserService getUserService(){
+        UserService userService = getClient().create(UserService.class);
+        return userService;
     }
 
     static Retrofit getBankClient() {

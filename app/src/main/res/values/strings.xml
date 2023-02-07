@@ -21,4 +21,7 @@
     <string name="error_message">Error! Please restart the app.</string>
     <string name="last_month">Last Month</string>
     <string name="ocbc_auth_header">Bearer 686560f4-ce07-3cdf-a609-103ba0d261d7</string>
+
+    <string name="enquiry">Enquiry Form</string>
+    <string name="submit">Submit</string>
 </resources>
