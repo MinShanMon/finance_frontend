@@ -9,4 +9,5 @@
     <dimen name="transactions_card_height">80dp</dimen>
 
     <dimen name="margin_top">20dp</dimen>
+    <dimen name="moneyamt_card_fontsize">40sp</dimen>
 </resources>

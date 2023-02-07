@@ -1,4 +1,4 @@
-package com.team3.personalfinanceapp;
+package com.team3.personalfinanceapp.utils;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -20,7 +20,7 @@ public class APIClient {
             .addInterceptor(logger)
             .build();
 
-    static Retrofit getClient() {
+    public static Retrofit getClient() {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(client)
@@ -28,7 +28,7 @@ public class APIClient {
                 .build();
     }
 
-    static Retrofit getBankClient() {
+    public static Retrofit getBankClient() {
         return new Retrofit.Builder()
                 .baseUrl(BANK_URL)
                 .client(client)

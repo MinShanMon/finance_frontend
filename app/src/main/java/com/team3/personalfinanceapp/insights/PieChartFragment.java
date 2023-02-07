@@ -1,4 +1,4 @@
-package com.team3.personalfinanceapp;
+package com.team3.personalfinanceapp.insights;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,10 +11,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.Transaction;
 
 import java.time.Month;
@@ -68,9 +70,15 @@ public class PieChartFragment extends Fragment {
      * Configure Pie Chart
      **/
     private void configurePieChart(PieChart pieChart) {
-        pieChart.setUsePercentValues(true);
+
         pieChart.setTouchEnabled(false);
+
+        pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
+        pieChart.setEntryLabelTextSize(0);
+
+        pieChart.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleColor(Color.WHITE);
         pieChart.setTransparentCircleColor(Color.WHITE);
@@ -91,13 +99,14 @@ public class PieChartFragment extends Fragment {
         categoryTotalSpendMap.forEach((category, spending) ->
                 entries.add(new PieEntry(Math.abs(spending.floatValue()), category)));
 
-        PieDataSet dataSet = new PieDataSet(entries, "Spending By Category");
+        PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
 
 
         PieData data = new PieData(dataSet);
         pieChart.setData(data);
         pieChart.invalidate();
+        pieChart.animateXY(500, 500);
     }
 
 }

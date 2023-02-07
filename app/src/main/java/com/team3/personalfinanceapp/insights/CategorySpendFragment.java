@@ -1,4 +1,4 @@
-package com.team3.personalfinanceapp;
+package com.team3.personalfinanceapp.insights;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.Transaction;
 
 import java.time.Month;

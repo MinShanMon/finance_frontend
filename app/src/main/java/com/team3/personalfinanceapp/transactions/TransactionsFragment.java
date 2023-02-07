@@ -1,4 +1,4 @@
-package com.team3.personalfinanceapp;
+package com.team3.personalfinanceapp.transactions;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +11,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.BankResponse;
 import com.team3.personalfinanceapp.model.Transaction;
+import com.team3.personalfinanceapp.transactions.AddTransactionActivity;
+import com.team3.personalfinanceapp.transactions.TransactionsActivity;
+import com.team3.personalfinanceapp.utils.APIClient;
+import com.team3.personalfinanceapp.utils.APIInterface;
+import com.team3.personalfinanceapp.utils.BankAPIInterface;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -111,14 +116,15 @@ public class TransactionsFragment extends Fragment {
         bankResponseCall.enqueue(new Callback<BankResponse>() {
             @Override
             public void onResponse(Call<BankResponse> call, Response<BankResponse> response) {
-                BankResponse bankResponse = response.body();
-
-                double balance = bankResponse.getAvailableBalance();
-                TextView balanceTextView = view.findViewById(R.id.available_balance_amt);
-                balanceTextView.setText("$" + balance);
-
+                if (response.isSuccessful()) {
+                    BankResponse bankResponse = response.body();
+                    if (bankResponse != null) {
+                        double balance = bankResponse.getAvailableBalance();
+                        TextView balanceTextView = view.findViewById(R.id.available_balance_amt);
+                        balanceTextView.setText("$" + balance);
+                    }
+                }
             }
-
             @Override
             public void onFailure(Call<BankResponse> call, Throwable t) {
                 call.cancel();

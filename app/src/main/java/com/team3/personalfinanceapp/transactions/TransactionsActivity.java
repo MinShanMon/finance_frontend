@@ -1,4 +1,4 @@
-package com.team3.personalfinanceapp;
+package com.team3.personalfinanceapp.transactions;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,10 +9,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.Transaction;
+import com.team3.personalfinanceapp.transactions.EditTransactionActivity;
+import com.team3.personalfinanceapp.utils.APIClient;
+import com.team3.personalfinanceapp.utils.APIInterface;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

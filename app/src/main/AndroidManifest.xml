@@ -16,17 +16,17 @@
         android:theme="@style/Theme.PersonalFinanceApp"
         tools:targetApi="31">
         <activity
-            android:name=".EditTransactionActivity"
+            android:name=".transactions.EditTransactionActivity"
             android:exported="false" />
         <activity
-            android:name=".AddTransactionActivity"
+            android:name=".transactions.AddTransactionActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".TransactionsActivity"
+            android:name=".transactions.TransactionsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

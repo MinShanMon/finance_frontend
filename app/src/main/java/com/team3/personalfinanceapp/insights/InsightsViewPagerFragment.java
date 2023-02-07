@@ -1,11 +1,10 @@
-package com.team3.personalfinanceapp;
+package com.team3.personalfinanceapp.insights;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
@@ -13,15 +12,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.adapter.InsightsViewPagerAdapter;
 import com.team3.personalfinanceapp.model.Transaction;
+import com.team3.personalfinanceapp.utils.APIClient;
+import com.team3.personalfinanceapp.utils.APIInterface;
 
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -97,12 +109,50 @@ public class InsightsViewPagerFragment extends Fragment {
     private void setLineChart() {
         View view = getView();
         LineChart lineChart = view.findViewById(R.id.insights_linechart);
-        Map<Month, Double> map = transactions.stream().collect(
+        configureLineChart(lineChart);
+        Map<Month, Double> sumPerMonthMap = transactions.stream().collect(
                 Collectors.groupingBy(
                         t -> t.getDate().getMonth(),
                         Collectors.summingDouble(Transaction::getAmount)
-        ));
+                ));
         List<Entry> entries = new ArrayList<>();
+        sumPerMonthMap.forEach((m, s) ->
+                entries.add(new Entry(m.getValue(), Math.abs(s.floatValue())))
+        );
+
+        // sort entries by month in ascending order
+        Collections.sort(entries, (o1, o2) -> (int) (o1.getX() - o2.getX()));
+
+        LineDataSet lineDataSet = new LineDataSet(entries, "Spending Trend");
+        lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        List<ILineDataSet> lineDataSets = new ArrayList<>();
+        lineDataSets.add(lineDataSet);
+        LineData lineData = new LineData(lineDataSets);
+        lineChart.setData(lineData);
+        setXLabels(lineChart);
+        lineChart.invalidate();
+    }
+
+    private void configureLineChart(LineChart lineChart) {
+        lineChart.getAxisLeft().setDrawGridLines(false);
+        lineChart.getAxisRight().setDrawGridLines(false);
+        lineChart.getXAxis().setDrawGridLines(false);
+    }
+
+    private void setXLabels(LineChart lineChart) {
+
+        Month[] months = Month.values();
+        ValueFormatter formatter = new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                return months[(int) value - 1].toString();
+            }
+        };
+
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setGranularity(1f);
+        xAxis.setValueFormatter(formatter);
 
     }
 

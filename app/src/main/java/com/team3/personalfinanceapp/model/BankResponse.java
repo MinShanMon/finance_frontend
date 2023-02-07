@@ -19,9 +19,10 @@ public class BankResponse {
     }
 
     private boolean success;
+    private String disclaimer;
     private BankAccount results;
 
-    public Boolean isSuccess() {
+    public boolean isSuccess() {
         return success;
     }
 
@@ -31,9 +32,10 @@ public class BankResponse {
 
     @JsonIgnore
     public double getAvailableBalance() {
-        return getResults().getStaticBalanceDetail().getAvailableBalance();
+        return getResults().getBalanceDetail();
     }
 
+    /** Nested class to map results object from BankAccount JSON **/
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class BankAccount {
 
@@ -49,13 +51,16 @@ public class BankResponse {
             this.staticBalanceDetail = staticBalanceDetail;
         }
 
-
         public long getAccountNo() {
             return accountNo;
         }
 
         public StaticBalanceDetail getStaticBalanceDetail() {
             return staticBalanceDetail;
+        }
+
+        public double getBalanceDetail() {
+            return getStaticBalanceDetail().getAvailableBalance();
         }
 
         @JsonIgnoreProperties(ignoreUnknown = true)
@@ -74,7 +79,6 @@ public class BankResponse {
                 return availableBalance;
             }
         }
-
     }
 
 }

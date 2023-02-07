@@ -1,4 +1,4 @@
-package com.team3.personalfinanceapp;
+package com.team3.personalfinanceapp.utils;
 
 import com.team3.personalfinanceapp.model.Transaction;
 

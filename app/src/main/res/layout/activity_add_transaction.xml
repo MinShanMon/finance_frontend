@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddTransactionActivity"
+    tools:context=".transactions.AddTransactionActivity"
     android:orientation="vertical">
 
     <TextView
@@ -18,11 +18,40 @@
         android:layout_height="wrap_content" />
 
 
-    <EditText
-        android:id="@+id/add_transaction_category"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Category" />
+        android:text="Category" />
+    
+    <RadioGroup
+        android:id="@+id/add_transaction_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+        <RadioButton
+            android:id="@+id/radio_food"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Food"/>
+
+
+        <RadioButton
+            android:id="@+id/radio_transport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Transport"/>
+
+        <RadioButton
+            android:id="@+id/radio_others"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Others" />
+        
+    </RadioGroup>
 
     <EditText
         android:id="@+id/add_transaction_title"

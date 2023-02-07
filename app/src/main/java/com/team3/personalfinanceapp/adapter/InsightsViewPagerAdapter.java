@@ -4,9 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.team3.personalfinanceapp.CategorySpendFragment;
+import com.team3.personalfinanceapp.insights.CategorySpendFragment;
 import com.team3.personalfinanceapp.ErrorFragment;
-import com.team3.personalfinanceapp.PieChartFragment;
+import com.team3.personalfinanceapp.insights.PieChartFragment;
 import com.team3.personalfinanceapp.model.Transaction;
 
 import java.util.List;
