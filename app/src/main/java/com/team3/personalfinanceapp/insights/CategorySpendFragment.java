@@ -18,6 +18,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.Transaction;
 
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,15 +53,12 @@ public class CategorySpendFragment extends Fragment {
     public void onStart() {
         super.onStart();
         View view = getView();
-
         createSpendingByCategory(view);
     }
 
     private void createSpendingByCategory(View view) {
-        TextView foodInsights = view.findViewById(R.id.food_insights);
-        TextView transportInsights = view.findViewById(R.id.transport_insights);
-        TextView othersInsights = view.findViewById(R.id.others_insights);
-        Month currMonth = Month.FEBRUARY;
+
+        Month currMonth = LocalDate.now().getMonth();
 
         Map<String, Double> currMonthCategorySpending =
                 transactions.stream().filter(t -> t.getDate().getMonth().equals(currMonth))
@@ -72,30 +70,61 @@ public class CategorySpendFragment extends Fragment {
                         .collect(Collectors.groupingBy(Transaction::getCategory,
                                 Collectors.summingDouble(Transaction::getAmount)));
 
-        foodInsights.setText(spendingDataText("Food", currMonthCategorySpending, prevMonthCategorySpending));
-        transportInsights.setText(spendingDataText("Transport", currMonthCategorySpending, prevMonthCategorySpending));
-        othersInsights.setText(spendingDataText("Others", currMonthCategorySpending, prevMonthCategorySpending));
+        setSpendingDataText(view, currMonthCategorySpending, prevMonthCategorySpending);
     }
 
-    private String spendingDataText(String category, Map<String, Double> currMonthSpendingMap, Map<String, Double> prevMonthSpendingMap) {
-        double currMonthSpend = 0;
-        double prevMonthSpend = 0;
-        if (currMonthSpendingMap.containsKey(category)) {
-            currMonthSpend = currMonthSpendingMap.get(category);
-        }
+    private void setSpendingDataText(View view, Map<String, Double> currMonthSpendingMap, Map<String, Double> prevMonthSpendingMap) {
 
-        if (prevMonthSpendingMap.containsKey(category)) {
-            prevMonthSpend = prevMonthSpendingMap.get(category);
-        }
+        TextView foodAmtThisMonth = view.findViewById(R.id.food_insights_thismonthamt);
+        TextView foodAmtLastMonth = view.findViewById(R.id.food_insights_lastmonthamt);
+        TextView foodAmtChange = view.findViewById(R.id.food_insights_changeamt);
 
-        return "This Month: " + "$" + Math.abs(currMonthSpend) + "\n"
-                + "Last Month: " + "$" + Math.abs(prevMonthSpend) + "\n"
-                + "Change: " + changeVsPrevMonth(currMonthSpend, prevMonthSpend);
-    }
+        TextView transportAmtThisMonth = view.findViewById(R.id.transport_insights_thismonthamt);
+        TextView transportAmtLastMonth = view.findViewById(R.id.transport_insights_lastmonthamt);
+        TextView transportAmtChange = view.findViewById(R.id.transport_insights_changeamt);
 
-    private double changeVsPrevMonth(double currMonthSpend, double prevMonthSpend) {
+        TextView othersAmtThisMonth = view.findViewById(R.id.others_insights_thismonthamt);
+        TextView othersAmtLastMonth = view.findViewById(R.id.others_insights_lastmonthamt);
+        TextView othersAmtChange = view.findViewById(R.id.others_insights_changeamt);
 
-        return Math.abs(currMonthSpend) - Math.abs(prevMonthSpend);
+        double[] foodSpending = new double[2];
+        double[] transportSpending = new double[2];
+        double[] othersSpending = new double[2];
+
+        currMonthSpendingMap.forEach((cat, spend) -> {
+            if (cat.equalsIgnoreCase("food")) {
+                foodAmtThisMonth.setText("$" + String.format("%,.2f", spend));
+                foodSpending[0] = spend;
+            }
+            if (cat.equalsIgnoreCase("transport")) {
+                transportAmtThisMonth.setText("$" + String.format("%,.2f", spend));
+                transportSpending[0] = spend;
+            }
+            if (cat.equalsIgnoreCase("others")) {
+                othersAmtThisMonth.setText("$" + String.format("%,.2f", spend));
+                othersSpending[0] = spend;
+            }
+        });
+
+        prevMonthSpendingMap.forEach((cat, spend) -> {
+            if (cat.equalsIgnoreCase("food")) {
+                foodAmtLastMonth.setText("$" + String.format("%,.2f", spend));
+                foodSpending[1] = spend;
+            }
+            if (cat.equalsIgnoreCase("transport")) {
+                transportAmtLastMonth.setText("$" + String.format("%,.2f", spend));
+                transportSpending[1] = spend;
+            }
+            if (cat.equalsIgnoreCase("others")) {
+                othersAmtLastMonth.setText("$" + String.format("%,.2f", spend));
+                othersSpending[1] = spend;
+            }
+        });
+
+        foodAmtChange.setText("$" + String.format("%,.2f", foodSpending[0] - foodSpending[1]));
+        transportAmtChange.setText("$" + String.format("%.2f", transportSpending[0] - transportSpending[1]));
+        othersAmtChange.setText("$" + String.format("%,.2f", othersSpending[0] - othersSpending[1]));
+
     }
 
 

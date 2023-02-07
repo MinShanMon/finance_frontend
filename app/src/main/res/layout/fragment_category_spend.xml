@@ -9,12 +9,14 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_food_insights"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_top"
+        android:layout_marginEnd="@dimen/margin_top"
         app:cardCornerRadius="@dimen/card_radius"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/card_transport_insights"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/card_transport_insights"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -28,11 +30,51 @@
                 android:text="Food"
                 android:textStyle="bold" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/food_insights"
-                android:layout_width="@dimen/spending_card_width"
-                android:layout_height="@dimen/spending_card_height" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/this_month" />
+
+                <TextView
+                    android:id="@+id/food_insights_thismonthamt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/spending_by_cat_defaultamt" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/last_month" />
+
+                <TextView
+                    android:id="@+id/food_insights_lastmonthamt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/spending_by_cat_defaultamt" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Change:" />
+
+                <TextView
+                    android:id="@+id/food_insights_changeamt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/spending_by_cat_defaultamt" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -41,13 +83,15 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_transport_insights"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_top"
+        android:layout_marginEnd="@dimen/margin_top"
         app:cardCornerRadius="@dimen/card_radius"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/card_food_insights"
-        app:layout_constraintRight_toLeftOf="@id/card_others_insights"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/card_others_insights"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_food_insights">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,10 +104,51 @@
                 android:text="Transport"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/transport_insights"
-                android:layout_width="@dimen/spending_card_width"
-                android:layout_height="@dimen/spending_card_height" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/this_month" />
+
+                <TextView
+                    android:id="@+id/transport_insights_thismonthamt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/spending_by_cat_defaultamt" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/last_month" />
+
+                <TextView
+                    android:id="@+id/transport_insights_lastmonthamt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/spending_by_cat_defaultamt" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Change:" />
+
+                <TextView
+                    android:id="@+id/transport_insights_changeamt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/spending_by_cat_defaultamt" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -72,13 +157,15 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_others_insights"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_top"
+        android:layout_marginEnd="@dimen/margin_top"
         app:cardCornerRadius="@dimen/card_radius"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/card_transport_insights"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/card_transport_insights">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -91,13 +178,53 @@
                 android:text="Others"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/others_insights"
-                android:layout_width="@dimen/spending_card_width"
-                android:layout_height="@dimen/spending_card_height" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/this_month" />
+
+                <TextView
+                    android:id="@+id/others_insights_thismonthamt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/spending_by_cat_defaultamt" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/last_month" />
+
+                <TextView
+                    android:id="@+id/others_insights_lastmonthamt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/spending_by_cat_defaultamt" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Change:" />
+
+                <TextView
+                    android:id="@+id/others_insights_changeamt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/spending_by_cat_defaultamt" />
+
+            </LinearLayout>
 
         </LinearLayout>
-
 
 
     </androidx.cardview.widget.CardView>

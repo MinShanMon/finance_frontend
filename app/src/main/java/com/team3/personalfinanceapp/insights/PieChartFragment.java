@@ -15,10 +15,12 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.Transaction;
 
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +65,7 @@ public class PieChartFragment extends Fragment {
     private void createPieChart(View view) {
         PieChart pieChart = view.findViewById(R.id.transactions_piechart);
         configurePieChart(pieChart);
-        setPieChartData(pieChart, transactions);
+        setPieChartData(pieChart);
     }
 
     /**
@@ -90,7 +92,7 @@ public class PieChartFragment extends Fragment {
     /**
      * Add data set and respective colors to pie chart
      **/
-    private void setPieChartData(PieChart pieChart, List<Transaction> transactions) {
+    private void setPieChartData(PieChart pieChart) {
         List<PieEntry> entries = new ArrayList<>();
         Map<String, Double> categoryTotalSpendMap =
                 transactions.stream().collect(Collectors.groupingBy(Transaction::getCategory,
@@ -102,11 +104,30 @@ public class PieChartFragment extends Fragment {
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
 
-
         PieData data = new PieData(dataSet);
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.WHITE);
         pieChart.setData(data);
+        setCenterText(pieChart);
         pieChart.invalidate();
         pieChart.animateXY(500, 500);
+    }
+
+    private void setCenterText(PieChart pieChart) {
+        double sum;
+        if (transactions.isEmpty()) {
+            sum = 0;
+        } else {
+            sum = transactions.stream()
+                    .filter(t -> t.getAmount() < 0)
+                    .filter(t -> t.getDate().getMonth().equals(LocalDate.now().getMonth()))
+                    .mapToDouble(Transaction::getAmount)
+                    .reduce(Double::sum).getAsDouble();
+        }
+
+
+        pieChart.setCenterText("Total\n$" +  String.format("%,.2f", Math.abs(sum)));
     }
 
 }

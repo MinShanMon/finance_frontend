@@ -75,6 +75,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/money_out"
                 android:textColor="@color/white"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -99,6 +100,8 @@
         android:layout_width="@dimen/transactions_card_width"
         android:layout_height="@dimen/transactions_card_height"
         android:layout_marginTop="@dimen/margin_top"
+        app:cardBackgroundColor="#ffac32"
+        app:cardCornerRadius="@dimen/card_radius"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/money_out_card">
@@ -112,6 +115,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Available Bank Balance:"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -121,6 +126,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Loading..."
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="@dimen/moneyamt_card_fontsize"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/avail_balance_title"/>
@@ -134,6 +142,7 @@
         android:layout_height="@dimen/transactions_card_height"
         android:layout_marginTop="@dimen/margin_top"
         app:cardCornerRadius="@dimen/card_radius"
+        app:cardBackgroundColor="#189AB4"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/balance_amt_card">
@@ -147,6 +156,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/largest_transaction_header"
+                android:textColor="@color/white"
+                android:textStyle="bold"
                 app:layout_constraintHorizontal_bias="0.3"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -156,6 +167,8 @@
                 android:id="@+id/largest_transaction_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textStyle="bold"
                 app:layout_constraintHorizontal_bias="0.3"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -165,6 +178,9 @@
                 android:id="@+id/largest_transaction_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="@dimen/moneyamt_card_fontsize"
                 app:layout_constraintHorizontal_bias="0.3"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -176,7 +192,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:text="@string/view_all_btn"
-                android:textColor="#0096FF"
+                android:textColor="@color/white"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toRightOf="@id/largest_transaction_header"
                 app:layout_constraintTop_toTopOf="parent" />
 

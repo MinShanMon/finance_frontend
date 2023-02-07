@@ -76,8 +76,8 @@ public class TransactionsFragment extends Fragment {
                 }
                 transactions = new ArrayList<>(response.body());
                 displayLargestTransaction(view, transactions);
-                displayMoneyIn(view, transactions);
-                displayMoneyOut(view, transactions);
+                displayIncome(view, transactions);
+                displayExpenses(view, transactions);
             }
 
             @Override
@@ -121,7 +121,7 @@ public class TransactionsFragment extends Fragment {
                     if (bankResponse != null) {
                         double balance = bankResponse.getAvailableBalance();
                         TextView balanceTextView = view.findViewById(R.id.available_balance_amt);
-                        balanceTextView.setText("$" + balance);
+                        balanceTextView.setText("$" + String.format("%,.2f", balance));
                     }
                 }
             }
@@ -141,24 +141,24 @@ public class TransactionsFragment extends Fragment {
         }
         title.setText(latestTransaction.getTitle());
         TextView amount = view.findViewById(R.id.largest_transaction_amount);
-        String amountStr = "$" + latestTransaction.getAmount();
+        String amountStr = "$" + String.format("%,.2f", latestTransaction.getAmount());
         amount.setText(amountStr);
     }
 
-    private void displayMoneyIn(View view, ArrayList<Transaction> transactions) {
+    private void displayIncome(View view, ArrayList<Transaction> transactions) {
         Double sum = transactions.stream().filter(t -> t.getAmount() > 0)
                 .mapToDouble(Transaction::getAmount)
                 .reduce(Double::sum).orElse(0);
         TextView moneyInView = view.findViewById(R.id.money_in_amount);
-        moneyInView.setText("$" + sum);
+        moneyInView.setText("$" + String.format("%,.2f", sum));
     }
 
-    private void displayMoneyOut(View view, ArrayList<Transaction> transactions) {
+    private void displayExpenses(View view, ArrayList<Transaction> transactions) {
         Double sum = transactions.stream().filter(t -> t.getAmount() < 0)
                 .mapToDouble(Transaction::getAmount)
                 .reduce(Double::sum).orElse(0);
         TextView moneyOutView = view.findViewById(R.id.money_out_amount);
-        moneyOutView.setText("$" + sum);
+        moneyOutView.setText("$" + String.format("%,.2f", Math.abs(sum)));
     }
 
 }
