@@ -35,7 +35,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         setTransactionTypeDropdown();
 
         Button addBtn = findViewById(R.id.add_btn);
-        addBtn.setOnClickListener(v -> addTransaction());
+        addBtn.setOnClickListener(v -> saveTransaction());
     }
 
     private void setTransactionTypeDropdown() {
@@ -66,7 +66,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         });
     }
 
-    private void addTransaction() {
+    private void saveTransaction() {
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
         Transaction newTransaction = new Transaction();
 

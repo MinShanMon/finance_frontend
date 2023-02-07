@@ -72,6 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/money_out"
+                android:textColor="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -80,6 +81,7 @@
                 android:id="@+id/money_out_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/money_out_header" />
@@ -122,7 +124,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/latest_transaction_card"
+        android:id="@+id/largest_transaction_card"
         android:layout_width="@dimen/transactions_card_width"
         android:layout_height="@dimen/transactions_card_height"
         android:layout_marginTop="@dimen/margin_top"
@@ -136,32 +138,32 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/latest_transaction_header"
+                android:id="@+id/largest_transaction_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/latest_transaction_header"
+                android:text="@string/largest_transaction_header"
                 app:layout_constraintHorizontal_bias="0.3"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/latest_transaction_title"
+                android:id="@+id/largest_transaction_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintHorizontal_bias="0.3"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/latest_transaction_header" />
+                app:layout_constraintTop_toBottomOf="@id/largest_transaction_header" />
 
             <TextView
-                android:id="@+id/latest_transaction_amount"
+                android:id="@+id/largest_transaction_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintHorizontal_bias="0.3"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/latest_transaction_title" />
+                app:layout_constraintTop_toBottomOf="@id/largest_transaction_title" />
 
             <TextView
                 android:id="@+id/view_all_btn"
@@ -170,7 +172,7 @@
                 android:layout_marginLeft="50dp"
                 android:text="@string/view_all_btn"
                 android:textColor="#0096FF"
-                app:layout_constraintLeft_toRightOf="@id/latest_transaction_header"
+                app:layout_constraintLeft_toRightOf="@id/largest_transaction_header"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -187,7 +189,7 @@
         android:textSize="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/latest_transaction_card" />
+        app:layout_constraintTop_toBottomOf="@id/largest_transaction_card" />
 
     <Button
         android:id="@+id/link_bank_btn"

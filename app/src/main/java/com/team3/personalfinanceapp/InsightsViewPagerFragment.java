@@ -14,13 +14,17 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.team3.personalfinanceapp.adapter.InsightsViewPagerAdapter;
 import com.team3.personalfinanceapp.model.Transaction;
 
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,6 +67,7 @@ public class InsightsViewPagerFragment extends Fragment {
         );
         tabLayoutMediator.attach();
         getAllTransactionsAndSetCharts();
+
     }
 
     private void getAllTransactionsAndSetCharts() {
@@ -73,6 +78,7 @@ public class InsightsViewPagerFragment extends Fragment {
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
                 transactions = new ArrayList<>(response.body());
                 setPieChartAndCategorySpending();
+                setLineChart();
             }
 
             @Override
@@ -88,8 +94,15 @@ public class InsightsViewPagerFragment extends Fragment {
         viewPager.setAdapter(insightsPagerAdapter);
     }
 
-    private void setLineChart(View view) {
+    private void setLineChart() {
+        View view = getView();
         LineChart lineChart = view.findViewById(R.id.insights_linechart);
+        Map<Month, Double> map = transactions.stream().collect(
+                Collectors.groupingBy(
+                        t -> t.getDate().getMonth(),
+                        Collectors.summingDouble(Transaction::getAmount)
+        ));
+        List<Entry> entries = new ArrayList<>();
 
     }
 

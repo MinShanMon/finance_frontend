@@ -30,16 +30,24 @@ import retrofit2.Response;
 
 public class TransactionsActivity extends AppCompatActivity {
 
-    ArrayList<Transaction> transactions;
     APIInterface apiInterface;
+
+    LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transactionslist);
+        linearLayout = findViewById(R.id.transactions_list_linearlayout);
         getAllTransactionsAndDisplay();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        linearLayout.removeAllViews();
+        getAllTransactionsAndDisplay();
+    }
 
     /**
      * Retrieve all transactions and display all transactions
@@ -54,7 +62,7 @@ public class TransactionsActivity extends AppCompatActivity {
                 if (response.body() == null) {
                     call.cancel();
                 }
-                transactions = new ArrayList<>(response.body());
+                List<Transaction> transactions = new ArrayList<>(response.body());
                 Map<LocalDate, List<Transaction>> transactionsByDate = groupTransactionsByDate(transactions);
                 displayTransactions(transactionsByDate);
             }
@@ -71,23 +79,22 @@ public class TransactionsActivity extends AppCompatActivity {
                 Collectors.groupingBy(
                         Transaction::getDate,
                         (Supplier<SortedMap<LocalDate, List<Transaction>>>) () ->
-                                new TreeMap(Comparator.reverseOrder()),
+                                new TreeMap<>(Comparator.reverseOrder()),
                         Collectors.toList()
                 )
         );
     }
 
     private void displayTransactions(Map<LocalDate, List<Transaction>> transactionsByDate) {
-        LinearLayout linearLayout = findViewById(R.id.transactions_list_linearlayout);
 
-        transactionsByDate.forEach( (date, transactions) -> {
+        transactionsByDate.forEach( (date, ts) -> {
             TextView dateText = new TextView(this);
             dateText.setText(date.toString());
             dateText.setTypeface(null, Typeface.BOLD);
             dateText.setBackgroundColor(Color.parseColor("#DCDCDC"));
             linearLayout.addView(dateText);
 
-            transactions.forEach( t -> {
+            ts.forEach( t -> {
                 TextView transactionText = new TextView(this);
                 String transStr = t.getTitle() + "\n"
                         + t.getCategory() + "\n"

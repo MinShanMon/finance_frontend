@@ -62,7 +62,7 @@ public class TransactionsFragment extends Fragment {
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
-                TextView title = view.findViewById(R.id.latest_transaction_title);
+                TextView title = view.findViewById(R.id.largest_transaction_title);
 
                 if (response.body() == null) {
                     call.cancel();
@@ -70,7 +70,7 @@ public class TransactionsFragment extends Fragment {
                     return;
                 }
                 transactions = new ArrayList<>(response.body());
-                displayLatestTransaction(view, transactions);
+                displayLargestTransaction(view, transactions);
                 displayMoneyIn(view, transactions);
                 displayMoneyOut(view, transactions);
             }
@@ -126,11 +126,15 @@ public class TransactionsFragment extends Fragment {
         });
     }
 
-    private void displayLatestTransaction(View view, ArrayList<Transaction> transactions) {
-        Transaction latestTransaction = transactions.get(0);
-        TextView title = view.findViewById(R.id.latest_transaction_title);
+    private void displayLargestTransaction(View view, ArrayList<Transaction> transactions) {
+        Transaction latestTransaction = transactions.stream().max( (t1, t2) -> (int) (t2.getAmount() - t1.getAmount())).orElse(null);
+        TextView title = view.findViewById(R.id.largest_transaction_title);
+        if (latestTransaction == null) {
+            title.setText("No transactions found");
+            return;
+        }
         title.setText(latestTransaction.getTitle());
-        TextView amount = view.findViewById(R.id.latest_transaction_amount);
+        TextView amount = view.findViewById(R.id.largest_transaction_amount);
         String amountStr = "$" + latestTransaction.getAmount();
         amount.setText(amountStr);
     }

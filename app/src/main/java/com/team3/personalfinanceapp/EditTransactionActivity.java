@@ -7,11 +7,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.team3.personalfinanceapp.model.Transaction;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,6 +28,9 @@ public class EditTransactionActivity extends AppCompatActivity {
     private static final int TYPE_INCOME = 1;
     private Transaction transactionToEdit;
     private int transactionType;
+    private long transactionId;
+
+    APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
 
 
     @Override
@@ -31,7 +39,7 @@ public class EditTransactionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_transaction);
 
         Intent intent = getIntent();
-        long transactionId = intent.getLongExtra("transactionId", 0);
+        transactionId = intent.getLongExtra("transactionId", 0);
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
         Call<Transaction> getTransactionCall = apiInterface.getTransactionById(transactionId);
         getTransactionCall.enqueue(new Callback<Transaction>() {
@@ -50,14 +58,31 @@ public class EditTransactionActivity extends AppCompatActivity {
 
     private void updateTransactionForm(Transaction transaction) {
 
-        EditText category = findViewById(R.id.edit_transaction_category);
-        category.setText(transaction.getCategory());
+
         if (transaction.getAmount() < 0) {
             transactionType = TYPE_SPENDING;
         } else {
             transactionType = TYPE_INCOME;
         }
         setTransactionTypeDropdown();
+
+        EditText category = findViewById(R.id.edit_transaction_category);
+        category.setText(transaction.getCategory());
+
+        EditText title = findViewById(R.id.edit_transaction_title);
+        title.setText(transaction.getTitle());
+
+        EditText description = findViewById(R.id.edit_transaction_description);
+        description.setText(transaction.getDescription());
+
+        EditText date = findViewById(R.id.edit_transaction_date);
+        date.setText(transaction.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+        EditText amount = findViewById(R.id.edit_transaction_amount);
+        amount.setText(Double.toString(Math.abs(transaction.getAmount())));
+
+        setSaveButton();
+        setDeleteButton();
     }
 
     private void setTransactionTypeDropdown() {
@@ -88,4 +113,81 @@ public class EditTransactionActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setSaveButton() {
+        Button saveBtn = findViewById(R.id.save_btn);
+        saveBtn.setOnClickListener( v -> saveTransaction());
+    }
+
+    private void setDeleteButton() {
+        Button deleteBtn = findViewById(R.id.delete_btn);
+        deleteBtn.setOnClickListener( v -> deleteTransaction());
+    }
+
+    private void saveTransaction() {
+
+        EditText title = findViewById(R.id.edit_transaction_title);
+        transactionToEdit.setTitle(title.getText().toString());
+
+        EditText description = findViewById(R.id.edit_transaction_description);
+        transactionToEdit.setDescription(description.getText().toString());
+
+        EditText date = findViewById(R.id.edit_transaction_date);
+        transactionToEdit.setDate(LocalDate.parse(date.getText().toString(),
+                DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+        EditText amountField = findViewById(R.id.edit_transaction_amount);
+
+        double amount = Double.parseDouble(amountField.getText().toString());
+        EditText category = findViewById(R.id.edit_transaction_category);
+        if (transactionType == TYPE_SPENDING) {
+            amount *= -1;
+        }
+        if (transactionType == TYPE_INCOME) {
+            category.setText("Income");
+        }
+        transactionToEdit.setAmount(amount);
+        transactionToEdit.setCategory(category.getText().toString());
+
+        Call<Transaction> addTransactionCall = apiInterface.editTransaction(1, transactionToEdit);
+
+        System.out.println(addTransactionCall.request());
+        addTransactionCall.enqueue(new Callback<Transaction>() {
+            @Override
+            public void onResponse(Call<Transaction> call, Response<Transaction> response) {
+                if (response.isSuccessful()) {
+                    finish();
+                }
+            }
+            @Override
+            public void onFailure(Call<Transaction> call, Throwable t) {
+                errorToast();
+                call.cancel();
+            }
+        });
+    }
+
+    private void deleteTransaction() {
+        Call<Long> deleteCall = apiInterface.deleteTransactionById(transactionId);
+        deleteCall.enqueue(new Callback<Long>() {
+            @Override
+            public void onResponse(Call<Long> call, Response<Long> response) {
+                if (response.isSuccessful()) {
+                    finish();
+                } else if (response.code() == 404) {
+                    Toast.makeText(EditTransactionActivity.this, "Transaction not found", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Long> call, Throwable t) {
+                errorToast();
+                call.cancel();
+            }
+        });
+    }
+
+    private void errorToast() {
+        Toast.makeText(EditTransactionActivity.this, "Network error. Please try again", Toast.LENGTH_SHORT).show();
+    }
+
 }

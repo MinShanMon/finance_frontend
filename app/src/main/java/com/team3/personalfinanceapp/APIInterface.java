@@ -6,6 +6,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -25,8 +26,11 @@ public interface APIInterface {
     @POST("transaction/{userId}")
     Call<Transaction> addTransaction(@Path("userId") int userId, @Body Transaction transaction);
 
-    @PUT("transaction")
+    @PUT("transaction/{userId}")
     Call<Transaction> editTransaction(@Path("userId") int userId, @Body Transaction transaction);
+
+    @DELETE("transaction")
+    Call<Long> deleteTransactionById(@Query("transactionId") long transactionId);
 
 
 }
