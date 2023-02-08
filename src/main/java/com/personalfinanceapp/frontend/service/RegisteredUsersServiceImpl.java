@@ -90,9 +90,9 @@ public class RegisteredUsersServiceImpl implements RegisteredUsersService {
     }
 
     @Override
-    public Long checkToken(String email, String token){
+    public Long checkToken(Integer id, String token){
         Mono<Long> checkToken = webClient.get()
-                                .uri("/user/checkToken?email=" + email)
+                                .uri("/user/checkToken?id=" + id)
                                 .header("Authorization", "Bearer "+token)
                                 .exchangeToMono(response -> {
                                     if (response.statusCode().equals(HttpStatus.OK)) {
@@ -108,9 +108,9 @@ public class RegisteredUsersServiceImpl implements RegisteredUsersService {
     }
 
     @Override
-    public Long logout(String email, String token){
+    public Long logout(Integer id, String token){
         Mono<Long> deleteToken = webClient.get()
-                                .uri("/user/deleteToken?email="+email)
+                                .uri("/user/deleteToken?id="+id)
                                 .header("Authorization", "Bearer "+token)
                                 .exchangeToMono(response -> {
                                     if (response.statusCode().equals(HttpStatus.OK)) {
@@ -137,5 +137,7 @@ public class RegisteredUsersServiceImpl implements RegisteredUsersService {
                 });
         return getUser.block();
     }
+
+    
 
 }

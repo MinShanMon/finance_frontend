@@ -9,9 +9,9 @@ public interface RegisteredUsersService {
 
     RegisteredUsers addAdminToSession(String email, String token);
 
-    Long checkToken(String email, String token);
+    Long checkToken(Integer id, String token);
 
     Token refreshToken(String token);
 
-    Long logout(String email, String token);
+    Long logout(Integer id, String token);
 }

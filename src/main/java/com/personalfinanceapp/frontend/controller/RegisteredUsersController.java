@@ -29,7 +29,7 @@ import com.personalfinanceapp.frontend.model.LoginForm;
 import com.personalfinanceapp.frontend.model.Token;
 import com.personalfinanceapp.frontend.model.UserSession;
 import com.personalfinanceapp.frontend.model.RegisteredUsers;
-
+import com.personalfinanceapp.frontend.model.Role;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -49,17 +49,18 @@ public class RegisteredUsersController {
     public String login(Model model, HttpSession session) {
         // UserSession user = (UserSession) session.getAttribute("usersession");
         // if(user != null){
-        //     User userRole = user.getUser();
-        //     if(userRole.getRoleIds().contains("Admin")){
-        //         return "redirect:/welcome";
+        //     RegisteredUsers userRole = user.getRegisteredUsers();
+        //     Optional<Role> admin = userRole.getRoleSet().stream().filter(role->role.getName()=="Admin").findFirst();
+        //     if(admin != null){
+        //         return "redirect:/admin/welcome";
         //     }
         //     else{
-        //         model.addAttribute("user", new LoginFrom());
+        //         model.addAttribute("user", new LoginForm());
         //         return "login";
         //     }
         // }
         // else{
-        //     model.addAttribute("user", new LoginFrom());
+        //     model.addAttribute("user", new LoginForm());
         //     return "login";
         // }
         model.addAttribute("user", new LoginForm());
@@ -111,7 +112,7 @@ public class RegisteredUsersController {
     public String logout(HttpSession session){
         
         UserSession user =(UserSession) session.getAttribute("usersession");
-        registeredUsersService.logout(user.getRegisteredUsers().getEmail(), user.getToken().getAccess_token());
+        registeredUsersService.logout(user.getRegisteredUsers().getId(), user.getToken().getAccess_token());
         session.invalidate();
         return "redirect:/admin/login";
     }

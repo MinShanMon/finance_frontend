@@ -32,10 +32,9 @@ public class SecurityInterceptor implements HandlerInterceptor {
     
     String uri = request.getRequestURI();
     
-    if (uri.equalsIgnoreCase("/admin/login")) {
-      return true;
-    }
+    
 
+    
     
     
     // if (uri.startsWith("/home/")) {
@@ -45,26 +44,33 @@ public class SecurityInterceptor implements HandlerInterceptor {
     HttpSession session = request.getSession();
     UserSession userSession = (UserSession) session.getAttribute("usersession");
 
+    if (uri.equalsIgnoreCase("/admin/login")) {
+      return true;
+    }
 
     if (userSession == null) {
       response.sendRedirect("/admin/login");
       return false;
     }
 
+  
 
     String email = userSession.getRegisteredUsers().getEmail();
+    Integer id = userSession.getRegisteredUsers().getId();
     String token = userSession.getToken().getAccess_token();
     //check jwt token is expire or not
     if(userSession != null){
 
       try{
-        registeredUsersService.checkToken(email, token);
+        registeredUsersService.checkToken(id, token);
+        // response.sendRedirect("/admin/welcome");
       }
       catch(Exception e){
         response.sendRedirect("/admin/login");
         return false;
       }
     }
+   
     if(userSession.getTokentime()<= System.currentTimeMillis()){
       Token refreshToken = registeredUsersService.refreshToken(token);
       registeredUsersService.addAdminToSession(userSession.getRegisteredUsers().getEmail(), refreshToken.getAccess_token());

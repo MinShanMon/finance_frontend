@@ -6,4 +6,5 @@ import lombok.Data;
 public class Token {
     String access_token;
     String refresh_token;
+    String status;
 }
