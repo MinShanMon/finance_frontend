@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.transition.TransitionInflater;
 
 import android.view.LayoutInflater;
@@ -146,6 +148,19 @@ public class BankDetailFragment extends Fragment {
                 });
 
 
+                v.findViewById(R.id.link).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("link", item.getBank().getBankLink());
+
+                        WebViewFragment webViewFragment = new WebViewFragment();
+                        webViewFragment.setArguments(bundle);
+                        commitTransaction(webViewFragment);
+                    }
+                });
+
+
             }
 
             @Override
@@ -156,6 +171,14 @@ public class BankDetailFragment extends Fragment {
 
         getActivity().setTitle("fixed deposists detail");
         return v;
+    }
+
+    private void commitTransaction(Fragment fragment) {
+        FragmentManager fm = getParentFragmentManager();
+        FragmentTransaction trans = fm.beginTransaction();
+        trans.replace(R.id.fragment_container, fragment);
+        trans.addToBackStack(null);
+        trans.commit();
     }
 
 
