@@ -58,6 +58,7 @@ public class BankFragment extends Fragment {
             @Override
             public void onResponse(Call<List<FixedDeposits>> call, Response<List<FixedDeposits>> response) {
                 if(!response.isSuccessful()){
+                    System.out.println("unsuccessful");
                     Toast.makeText(getContext(),"unsuccressful",Toast.LENGTH_SHORT).show();
                     return;
                 }

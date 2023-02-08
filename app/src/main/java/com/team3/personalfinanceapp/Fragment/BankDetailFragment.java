@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.transition.TransitionInflater;
 
 import android.view.LayoutInflater;
@@ -66,10 +68,8 @@ public class BankDetailFragment extends Fragment {
 
         fixedDeposistsServics fs = api.getRetrofit().create(fixedDeposistsServics.class);
         Call<List<FixedDeposits>> call = fs.getAll();
-
+        System.out.println(call.request());
         call.enqueue(new Callback<List<FixedDeposits>>() {
-
-
 
             @Override
             public void onResponse(Call<List<FixedDeposits>> call, Response<List<FixedDeposits>> response) {
@@ -104,8 +104,8 @@ public class BankDetailFragment extends Fragment {
                 SharedPreferences pref = getActivity().getSharedPreferences("bankIdList", getContext().MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
 
+//                Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
                 Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
-
 
                 if(fixedIdMap.size() == 0){
                     compare.setText("0");
@@ -143,8 +143,16 @@ public class BankDetailFragment extends Fragment {
                         compare.setText("comapre "+Integer.toString(fixedIdMap2.size()) + " items");
 
                     }
-                });
+                }
+                );
+                compare.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CompareFragment compareFragment = new CompareFragment();
+                        commitTransaction(compareFragment);
 
+                    }
+                });
 
             }
 
@@ -168,6 +176,13 @@ public class BankDetailFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    private void commitTransaction(Fragment fragment) {
+        FragmentManager fm = getParentFragmentManager();
+        FragmentTransaction trans = fm.beginTransaction();
+        trans.replace(R.id.fragment_container, fragment);
+        trans.addToBackStack(null);
+        trans.commit();
     }
 
 
