@@ -56,6 +56,8 @@ public class TransactionsActivity extends AppCompatActivity {
      * Retrieve all transactions and display all transactions
      **/
     private void getAllTransactionsAndDisplay() {
+        TextView title = findViewById(R.id.transaction_list_title);
+        title.setText(getString(R.string.all_transactions_title));
         apiInterface = APIClient.getClient().create(APIInterface.class);
         Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(1);
         transactionsCall.enqueue(new Callback<List<Transaction>>() {

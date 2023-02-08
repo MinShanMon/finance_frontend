@@ -9,9 +9,9 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/transaction_list_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="All Transactions"
         android:textStyle="bold"
         android:textSize="20sp" />
 

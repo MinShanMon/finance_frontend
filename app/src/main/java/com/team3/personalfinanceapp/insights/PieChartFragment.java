@@ -78,6 +78,7 @@ public class PieChartFragment extends Fragment {
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
         pieChart.setEntryLabelTextSize(0);
+        pieChart.setNoDataText("Loading...");
 
         pieChart.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
 
@@ -85,8 +86,8 @@ public class PieChartFragment extends Fragment {
         pieChart.setHoleColor(Color.WHITE);
         pieChart.setTransparentCircleColor(Color.WHITE);
         pieChart.setTransparentCircleAlpha(110);
-        pieChart.setHoleRadius(58f);
-        pieChart.setTransparentCircleRadius(61f);
+        pieChart.setHoleRadius(52f);
+        pieChart.setTransparentCircleRadius(55f);
     }
 
     /**
@@ -105,7 +106,7 @@ public class PieChartFragment extends Fragment {
         dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
 
         PieData data = new PieData(dataSet);
-        data.setValueFormatter(new PercentFormatter());
+        data.setValueFormatter(new PercentFormatter(pieChart));
         data.setValueTextSize(11f);
         data.setValueTextColor(Color.WHITE);
         pieChart.setData(data);

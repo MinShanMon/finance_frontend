@@ -5,7 +5,7 @@
     <string name="navbar_transactions">Transactions</string>
     <string name="navbar_products">Products</string>
     <string name="largest_transaction_header">Largest Expense:</string>
-    <string name="view_all_btn">View all</string>
+    <string name="view_all_btn">View All</string>
     <string name="add_transaction">Add Transaction</string>
     <string name="link_bankacct">Link Bank Account</string>
     <string-array name="transaction_types_array">
@@ -21,4 +21,6 @@
     <string name="ocbc_auth_header">Bearer 686560f4-ce07-3cdf-a609-103ba0d261d7</string>
     <string name="spending_by_cat_defaultamt">$0.00</string>
     <string name="money_format">%,.2f</string>
+    <string name="all_transactions_title">All Transactions</string>
+    <string name="bank_statement_title">Bank Statements</string>
 </resources>

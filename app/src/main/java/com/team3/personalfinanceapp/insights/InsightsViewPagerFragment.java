@@ -49,6 +49,8 @@ public class InsightsViewPagerFragment extends Fragment {
 
     private ArrayList<Transaction> transactions;
 
+    LineChart lineChart;
+
 
     public InsightsViewPagerFragment() {
         // Required empty public constructor
@@ -65,6 +67,8 @@ public class InsightsViewPagerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        lineChart = view.findViewById(R.id.insights_linechart);
+        lineChart.setNoDataText("Loading...");
 
         TabLayout tabLayout = view.findViewById(R.id.insights_tablayout);
         viewPager = view.findViewById(R.id.insights_viewpager);
@@ -107,8 +111,7 @@ public class InsightsViewPagerFragment extends Fragment {
     }
 
     private void setLineChart() {
-        View view = getView();
-        LineChart lineChart = view.findViewById(R.id.insights_linechart);
+
         configureLineChart(lineChart);
         Map<Month, Double> sumPerMonthMap = transactions.stream().collect(
                 Collectors.groupingBy(
@@ -138,6 +141,7 @@ public class InsightsViewPagerFragment extends Fragment {
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getAxisRight().setDrawGridLines(false);
         lineChart.getXAxis().setDrawGridLines(false);
+
     }
 
     private void setXLabels(LineChart lineChart) {
