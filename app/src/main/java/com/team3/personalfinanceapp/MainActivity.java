@@ -38,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         setContentView(R.layout.activity_main);
         BottomNavigationView btmNavBar = findViewById(R.id.btm_navbar);
         btmNavBar.setOnItemSelectedListener(this);
-        btmNavBar.setSelectedItemId(R.id.home_item);
+        btmNavBar.setSelectedItemId(R.id.manage_profile);
+        getSupportActionBar().hide();
 
         SharedPreferences pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
 
@@ -51,36 +52,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     }
 
-    private void loginWithFb(){
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        GraphRequest request = GraphRequest.newMeRequest(
-                accessToken, new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(
-                            JSONObject object,
-                            GraphResponse response) {
-                        // Application code 1319406795267973
-                        Gson gson = new Gson();
-                        String json = gson.toJson(response);
-                        Log.i("response",json);
-
-                        try {
-                            String fullname = object.getString("name");
-                            //setting profile picture
-//                            String url = object.getJSONObject("picture").getJSONObject("data").getString("url");
-//                            Picasso.get().load(url).into(imageView);
-//                            txt.setText(fullname);
-//                            Log.i("response",fullname);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,link, picture.type(large)");
-        request.setParameters(parameters);
-        request.executeAsync();
-    }
 
     @Override
     public void onStart(){

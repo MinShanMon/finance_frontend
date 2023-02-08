@@ -87,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            error_msg.setText("");
+
             error_msg.setText("please enter valid email");
             return;
         }
@@ -102,12 +102,17 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<RegisteredUsers> call, Response<RegisteredUsers> response) {
 
+                if(response.body() == null){
+                    error_msg.setText("email already exit");
+                    return;
+                }
                 editor = pref.edit();
                 editor.clear();
                 editor.commit();
                 pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
                 editor = pref.edit();
                 editor.putString("email",email);
+                editor.putString("username", response.body().getFullName());
                 editor.putString("password",password);
                 editor.putInt("userid", response.body().getId());
                 editor.commit();
@@ -115,6 +120,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<RegisteredUsers> call, Throwable t) {
+//                call.cancel();
 
             }
         });

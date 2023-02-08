@@ -1,5 +1,8 @@
 package com.team3.personalfinanceapp;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -43,6 +46,9 @@ public class InsightsViewPagerFragment extends Fragment {
 
     private TabLayoutMediator tabLayoutMediator;
 
+    SharedPreferences pref;
+
+
 
     public InsightsViewPagerFragment() {
         // Required empty public constructor
@@ -76,8 +82,9 @@ public class InsightsViewPagerFragment extends Fragment {
     }
 
     private void getAllTransactionsAndSetCharts(View view) {
+        pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
         apiInterface = APIClient.getClient().create(APIInterface.class);
-        Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(1); //hardcoded userid
+        Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(pref.getInt("userid", 0),"Bearer "+ pref.getString("token", "")); //hardcoded userid
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {

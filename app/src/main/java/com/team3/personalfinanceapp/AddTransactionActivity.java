@@ -2,6 +2,7 @@ package com.team3.personalfinanceapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,6 +30,8 @@ public class AddTransactionActivity extends AppCompatActivity {
     private final int TYPE_INCOME = 1;
 
     private int transactionType;
+
+    SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +101,8 @@ public class AddTransactionActivity extends AppCompatActivity {
         newTransaction.setAmount(amount);
         newTransaction.setCategory(category.getText().toString());
 
-        Call<Transaction> addTransactionCall = apiInterface.addTransaction(1, newTransaction);
+        pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+        Call<Transaction> addTransactionCall = apiInterface.addTransaction(pref.getInt("userid", 0), newTransaction, "Bearer "+ pref.getString("token" , ""));
         System.out.println(addTransactionCall.request());
         addTransactionCall.enqueue(new Callback<Transaction>() {
             @Override

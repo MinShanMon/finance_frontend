@@ -11,7 +11,7 @@
     <string name="link_bankacct">Link Bank Account</string>
     <string name="sendOTP">Send OTP</string>
     <string name="logout">Log Out</string>
-    <string name="profile">Profile</string>
+    <string name="profile">Edit Profile</string>
 
     <string-array name="transaction_types_array">
         <item>Spending</item>
@@ -53,6 +53,10 @@
     <string name="fb_login_protocol_scheme">fb1234</string>
     <string name="facebook_client_token">0efb9672865c8554c2f47d1a129c21a1</string>
     <string name="remember_password">Remember Password</string>
+    <string name="change_password">Change Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="username_email">Name And Email</string>
+    <string name="change_name">Change Name</string>
 
 
 </resources>

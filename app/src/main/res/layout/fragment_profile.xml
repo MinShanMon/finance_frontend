@@ -8,19 +8,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_marginBottom="10dp"
+    android:layout_marginTop="20dp"
     >
 
-    <ImageButton
+    <ImageView
+        android:id="@+id/img_icon"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:layout_marginBottom="16dp"
-
         android:layout_marginTop="16dp"
-        android:background="@drawable/ic_baseline_email_24"/>
+        />
+
     <TextView
+        android:id="@+id/profile"
         android:text="@string/profile"
-        android:textSize="28dp"
+        android:textSize="20dp"
         android:layout_marginBottom="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,7 +44,7 @@
             android:src="@drawable/ic_baseline_account_circle_24" />
 
         <TextView
-            android:text="Kyaw Kyaw"
+            android:id="@+id/txtUsername"
             android:textSize="20dp"
             android:layout_weight="2"
             android:layout_width="wrap_content"
@@ -49,6 +52,7 @@
 
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/email_display"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -64,22 +68,23 @@
             android:src="@drawable/ic_baseline_email_24" />
 
         <TextView
-            android:text="oscar@gmail.com"
+            android:id="@+id/edtRegisterEmail"
             android:textSize="20dp"
             android:layout_weight="2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/ic_baseline_arrow_circle_right_24"
-            app:tint="@color/purple_500" />
+<!--        <ImageView-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginRight="16dp"-->
+<!--            android:src="@drawable/ic_baseline_arrow_circle_right_24"-->
+<!--            app:tint="@color/purple_500" />-->
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/change_password"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -94,7 +99,7 @@
             android:src="@drawable/ic_baseline_lock_24" />
 
         <TextView
-            android:text="*******"
+            android:text="@string/change_password"
             android:textSize="24dp"
             android:layout_weight="2"
             android:layout_width="wrap_content"
@@ -110,10 +115,10 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-
         android:layout_marginTop="32dp"
         android:text="@string/logout"
         android:textSize="20dp" />

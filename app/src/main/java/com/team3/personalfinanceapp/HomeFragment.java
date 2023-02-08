@@ -17,9 +17,7 @@ import com.team3.personalfinanceapp.ui.LoginActivity;
 
 public class HomeFragment extends Fragment {
 
-    Button logout;
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
+
 
     public void setPref(){
 
@@ -34,22 +32,6 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
-        logout = view.findViewById(R.id.logout);
-        pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
-
-
-
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences.Editor editor = pref.edit();
-                editor.clear();
-                editor.commit();
-                Intent intent = new Intent(v.getContext() , LoginActivity.class);
-                startActivity(intent);
-                getActivity().finish();
-            }
-        });
         return view;
     }
 

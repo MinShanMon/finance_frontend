@@ -1,6 +1,9 @@
 package com.team3.personalfinanceapp;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -30,6 +33,8 @@ public class TransactionsFragment extends Fragment {
     private APIInterface apiInterface;
 
     private BankAPIInterface bankAPIInterface;
+
+    SharedPreferences pref;
 
     public TransactionsFragment() {
         // Required empty public constructor
@@ -71,8 +76,9 @@ public class TransactionsFragment extends Fragment {
      * Retrieve all transactions and display the data
      **/
     private void getTransactionsAndDisplayData(View view) {
+        pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
         apiInterface = APIClient.getClient().create(APIInterface.class);
-        Call<List<Transaction>> transactionsCall = apiInterface.getTransactionsByMonth(1, 2);
+        Call<List<Transaction>> transactionsCall = apiInterface.getTransactionsByMonth(pref.getInt("userid", 0), 2, "Bearer "+ pref.getString("token", ""));
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {

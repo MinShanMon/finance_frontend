@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.network.api.UserApi;
 import com.team3.personalfinanceapp.util.APIClient;
@@ -23,11 +25,22 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     TextInputEditText password;
     TextInputEditText confirmPassword;
+    TextInputEditText current_password;
+    TextInputLayout current_password_pwd;
+    TextView txtLogin;
     AppCompatButton resetpassbtn;
     SharedPreferences.Editor editor;
     SharedPreferences pref;
     TextView error_msg;
     UserApi apiInterface;
+    Intent intent;
+    Boolean change_password;
+    String otp;
+    String email;
+    String token;
+    String passwordAp;
+    String confirmP;
+    String c_p;
 
 
     @Override
@@ -38,28 +51,99 @@ public class ChangePasswordActivity extends AppCompatActivity {
         resetpassbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reset();
+                if(change_password){
+                    change_pwd();
+                }
+                else{
+                    reset(token);
+                }
+
             }
         });
-
     }
 
     private void init(){
         apiInterface = APIClient.getClient().create(UserApi.class);
         password = findViewById(R.id.password);
         confirmPassword = findViewById(R.id.confirmPassword);
+        current_password_pwd = findViewById(R.id.current_password_pwd);
+        current_password = findViewById(R.id.current_password);
         resetpassbtn = findViewById(R.id.resetpassbtn);
+        txtLogin = findViewById(R.id.txtLogin);
         error_msg = findViewById(R.id.error_msg);
+        intent = getIntent();
+        change_password = intent.getBooleanExtra("change_password", false);
+
+        otp = intent.getStringExtra("otp");
+        email = intent.getStringExtra("email");
+        token = intent.getStringExtra("token");
+
+
+        if(!change_password){
+            current_password_pwd.setVisibility(View.GONE);
+            txtLogin.setText("RESET PASSWORD");
+        }
+        else{
+            txtLogin.setText("CHANGE PASSWORD");
+        }
     }
 
-    private void reset(){
-        Intent intent = getIntent();
-        String otp = intent.getStringExtra("otp");
-        String email = intent.getStringExtra("email");
-        String token = intent.getStringExtra("token");
-        String passwordAp = password.getText().toString();
-        String confirmP = confirmPassword.getText().toString();
+    private void change_pwd(){
+        passwordAp = password.getText().toString();
+        confirmP = confirmPassword.getText().toString();
+        c_p = current_password.getText().toString();
+        pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+        String curr_pass = pref.getString("password", "");
+        String tokens = pref.getString("token", "");
+        Integer id = pref.getInt("userid", 0);
+        if(c_p.isEmpty()){
+            error_msg.setText("Fileds cannot be empty");
+            return;
+        }
+        else if(!pref.getString("password", "").equals(c_p)){
+            error_msg.setText("Current Password is incorrect");
+            return;
+        }
+        if(passwordAp.isEmpty() && confirmP.isEmpty()){
+            error_msg.setText("Fileds cannot be empty");
+            return;
+        }
+        if(!passwordAp.equals(confirmP)){
+            error_msg.setText("new confirmPassword and new password must be same");
+            return;
+        }
+        Call<Object> userLoginCall = apiInterface.editPassword(id,passwordAp,"Bearer "+ tokens);
+        userLoginCall.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
 
+                
+
+//                editor = pref.edit();
+//                editor.putString("password", passwordAp);
+//
+//                editor.commit();
+//
+                Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
+                error_msg.setText("");
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void reset(String tokens){
+        passwordAp = password.getText().toString();
+        confirmP = confirmPassword.getText().toString();
+        c_p = current_password.getText().toString();
+
+        pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
         if(passwordAp.isEmpty() && confirmP.isEmpty()){
             error_msg.setText("Fileds cannot be empty");
             return;
@@ -68,18 +152,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
             error_msg.setText("confirmPassword and password must be same");
             return;
         }
-        pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
-        Call<Object> userLoginCall = apiInterface.resetPassword(email,passwordAp,otp,"Bearer "+ token);
+
+        Call<Object> userLoginCall = apiInterface.resetPassword(email,passwordAp,otp,"Bearer "+ tokens);
         userLoginCall.enqueue(new Callback<Object>() {
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {
 
-//                pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
-//                editor = pref.edit();
-//                editor.putString("token", response.body().access_token);
-//
-//                editor.commit();
-//
                 Intent intent = new Intent(ChangePasswordActivity.this, LoginActivity.class);
                 error_msg.setText("");
                 editor = pref.edit();

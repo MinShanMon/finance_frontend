@@ -2,6 +2,7 @@ package com.team3.personalfinanceapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ListView;
 
@@ -22,6 +23,8 @@ public class TransactionsActivity extends AppCompatActivity {
     ArrayList<Transaction> transactions;
     APIInterface apiInterface;
 
+    SharedPreferences pref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +38,9 @@ public class TransactionsActivity extends AppCompatActivity {
      * Retrieve all transactions and display all transactions
      **/
     private void getAllTransactionsAndDisplay() {
+        pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
         apiInterface = APIClient.getClient().create(APIInterface.class);
-        Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(1);
+        Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(pref.getInt("userid",0),"Bearer "+pref.getString("token", ""));
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {

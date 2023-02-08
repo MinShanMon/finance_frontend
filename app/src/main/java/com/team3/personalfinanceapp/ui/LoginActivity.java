@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     CheckBox checkBox;
     String username;
     String password;
+    AccessToken accessToken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,18 +78,11 @@ public class LoginActivity extends AppCompatActivity {
         if(pref.contains("token") && pref.contains("userid")){
             checkToken(pref.getInt("userid",0),pref.getString("token",""));
         }
-
-
-            //STEP 2 Read from shared Preferences
-//            boolean loginOk = logIn(pref.getString("username", ""), pref.getString("password", ""));
-//
-//            if (loginOk)
-//            {
-//                startProtectedActivity();
-//            }
-
-
-
+        accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        if(isLoggedIn){
+            checkToken(pref.getInt("userid", 0), pref.getString("token", ""));
+        }
 
         txtForgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,13 +122,6 @@ public class LoginActivity extends AppCompatActivity {
         userLoginCall.enqueue(new Callback<Object>() {
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {
-
-//                pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
-//                editor = pref.edit();
-//                editor.putInt("userid", response.body().getId());
-//                editor.putString("username", response.body().getFullName());
-//                editor.putString("token", response.body().getJwtToken());
-//                editor.commit();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             }
@@ -189,7 +176,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void loginfb(){
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        accessToken = AccessToken.getCurrentAccessToken();
         GraphRequest request = GraphRequest.newMeRequest(
                 accessToken, new GraphRequest.GraphJSONObjectCallback() {
                     @Override
@@ -242,6 +229,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putInt("userid", response.body().getId());
                 editor.putString("username", response.body().getFullName());
                 editor.putString("token", response.body().getJwtToken());
+                editor.putBoolean("fbuser", true);
                 editor.commit();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
@@ -287,6 +275,7 @@ public class LoginActivity extends AppCompatActivity {
                 pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
                 editor = pref.edit();
                 editor.putString("token", response.body().refresh_token);
+                editor.putString("password", password);
                 editor.commit();
 
                 pref_rember = getSharedPreferences("remember_password", MODE_PRIVATE);
@@ -326,6 +315,8 @@ public class LoginActivity extends AppCompatActivity {
                     pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
                     editor = pref.edit();
                     editor.putInt("userid", response.body().getId());
+                    editor.putString("username", response.body().getFullName());
+                    editor.putString("email", response.body().getEmail());
                     editor.commit();
 
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);

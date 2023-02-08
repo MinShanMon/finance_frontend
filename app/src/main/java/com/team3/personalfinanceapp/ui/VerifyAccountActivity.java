@@ -35,11 +35,12 @@ public class VerifyAccountActivity extends AppCompatActivity {
     TextView txtGetVerify;
     String token;
     Boolean register;
+    Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_account);
-
 //        SharedPreferences pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
 //        String uid = pref.getString("token", "");
 //        Log.i("verify token", uid);
@@ -71,7 +72,7 @@ public class VerifyAccountActivity extends AppCompatActivity {
         apiInterface = APIClient.getClient().create(UserApi.class);
         edtCodeSix = findViewById(R.id.edtCodeSix);
         txtVerifyEmail = findViewById(R.id.txtVerifyEmail);
-        Intent intent = getIntent();
+        intent = getIntent();
         email = intent.getStringExtra("email");
         token=intent.getStringExtra("token");
         register = intent.getBooleanExtra("register", false);
