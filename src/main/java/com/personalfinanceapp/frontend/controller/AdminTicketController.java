@@ -58,18 +58,18 @@ public class AdminTicketController {
         return "admin/closed-tickets";
     }
 
-    @PostMapping("/save")
-    public String saveTik(String reply) {
-        // if (result.hasErrors()) {
-        //     return "admin/reply";
-        // }
+    // @PostMapping("/save")
+    // public String saveTik(String reply) {
+    //     // if (result.hasErrors()) {
+    //     //     return "admin/reply";
+    //     // }
 
-        Ticket newTik = new Ticket(reply,TicketStatusEnum.OPEN,LocalDateTime.now());
+    //     Ticket newTik = new Ticket(reply,TicketStatusEnum.OPEN,LocalDateTime.now());
         
-        tikService.create(newTik);
+    //     tikService.create(newTik);
 
-        return "redirect:/admin/enquiries/";
-    }
+    //     return "redirect:/admin/enquiries/";
+    // }
 
     @GetMapping("/view/{id}")
     public String replyEnq(@PathVariable int id, Model model){

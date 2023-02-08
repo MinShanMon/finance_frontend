@@ -4,5 +4,5 @@ import com.personalfinanceapp.frontend.model.Enquiry;
 
 public interface ReviewService {
     Enquiry getOneReview(Integer id);
-    Enquiry updateReview(Enquiry currEnq);
+    Enquiry updateReview(Enquiry Enq);
 }

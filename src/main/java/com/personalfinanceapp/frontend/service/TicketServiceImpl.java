@@ -10,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import java.util.logging.Logger;
-import java.time.Duration;
 
 import com.personalfinanceapp.frontend.model.Ticket;
 
@@ -39,16 +38,16 @@ public class TicketServiceImpl implements TicketService {
         };
     }
 
-    @Override
-    public Ticket create(Ticket tik) {
-        Mono<Ticket> createdTik = webClient.post()
-                .uri("/ticket")
-                .body(Mono.just(tik), Ticket.class)
-                .retrieve()
-                .bodyToMono(Ticket.class)
-                .timeout(Duration.ofMillis(10_000));
-        return createdTik.block();
-    }
+    // @Override
+    // public Ticket create(Ticket tik) {
+    //     Mono<Ticket> createdTik = webClient.post()
+    //             .uri("/ticket")
+    //             .body(Mono.just(tik), Ticket.class)
+    //             .retrieve()
+    //             .bodyToMono(Ticket.class)
+    //             .timeout(Duration.ofMillis(10_000));
+    //     return createdTik.block();
+    // }
 
     @Override
     public Ticket update(Ticket tik){

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,19 +22,17 @@ public class CustomerReviewController {
     public String reviewEnq(@PathVariable int id, Model model){
         Enquiry enquiry = rivService.getOneReview(id);
         model.addAttribute("enquiry", enquiry);
-       // model.addAttribute("ticket", enquiry.getTicket());
         return "customer/review";
     }
 
-    @PostMapping("/feedback")
-    public String reply(String id, String comment,Model model) {
+    @PostMapping("/feedback/{id}")
+    public String reply(@ModelAttribute ("enq") Enquiry enquiry, @PathVariable int id ,String comment,Model model) {
 
-        Enquiry currEnq = rivService.getOneReview(Integer.parseInt(id));
+        Enquiry currEnq = rivService.getOneReview(enquiry.getId());
         currEnq.setComment(comment);
-        currEnq.setRating(2);
-        
+        //currEnq.setRating(2);
         rivService.updateReview(currEnq);
-        return "customer/review";
+        return "customer/thanks";
     }
 }    
-        
+            

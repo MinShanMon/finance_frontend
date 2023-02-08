@@ -134,30 +134,11 @@
         <div class="submit">
             <div class="text"> We value your feedback !</div>
         </div>
-        <div class="star-widget">
-            <input type="radio" name="rate" id="rate-5">
-            <label for="rate-5" class="fa fa-star"></label>
-            <input type="radio" name="rate" id="rate-4">
-            <label for="rate-4" class="fa fa-star"></label>
-            <input type="radio" name="rate" id="rate-3">
-            <label for="rate-3" class="fa fa-star"></label>
-            <input type="radio" name="rate" id="rate-2">
-            <label for="rate-2" class="fa fa-star"></label>
-            <input type="radio" name="rate" id="rate-1">
-            <label for="rate-1" class="fa fa-star"></label>
             <form action="#">
                 <header>
                     
                 </header>           
         </form> 
-        
-        <form action="#" th:action="@{/customer/feedback/}+${enquiry.id}" method="post">
-            <input type="hidden" th:name="id" th:value="${enquiry.id}" />
-            <textarea type="text" th:name="comment" th:value="${enquiry.comment}" cols="60" rows="10"></textarea>
-            <div class="btn">
-            <button type="submit">Submit</button>
-          </div>  	
-        </form>
             </div>
         </div>
     </body>
