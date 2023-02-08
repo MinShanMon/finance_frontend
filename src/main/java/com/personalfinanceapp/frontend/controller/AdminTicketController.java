@@ -35,6 +35,7 @@ public class AdminTicketController {
         List<Enquiry> enquiries = enqService.viewDashboard();
         List<Enquiry> openEnquiries = enqService.getOpenEnquiry();
         model.addAttribute("open", openEnquiries);
+        model.addAttribute("openSum", openEnquiries.size());
         model.addAttribute("enquiries", enquiries);
         return "admin/dashboard";
     }
