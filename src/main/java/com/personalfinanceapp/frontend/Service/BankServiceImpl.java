@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -88,6 +89,33 @@ public class BankServiceImpl implements BankService {
                     }
                 });
         return bank.block();
+    }
+
+    @Override
+    public Bank editbank(Bank bank) {
+        Mono<Bank> _editbank = webClient.put()
+                .uri("/editbank/")
+                .body(Mono.just(bank), Bank.class)
+                .retrieve()
+                .bodyToMono(Bank.class);
+        return _editbank.block();
+    }
+
+    @Override
+    public Long deletebank(Long id){
+        Mono<Long> _deletebank = webClient.delete()
+        .uri("/deletebank/" + id)
+        .accept(MediaType.APPLICATION_JSON)
+        .retrieve()
+        .onStatus(HttpStatus::is4xxClientError, response -> {
+            return Mono.error(NotFoundException::new);
+        })
+        .onStatus(HttpStatus::is5xxServerError, response -> {
+            return Mono.error(UnknownError::new);
+        })
+        .bodyToMono(Long.class)
+        .onErrorComplete();
+        return _deletebank.block();
     }
 
 }

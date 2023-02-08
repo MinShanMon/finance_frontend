@@ -7,6 +7,7 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -64,6 +65,51 @@ public class FixedDepostisServiceImpl implements FixedDepostisService {
     }
 
     @Override
+    public FixedDeposits editfixed(FixedDeposits fixedDeposits) {
+        Mono<FixedDeposits> _editfixed = webClient.put()
+                .uri("/editfixed/")
+                .body(Mono.just(fixedDeposits), FixedDeposits.class)
+                .retrieve()
+                .bodyToMono(FixedDeposits.class);
+        return _editfixed.block();
+    }
+
+    @Override
+    public FixedDeposits findbyid(Long id) {
+        Mono<FixedDeposits> bank = webClient.get()
+                .uri("/fixed/" + id)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchangeToMono(response -> {
+                    if (response.statusCode().equals(HttpStatus.OK)) {
+                        return response.bodyToMono(FixedDeposits.class);
+                    } else {
+                        return response.createException().flatMap(Mono::error);
+                    }
+                });
+        return bank.block();
+    }
+
+
+
+    @Override
+    public List<FixedDeposits> findfixedbybankid(Long id){
+
+        Flux<FixedDeposits> fixedList = webClient.get()
+                .uri("/fixeds/"+ id)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchangeToFlux(response -> {
+                    if (response.statusCode().equals(HttpStatus.OK)) {
+                        return response.bodyToFlux(FixedDeposits.class);
+                    } else {
+                        return response.createException().flatMapMany(Flux::error);
+                    }
+                });
+
+        return fixedList.collectList().block();
+
+    }
+
+    @Override
     public FixedDeposits addFixedDeposits(FixedDeposits fixedDeposits) {
         Mono<FixedDeposits> a_fixed = webClient.post()
                 .uri("/addfixed")
@@ -74,4 +120,20 @@ public class FixedDepostisServiceImpl implements FixedDepostisService {
         return a_fixed.block();
     }
 
+    @Override
+    public Long deletefixed(Long id){
+        Mono<Long> _deletefixed = webClient.delete()
+        .uri("/deletefixed/" + id)
+        .accept(MediaType.APPLICATION_JSON)
+        .retrieve()
+        .onStatus(HttpStatus::is4xxClientError, response -> {
+            return Mono.error(NotFoundException::new);
+        })
+        .onStatus(HttpStatus::is5xxServerError, response -> {
+            return Mono.error(UnknownError::new);
+        })
+        .bodyToMono(Long.class)
+        .onErrorComplete();
+        return _deletefixed.block();
+    }
 }

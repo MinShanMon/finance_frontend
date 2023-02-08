@@ -12,5 +12,9 @@ public interface BankService {
 
     Bank findBankById(Long id);
 
+    Long deletebank(Long id);
+
+    Bank editbank(Bank bank);
+
 
 }
