@@ -69,6 +69,15 @@ public class TicketServiceImpl implements TicketService {
             .bodyToMono(Boolean.class);
         return sendemail.block();
     }
+
+    @Override
+    public boolean sendReview(Integer id){
+    Mono<Boolean> sendReview = webClient.post()
+            .uri("/sendreview/{id}",id)
+            .retrieve()
+            .bodyToMono(Boolean.class);
+        return sendReview.block();
+    }
 }    
 
 

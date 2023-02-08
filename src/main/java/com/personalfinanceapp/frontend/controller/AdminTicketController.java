@@ -88,15 +88,30 @@ public class AdminTicketController {
         // }
 
         Ticket currticket = enqService.getOneEnquiry(Integer.parseInt(id)).getTicket();
+        currticket.setReply(reply);
+        currticket.setReply_dateTime(LocalDateTime.now());
+        
+        tikService.update(currticket);
+        tikService.sendEmail(Integer.parseInt(id));
+
+        return "redirect:/admin/enquiries/";
+    }
+
+    @PostMapping("/close_ticket")
+    public String closeTicket(String id, String reply,Model model) {
+
+        // if (result.hasErrors()) {
+        //     return "admin/reply";
+        // }
+
+        Ticket currticket = enqService.getOneEnquiry(Integer.parseInt(id)).getTicket();
 
         currticket.setReply(reply);
         currticket.setReply_dateTime(LocalDateTime.now());
-        // currticket.setTikStatus(TicketStatusEnum.CLOSED);
+        currticket.setTikStatus(TicketStatusEnum.CLOSED);
 
         tikService.update(currticket);
-
-        //sendEmail(Integer.parseInt(id));
-        tikService.sendEmail(Integer.parseInt(id));
+        tikService.sendReview(Integer.parseInt(id));
 
         return "redirect:/admin/enquiries/";
     }
