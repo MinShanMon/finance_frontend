@@ -7,25 +7,24 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+
 @ToString
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "enquiries")
+@Table(name = "enquiry")
 public class Enquiry {
     @Id
     @Column(name="enquiry_id",nullable = false)
@@ -49,19 +48,21 @@ public class Enquiry {
 
     private String question;
 
-    
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     private LocalDateTime enquiry_dateTime;
     
+    @Column(nullable = true)
     private int rating;
 
-    @JsonIgnoreProperties({"ticket"})
+    @Column(nullable = true)
+    private String comment;
+    
     @OneToOne
     @JoinColumn(name="ticket_id")
     private Ticket ticket;
 
     public Enquiry(EnquiryTypeEnum enquiryType,SalutationEnum title, String name,String email,
-    String phoneNum,String question, LocalDateTime enquiry_dateTime,int rating,Ticket ticket){ 
+    String phoneNum,String question, LocalDateTime dateTime,int rating,String comment,Ticket ticket){ 
 
         this.enquiryType= enquiryType;
         this.title = title;
@@ -69,10 +70,13 @@ public class Enquiry {
         this.email = email;
         this.phoneNum = phoneNum;
         this.question = question;
-        this.enquiry_dateTime = enquiry_dateTime;
+        this.enquiry_dateTime = dateTime;
         this.rating = rating;
+        this.comment = comment;
         this.ticket = ticket;
     }
 }
+
+
 
 

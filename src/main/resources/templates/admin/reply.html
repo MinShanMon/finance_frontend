@@ -185,13 +185,12 @@
         <!-- <p th:if="${#fields.hasErrors('reply')}"
 				th:errors="*{reply}"></p> -->
        </form>
+
+
        &nbsp; &nbsp;
         <form action="#" th:action="@{/admin/update/}" method="post">
         <input type="hidden" th:name="id" th:value="${enquiry.id}" />
         <textarea type="text" th:name="reply" th:value="${ticket.reply}" cols="130" rows="10"></textarea>
-        <!-- <p th:if="${#fields.hasErrors('reply')}"
-				th:errors="*{reply}"></p> -->
- 
     <fieldset float:left>
       &nbsp; &nbsp;
       <input type="submit" value="Send"/>  	

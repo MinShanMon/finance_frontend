@@ -56,5 +56,15 @@ public class ReviewServiceImpl implements ReviewService {
     return enq.block();
     }
 
+    @Override
+    public Enquiry updateReview(Enquiry enq){
+        Mono<Enquiry> updatedReview = webClient.put()
+            .uri("/rate")
+            .body(Mono.just(enq), Enquiry.class)
+            .retrieve()
+            .bodyToMono(Enquiry.class);
+        return updatedReview.block();
+    }
+
 }
 

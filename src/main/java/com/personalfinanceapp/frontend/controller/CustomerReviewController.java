@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.personalfinanceapp.frontend.model.Enquiry;
@@ -23,5 +24,16 @@ public class CustomerReviewController {
        // model.addAttribute("ticket", enquiry.getTicket());
         return "customer/review";
     }
+
+    @PostMapping("/feedback")
+    public String reply(String id, String comment,Model model) {
+
+        Enquiry currEnq = rivService.getOneReview(Integer.parseInt(id));
+        currEnq.setComment(comment);
+        currEnq.setRating(2);
+        
+        rivService.updateReview(currEnq);
+        return "customer/review";
+    }
 }    
-    
+        

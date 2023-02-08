@@ -120,6 +120,7 @@
 
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="submit">
@@ -140,16 +141,19 @@
                 <header>
                     
                 </header>
+        <form action="#" th:action="@{/customer/feedback/}" method="post">            
+        <input type="hidden" th:name="id" th:value="${enquiry.id}" />
                 <div class="textarea">
-                    <textarea name="name" rows="13" cols="35" placeholder="Any feedback for us?"></textarea>
+                    <textarea type="text" th:name="comment" th:value="${enquiry.comment}" rows="13" cols="35" placeholder="Any feedback for us?"></textarea>
                  </div>
                  <div class="btn">
                     <button type="submit">Submit</button>
                  </div>
-
-            </form>
+        </form>
+            </div>
         </div>
-    </div>
+    </body>
+
 
     <script>
         const btn = document.querySelector("button")
