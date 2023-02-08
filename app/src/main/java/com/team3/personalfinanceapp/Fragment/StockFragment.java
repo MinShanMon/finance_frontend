@@ -3,11 +3,14 @@ package com.team3.personalfinanceapp.Fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.transition.TransitionInflater;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,6 +24,7 @@ import com.team3.personalfinanceapp.Services.etfServics;
 import com.team3.personalfinanceapp.config.APIclientstock;
 import com.team3.personalfinanceapp.Services.stockServics;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +38,8 @@ public class StockFragment extends Fragment {
         // Required empty public constructor
     }
 
+
+    List<String> validSotck = Arrays.asList("D05","SVI","511880","BOTHE","INFY","005930","GMEXICOB","TKMIT","EBS");
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,24 +59,25 @@ public class StockFragment extends Fragment {
             @Override
             public void onResponse(Call<StockData> call, Response<StockData> response) {
 
-                List<Stock> stockList = response.body().getData().stream().filter(e -> e.getCountry().compareTo("Singapore") == 0).collect(Collectors.toList());
+                List<Stock> stockList = response.body().getData().stream().filter(e -> validSotck.contains(e.getSymbol())).collect(Collectors.toList());
 
                 ListView listView = v.findViewById(R.id.listView);
                 if (listView != null) {
                     listView.setAdapter(new ListAdapterStock(getContext(), stockList));
-//                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//                        @Override
-//                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                            Bundle bundle = new Bundle();
-//                            bundle.putInt("deposists", position);
-//
-//                            BankDetailFragment bankDetailFragment = new BankDetailFragment();
-//                            bankDetailFragment.setArguments(bundle);
-//                            commitTransaction(bankDetailFragment);
-//                        }
-//                    });
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("symbol", stockList.get(position).getSymbol());
+                            bundle.putString("exchange", stockList.get(position).getExchange());
+
+                            StockDetailFragment stockDetailFragment = new StockDetailFragment();
+                            stockDetailFragment.setArguments(bundle);
+                            commitTransaction(stockDetailFragment);
+                        }
+                    });
 
 
 
@@ -85,8 +92,13 @@ public class StockFragment extends Fragment {
         });
 
         return  v;
-
-
 //
+    }
+    private void commitTransaction(Fragment fragment) {
+        FragmentManager fm = getParentFragmentManager();
+        FragmentTransaction trans = fm.beginTransaction();
+        trans.replace(R.id.fragment_container, fragment);
+        trans.addToBackStack(null);
+        trans.commit();
     }
 }

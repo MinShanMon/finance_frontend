@@ -3,6 +3,8 @@ package com.team3.personalfinanceapp.Fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.transition.TransitionInflater;
 
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ import com.team3.personalfinanceapp.Services.fixedDeposistsServics;
 import com.team3.personalfinanceapp.config.APIclientetf;
 import com.team3.personalfinanceapp.config.APIclientstock;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,7 +51,7 @@ public class EtfFragment extends Fragment {
         setEnterTransition(tInflater.inflateTransition(R.transition.slide_right));
 
 
-//
+        List<String> validEtfs = Arrays.asList("SPY","SPCZ");
 //
           APIclientetf apIclientetf = new APIclientetf();
 //
@@ -60,24 +63,29 @@ public class EtfFragment extends Fragment {
             @Override
             public void onResponse(Call<EtfData> call, Response<EtfData> response) {
 
-                List<Etf> etfList = response.body().getData().stream().filter(e -> e.getCountry().compareTo("Singapore") == 0).collect(Collectors.toList());
+
+
+                List<Etf> etfList = response.body().getData().stream().filter(e -> validEtfs.contains(e.getSymbol())).collect(Collectors.toList());
 
                 ListView listView = v.findViewById(R.id.listView);
                 if (listView != null) {
                     listView.setAdapter(new ListAdapterEtf(getContext(), etfList));
-//                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//                        @Override
-//                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                            Bundle bundle = new Bundle();
-//                            bundle.putInt("deposists", position);
-//
-//                            BankDetailFragment bankDetailFragment = new BankDetailFragment();
-//                            bankDetailFragment.setArguments(bundle);
-//                            commitTransaction(bankDetailFragment);
-//                        }
-//                    });
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("symbol", etfList.get(position).getSymbol());
+
+
+
+
+                            EtfDetailFragment etfDetailFragment = new EtfDetailFragment();
+                            etfDetailFragment.setArguments(bundle);
+                            commitTransaction(etfDetailFragment);
+                        }
+                    });
 
 
 
@@ -97,5 +105,13 @@ public class EtfFragment extends Fragment {
         return v;
 
 
+    }
+
+    private void commitTransaction(Fragment fragment) {
+        FragmentManager fm = getParentFragmentManager();
+        FragmentTransaction trans = fm.beginTransaction();
+        trans.replace(R.id.fragment_container, fragment);
+        trans.addToBackStack(null);
+        trans.commit();
     }
 }
