@@ -14,13 +14,17 @@ import android.widget.TextView;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.BankResponse;
 import com.team3.personalfinanceapp.model.Transaction;
+import com.team3.personalfinanceapp.statements.StatementsActivity;
 import com.team3.personalfinanceapp.transactions.AddTransactionActivity;
 import com.team3.personalfinanceapp.transactions.TransactionsActivity;
 import com.team3.personalfinanceapp.utils.APIClient;
 import com.team3.personalfinanceapp.utils.APIInterface;
 import com.team3.personalfinanceapp.utils.BankAPIInterface;
 
+import org.w3c.dom.Text;
+
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +35,8 @@ import retrofit2.Response;
 public class TransactionsFragment extends Fragment {
 
     private ArrayList<Transaction> transactions;
+
+    private String moneyFormat;
 
     public TransactionsFragment() {
         // Required empty public constructor
@@ -47,14 +53,20 @@ public class TransactionsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         View view = getView();
+        moneyFormat = getString(R.string.money_format);
         getTransactionsAndDisplayData(view);
         getAvailableBalanceAndDisplay(view);
-        setViewOthersButton(view);
+        setViewAllButton(view);
+        setViewStatementsBtn(view);
         setAddTransactionButton(view);
 
         TextView currentMonthHeader = view.findViewById(R.id.transaction_fragment_month);
-        currentMonthHeader.setText(LocalDate.now().getMonth().toString());
+        currentMonthHeader.setText(capitalize(LocalDate.now().getMonth()));
+    }
 
+    private String capitalize(Month month) {
+        String monthStr = month.toString();
+        return monthStr.substring(0, 1) + monthStr.substring(1).toLowerCase();
     }
 
 
@@ -88,11 +100,20 @@ public class TransactionsFragment extends Fragment {
     }
 
     /** Set view other transactions button **/
-    private void setViewOthersButton(View view) {
+    private void setViewAllButton(View view) {
 
         TextView viewAllBtn = view.findViewById(R.id.view_all_btn);
         viewAllBtn.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), TransactionsActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void setViewStatementsBtn(View view) {
+
+        TextView viewStatementBtn = view.findViewById(R.id.bank_statements_btn);
+        viewStatementBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), StatementsActivity.class);
             startActivity(intent);
         });
     }
@@ -121,7 +142,7 @@ public class TransactionsFragment extends Fragment {
                     if (bankResponse != null) {
                         double balance = bankResponse.getAvailableBalance();
                         TextView balanceTextView = view.findViewById(R.id.available_balance_amt);
-                        balanceTextView.setText("$" + String.format("%,.2f", balance));
+                        balanceTextView.setText("$" + String.format(moneyFormat, balance));
                     }
                 }
             }
@@ -141,7 +162,7 @@ public class TransactionsFragment extends Fragment {
         }
         title.setText(latestTransaction.getTitle());
         TextView amount = view.findViewById(R.id.largest_transaction_amount);
-        String amountStr = "$" + String.format("%,.2f", latestTransaction.getAmount());
+        String amountStr = "$" + String.format(moneyFormat, latestTransaction.getAmount());
         amount.setText(amountStr);
     }
 
@@ -150,7 +171,7 @@ public class TransactionsFragment extends Fragment {
                 .mapToDouble(Transaction::getAmount)
                 .reduce(Double::sum).orElse(0);
         TextView moneyInView = view.findViewById(R.id.money_in_amount);
-        moneyInView.setText("$" + String.format("%,.2f", sum));
+        moneyInView.setText("$" + String.format(moneyFormat, sum));
     }
 
     private void displayExpenses(View view, ArrayList<Transaction> transactions) {
@@ -158,7 +179,7 @@ public class TransactionsFragment extends Fragment {
                 .mapToDouble(Transaction::getAmount)
                 .reduce(Double::sum).orElse(0);
         TextView moneyOutView = view.findViewById(R.id.money_out_amount);
-        moneyOutView.setText("$" + String.format("%,.2f", Math.abs(sum)));
+        moneyOutView.setText("$" + String.format(moneyFormat, Math.abs(sum)));
     }
 
 }

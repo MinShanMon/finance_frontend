@@ -33,6 +33,8 @@ public class CategorySpendFragment extends Fragment {
 
     private List<Transaction> transactions;
 
+    private String moneyFormat;
+
     public CategorySpendFragment() {
         // Required empty public constructor
     }
@@ -53,6 +55,7 @@ public class CategorySpendFragment extends Fragment {
     public void onStart() {
         super.onStart();
         View view = getView();
+        moneyFormat = getString(R.string.money_format);
         createSpendingByCategory(view);
     }
 
@@ -93,37 +96,37 @@ public class CategorySpendFragment extends Fragment {
 
         currMonthSpendingMap.forEach((cat, spend) -> {
             if (cat.equalsIgnoreCase("food")) {
-                foodAmtThisMonth.setText("$" + String.format("%,.2f", spend));
+                foodAmtThisMonth.setText("$" + String.format(moneyFormat, spend));
                 foodSpending[0] = spend;
             }
             if (cat.equalsIgnoreCase("transport")) {
-                transportAmtThisMonth.setText("$" + String.format("%,.2f", spend));
+                transportAmtThisMonth.setText("$" + String.format(moneyFormat, spend));
                 transportSpending[0] = spend;
             }
             if (cat.equalsIgnoreCase("others")) {
-                othersAmtThisMonth.setText("$" + String.format("%,.2f", spend));
+                othersAmtThisMonth.setText("$" + String.format(moneyFormat, spend));
                 othersSpending[0] = spend;
             }
         });
 
         prevMonthSpendingMap.forEach((cat, spend) -> {
             if (cat.equalsIgnoreCase("food")) {
-                foodAmtLastMonth.setText("$" + String.format("%,.2f", spend));
+                foodAmtLastMonth.setText("$" + String.format(moneyFormat, spend));
                 foodSpending[1] = spend;
             }
             if (cat.equalsIgnoreCase("transport")) {
-                transportAmtLastMonth.setText("$" + String.format("%,.2f", spend));
+                transportAmtLastMonth.setText("$" + String.format(moneyFormat, spend));
                 transportSpending[1] = spend;
             }
             if (cat.equalsIgnoreCase("others")) {
-                othersAmtLastMonth.setText("$" + String.format("%,.2f", spend));
+                othersAmtLastMonth.setText("$" + String.format(moneyFormat, spend));
                 othersSpending[1] = spend;
             }
         });
 
-        foodAmtChange.setText("$" + String.format("%,.2f", foodSpending[0] - foodSpending[1]));
-        transportAmtChange.setText("$" + String.format("%.2f", transportSpending[0] - transportSpending[1]));
-        othersAmtChange.setText("$" + String.format("%,.2f", othersSpending[0] - othersSpending[1]));
+        foodAmtChange.setText("$" + String.format(moneyFormat, foodSpending[0] - foodSpending[1]));
+        transportAmtChange.setText("$" + String.format(moneyFormat, transportSpending[0] - transportSpending[1]));
+        othersAmtChange.setText("$" + String.format(moneyFormat, othersSpending[0] - othersSpending[1]));
 
     }
 

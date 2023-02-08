@@ -19,7 +19,6 @@ public class BankResponse {
     }
 
     private boolean success;
-    private String disclaimer;
     private BankAccount results;
 
     public boolean isSuccess() {

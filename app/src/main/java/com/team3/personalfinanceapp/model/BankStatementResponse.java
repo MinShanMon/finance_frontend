@@ -1,61 +1,86 @@
 package com.team3.personalfinanceapp.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
+import java.time.LocalDate;
+import java.util.List;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BankStatementResponse {
 
     private boolean success;
-    private ActivityDetails results;
+    private BankStatement results;
 
     @JsonCreator
-    public BankStatementResponse(@JsonProperty("Success") boolean success, @JsonProperty("Results") ActivityDetails results) {
+    public BankStatementResponse(@JsonProperty("Success") boolean success, @JsonProperty("Results") BankStatement results) {
         this.success = success;
         this.results = results;
     }
 
-    /** Nested class to map results object from BankStatement JSON **/
+    public BankStatement getResults() {
+        return results;
+    }
 
+    /**
+     * Nested class to map results object from BankStatement JSON
+     **/
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class BankStatement {
 
         private long accountNo;
-        private ActivityDetails activityDetails;
+        private List<ActivityDetails> activityDetails;
 
-        BankStatement(){}
+        BankStatement() {
+        }
 
         @JsonCreator
-        BankStatement(@JsonProperty("AccountNo") long accountNo, @JsonProperty("RecentAccountActivityDetails") ActivityDetails activityDetails) {
+        BankStatement(@JsonProperty("AccountNo") long accountNo, @JsonProperty("RecentAccountActivityDetails") List<ActivityDetails> activityDetails) {
             this.accountNo = accountNo;
             this.activityDetails = activityDetails;
         }
 
-        public double getBalanceDetail() {
-            return getActivityDetails().getAverageBalance();
-        }
 
         public long getAccountNo() {
             return accountNo;
         }
 
-        public ActivityDetails getActivityDetails() {
+        public List<ActivityDetails> getActivityDetails() {
             return activityDetails;
         }
 
-        public double getAverageBalance() {
-        return getActivityDetails().getAverageBalance();
-        }
     }
 
-        public static class ActivityDetails {
-            private double averageBalance;
 
-            @JsonCreator
-            ActivityDetails(@JsonProperty("AverageBalance") double averageBalance) {
-                this.averageBalance = averageBalance;
-            }
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class ActivityDetails {
+        private double averageBalance;
 
-            public double getAverageBalance() {
-                return averageBalance;
-            }
+        private String date;
+
+        ActivityDetails(){}
+
+
+        @JsonCreator
+        ActivityDetails(@JsonProperty("AverageBalance") double averageBalance, @JsonProperty("Date") String date) {
+            this.averageBalance = averageBalance;
+            this.date = date;
         }
+
+        public double getAverageBalance() {
+            return averageBalance;
+        }
+
+        @JsonIgnore
+        public LocalDate getDate() {
+            return LocalDate.parse(date);
+        }
+    }
 }
