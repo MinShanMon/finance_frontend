@@ -47,6 +47,22 @@ public class EnquiryServiceImpl implements EnquiryService {
 
 
     @Override
+    public List<Enquiry> viewDashboard(){
+        Flux<Enquiry> enquiries = webClient.get()
+                .uri("/enquiries")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchangeToFlux(response -> {
+                    if (response.statusCode().equals(HttpStatus.OK)) {
+                        return response.bodyToFlux(Enquiry.class);
+                    } else {
+                        return response.createException().flatMapMany(Flux::error);
+                    }
+                });
+
+        return enquiries.collectList().block();
+    }
+
+    @Override
     public List<Enquiry> getAllEnquiry(){
         Flux<Enquiry> enquiries = webClient.get()
                 .uri("/enquiries")

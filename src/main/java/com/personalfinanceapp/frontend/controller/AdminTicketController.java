@@ -29,6 +29,16 @@ public class AdminTicketController {
     @Autowired
     private TicketService tikService;
 
+    // *** mock need to edit again
+    @GetMapping("/dashboard")
+    public String view(Model model) {
+        List<Enquiry> enquiries = enqService.viewDashboard();
+        List<Enquiry> openEnquiries = enqService.getOpenEnquiry();
+        model.addAttribute("open", openEnquiries);
+        model.addAttribute("enquiries", enquiries);
+        return "admin/dashboard";
+    }
+
     @GetMapping("/enquiries")
     public String viewEnquiries(Model model) {
         List<Enquiry> enquiries = enqService.getAllEnquiry();
