@@ -7,14 +7,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,7 +21,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.RegisteredUsers;
-import com.team3.personalfinanceapp.model.Token;
 import com.team3.personalfinanceapp.network.api.UserApi;
 import com.team3.personalfinanceapp.util.APIClient;
 
@@ -47,6 +45,7 @@ public class ProfileEditFragment extends Fragment {
     LinearLayout current_password;
     TextView profile;
     TextView error_msg;
+    ImageView img_backArrow;
     SharedPreferences.Editor editor;
     SharedPreferences pref;
     UserApi apiInterface;
@@ -106,6 +105,13 @@ public class ProfileEditFragment extends Fragment {
             }
         });
 
+        img_backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+
         return view;
     }
 
@@ -117,6 +123,7 @@ public class ProfileEditFragment extends Fragment {
         email_display = view.findViewById(R.id.email_display);
         profile = view.findViewById(R.id.profile);
         error_msg = view.findViewById(R.id.error_msg);
+        img_backArrow = view.findViewById(R.id.img_backArrow);
         current_password = view.findViewById(R.id.current_password);
         apiInterface = APIClient.getClient().create(UserApi.class);
         pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);

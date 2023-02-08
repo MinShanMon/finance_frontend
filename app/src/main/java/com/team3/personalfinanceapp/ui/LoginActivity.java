@@ -19,6 +19,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.Login;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.share.Share;
@@ -68,12 +69,12 @@ public class LoginActivity extends AppCompatActivity {
         pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
         pref_rember = getSharedPreferences("remember_password", MODE_PRIVATE);
 
-
         if (pref_rember.contains("email") && pref_rember.contains("password")) {
             txtUsername.setText(pref_rember.getString("email", ""));
             txtPassword.setText(pref_rember.getString("password", ""));
             checkBox.setChecked(pref_rember.getBoolean("check", false));
         }
+
 
         if(pref.contains("token") && pref.contains("userid")){
             checkToken(pref.getInt("userid",0),pref.getString("token",""));
@@ -106,7 +107,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
         login();
         LoginWithFacebook.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -117,20 +117,20 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void checkToken(Integer uid, String token){
-        Call<Object> userLoginCall = apiInterface.checkToken(uid, "Bearer " + token);
-        userLoginCall.enqueue(new Callback<Object>() {
-            @Override
-            public void onResponse(Call<Object> call, Response<Object> response) {
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                finish();
-            }
-            @Override
-            public void onFailure(Call<Object> call, Throwable t) {
-
-            }
-        });
+    @Override
+    public void onStart(){
+        super.onStart();
+        if(pref.contains("token") && pref.contains("userid")){
+            checkToken(pref.getInt("userid",0),pref.getString("token",""));
+        }
+        accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        if(isLoggedIn){
+            checkToken(pref.getInt("userid", 0), pref.getString("token", ""));
+        }
     }
+
+
 
     private void init(){
         txtUsername = findViewById(R.id.txtLoginUsername);
@@ -145,6 +145,29 @@ public class LoginActivity extends AppCompatActivity {
 
         apiInterface = APIClient.getClient().create(UserApi.class);
         callbackManager = CallbackManager.Factory.create();
+    }
+
+    private void checkToken(Integer uid, String token){
+        Call<Token> userLoginCall = apiInterface.checkToken(uid, "Bearer " + token);
+        userLoginCall.enqueue(new Callback<Token>() {
+            @Override
+            public void onResponse(Call<Token> call, Response<Token> response) {
+
+                    if(response.body() == null){
+                        startActivity(new Intent(LoginActivity.this, LoginActivity.class));
+                        editor = pref.edit();
+                        editor.clear();
+                        editor.commit();
+                        return;
+                    }
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
+            }
+            @Override
+            public void onFailure(Call<Token> call, Throwable t) {
+
+            }
+        });
     }
 
     private void login(){

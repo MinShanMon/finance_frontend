@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import retrofit2.Call;
@@ -32,6 +33,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     SharedPreferences pref;
     TextView error_msg;
+    ImageView img_backArrow;
     UserApi apiInterface;
     Intent intent;
     Boolean change_password;
@@ -60,6 +62,13 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
             }
         });
+
+        img_backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void init(){
@@ -70,6 +79,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         current_password = findViewById(R.id.current_password);
         resetpassbtn = findViewById(R.id.resetpassbtn);
         txtLogin = findViewById(R.id.txtLogin);
+        img_backArrow = findViewById(R.id.img_backArrow);
         error_msg = findViewById(R.id.error_msg);
         intent = getIntent();
         change_password = intent.getBooleanExtra("change_password", false);
@@ -117,13 +127,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {
 
-                
 
-//                editor = pref.edit();
-//                editor.putString("password", passwordAp);
-//
-//                editor.commit();
-//
                 Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
                 error_msg.setText("");
                 startActivity(intent);

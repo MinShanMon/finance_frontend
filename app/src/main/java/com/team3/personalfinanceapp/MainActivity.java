@@ -19,11 +19,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+import com.team3.personalfinanceapp.model.Token;
+import com.team3.personalfinanceapp.network.api.UserApi;
 import com.team3.personalfinanceapp.ui.LoginActivity;
 import com.team3.personalfinanceapp.ui.ProfileFragment;
+import com.team3.personalfinanceapp.util.APIClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
 
@@ -31,6 +38,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     private HomeFragment homeFragment = new HomeFragment();
     private InsightsViewPagerFragment insightsFragment = new InsightsViewPagerFragment();
     private ProfileFragment profileFragment = new ProfileFragment();
+
+
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    UserApi apiInterface;
+    AccessToken accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,26 +54,57 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         btmNavBar.setSelectedItemId(R.id.manage_profile);
         getSupportActionBar().hide();
 
-        SharedPreferences pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+        pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
 
-//        if(!pref.contains("token")){
-//            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//            startActivity(intent);
-//        }
-//        loginWithFb();
+        apiInterface = APIClient.getClient().create(UserApi.class);
 
 
+        if(pref.contains("token") && pref.contains("userid")){
+            checkToken(pref.getInt("userid",0),pref.getString("token",""));
+        }
+        accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        if(isLoggedIn){
+            checkToken(pref.getInt("userid", 0), pref.getString("token", ""));
+        }
     }
 
 
     @Override
     public void onStart(){
         super.onStart();
-        SharedPreferences pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
-        if(!pref.contains("token")){
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
+        pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+        if(pref.contains("token") && pref.contains("userid")){
+            checkToken(pref.getInt("userid",0),pref.getString("token",""));
         }
+        accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        if(isLoggedIn){
+            checkToken(pref.getInt("userid", 0), pref.getString("token", ""));
+        }
+    }
+
+    private void checkToken(Integer uid, String token){
+        Call<Token> userLoginCall = apiInterface.checkToken(uid, "Bearer " + token);
+        userLoginCall.enqueue(new Callback<Token>() {
+            @Override
+            public void onResponse(Call<Token> call, Response<Token> response) {
+
+                if(response.body() == null){
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    editor = pref.edit();
+                    editor.clear();
+                    editor.commit();
+                    return;
+                }
+    //                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+    //                finish();
+            }
+            @Override
+            public void onFailure(Call<Token> call, Throwable t) {
+
+            }
+        });
     }
 
 
