@@ -2,6 +2,7 @@ package com.team3.personalfinanceapp.transactions;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +17,7 @@ import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.Transaction;
 import com.team3.personalfinanceapp.utils.APIClient;
 import com.team3.personalfinanceapp.utils.APIInterface;
+
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -125,9 +127,8 @@ public class AddTransactionActivity extends AppCompatActivity {
         newTransaction.setAmount(amount);
         newTransaction.setCategory(categoryChoice);
 
-        Call<Transaction> addTransactionCall = apiInterface.addTransaction(1, newTransaction);
-
-
+        SharedPreferences pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+        Call<Transaction> addTransactionCall = apiInterface.addTransaction(pref.getInt("userid", 0), newTransaction, "Bearer "+ pref.getString("token" , ""));
         System.out.println(addTransactionCall.request());
         addTransactionCall.enqueue(new Callback<Transaction>() {
             @Override
@@ -143,6 +144,8 @@ public class AddTransactionActivity extends AppCompatActivity {
         });
 
     }
+
+
 
 
 }

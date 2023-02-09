@@ -3,6 +3,7 @@ package com.team3.personalfinanceapp.transactions;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -33,9 +34,7 @@ import retrofit2.Response;
 
 public class TransactionsActivity extends AppCompatActivity {
 
-    APIInterface apiInterface;
-
-    LinearLayout linearLayout;
+    private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +57,9 @@ public class TransactionsActivity extends AppCompatActivity {
     private void getAllTransactionsAndDisplay() {
         TextView title = findViewById(R.id.transaction_list_title);
         title.setText(getString(R.string.all_transactions_title));
-        apiInterface = APIClient.getClient().create(APIInterface.class);
-        Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(1);
+        APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+        SharedPreferences pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+        Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(pref.getInt("userid", 0), "Bearer " + pref.getString("token", ""));
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
@@ -92,20 +92,20 @@ public class TransactionsActivity extends AppCompatActivity {
 
     private void displayTransactions(Map<LocalDate, List<Transaction>> transactionsByDate) {
 
-        transactionsByDate.forEach( (date, ts) -> {
+        transactionsByDate.forEach((date, ts) -> {
             TextView dateText = new TextView(this);
             dateText.setText(date.toString());
             dateText.setTypeface(null, Typeface.BOLD);
             dateText.setBackgroundColor(Color.parseColor("#DCDCDC"));
             linearLayout.addView(dateText);
 
-            ts.forEach( t -> {
+            ts.forEach(t -> {
                 TextView transactionText = new TextView(this);
                 String transStr = t.getTitle() + "\n"
                         + t.getCategory() + "\n"
                         + t.getAmount();
                 transactionText.setText(transStr);
-                transactionText.setOnClickListener( v -> {
+                transactionText.setOnClickListener(v -> {
                     Intent intent = new Intent(this, EditTransactionActivity.class);
                     intent.putExtra("transactionId", t.getId());
                     startActivity(intent);

@@ -3,6 +3,7 @@ package com.team3.personalfinanceapp.transactions;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,6 +33,8 @@ public class EditTransactionActivity extends AppCompatActivity {
     private int transactionType;
     private long transactionId;
 
+    private SharedPreferences pref;
+
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
 
 
@@ -42,8 +45,9 @@ public class EditTransactionActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         transactionId = intent.getLongExtra("transactionId", 0);
-        APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-        Call<Transaction> getTransactionCall = apiInterface.getTransactionById(transactionId);
+        apiInterface = APIClient.getClient().create(APIInterface.class);
+        pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+        Call<Transaction> getTransactionCall = apiInterface.getTransactionById(transactionId, "Bearer "+ pref.getString("token" , ""));
         getTransactionCall.enqueue(new Callback<Transaction>() {
             @Override
             public void onResponse(Call<Transaction> call, Response<Transaction> response) {
@@ -109,7 +113,7 @@ public class EditTransactionActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                EditText categoryField = findViewById(R.id.add_transaction_category);
+                EditText categoryField = findViewById(R.id.edit_transaction_category);
                 transactionType = TYPE_SPENDING;
                 categoryField.setVisibility(View.VISIBLE);
             }
@@ -150,8 +154,8 @@ public class EditTransactionActivity extends AppCompatActivity {
         }
         transactionToEdit.setAmount(amount);
         transactionToEdit.setCategory(category.getText().toString());
-
-        Call<Transaction> addTransactionCall = apiInterface.editTransaction(1, transactionToEdit);
+        pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+        Call<Transaction> addTransactionCall = apiInterface.editTransaction(1, transactionToEdit, "Bearer "+ pref.getString("token" , ""));
 
         System.out.println(addTransactionCall.request());
         addTransactionCall.enqueue(new Callback<Transaction>() {
@@ -170,7 +174,8 @@ public class EditTransactionActivity extends AppCompatActivity {
     }
 
     private void deleteTransaction() {
-        Call<Long> deleteCall = apiInterface.deleteTransactionById(transactionId);
+        pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+        Call<Long> deleteCall = apiInterface.deleteTransactionById(transactionId, "Bearer "+ pref.getString("token" , ""));
         deleteCall.enqueue(new Callback<Long>() {
             @Override
             public void onResponse(Call<Long> call, Response<Long> response) {

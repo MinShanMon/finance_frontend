@@ -5,9 +5,14 @@
     <string name="navbar_transactions">Transactions</string>
     <string name="navbar_products">Products</string>
     <string name="largest_transaction_header">Largest Expense:</string>
-    <string name="view_all_btn">View All</string>
+    <string name="navbar_profile">Profile</string>
+    <string name="view_all_btn">View others</string>
     <string name="add_transaction">Add Transaction</string>
     <string name="link_bankacct">Link Bank Account</string>
+    <string name="sendOTP">Send OTP</string>
+    <string name="logout">Log Out</string>
+    <string name="profile">Edit Profile</string>
+
     <string-array name="transaction_types_array">
         <item>Spending</item>
         <item>Income</item>
@@ -23,4 +28,32 @@
     <string name="money_format">%,.2f</string>
     <string name="all_transactions_title">All Transactions</string>
     <string name="bank_statement_title">Bank Statements</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm">Confirm</string>
+
+    <string name="loginEng">Login</string>
+    <string name="username">User Name</string>
+    <string name="password">Password</string>
+    <string name="forget_password">Forget Password</string>
+    <string name="login">Login</string>
+    <string name="LoginWithFacebook">Login With Facebook</string>
+    <string name="sign_up_here">Sign Up</string>
+    <string name="Verfication_code">Verification OTP Code</string>
+    <string name="please_type_verification_code">Please type the verification code send</string>
+    <string name="to_phone_no">to shan@gmail.com</string>
+    <string name="get_verify_code"><u>Request OTP Again</u></string>
+    <string name="verify">Confirm</string>
+    <string name="phone_number">Email</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">Sign Up</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="facebook_app_id">711073860425774</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">0efb9672865c8554c2f47d1a129c21a1</string>
+    <string name="remember_password">Remember Password</string>
+    <string name="change_password">Change Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="username_email">Name And Email</string>
+    <string name="change_name">Change Name</string>
 </resources>

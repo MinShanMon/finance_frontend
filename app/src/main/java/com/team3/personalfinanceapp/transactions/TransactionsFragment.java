@@ -1,6 +1,9 @@
 package com.team3.personalfinanceapp.transactions;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,13 +18,9 @@ import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.BankResponse;
 import com.team3.personalfinanceapp.model.Transaction;
 import com.team3.personalfinanceapp.statements.StatementsActivity;
-import com.team3.personalfinanceapp.transactions.AddTransactionActivity;
-import com.team3.personalfinanceapp.transactions.TransactionsActivity;
 import com.team3.personalfinanceapp.utils.APIClient;
 import com.team3.personalfinanceapp.utils.APIInterface;
 import com.team3.personalfinanceapp.utils.BankAPIInterface;
-
-import org.w3c.dom.Text;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -74,8 +73,9 @@ public class TransactionsFragment extends Fragment {
      * Retrieve all transactions and display the data
      **/
     private void getTransactionsAndDisplayData(View view) {
+        SharedPreferences pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-        Call<List<Transaction>> transactionsCall = apiInterface.getTransactionsByMonth(1, 2);
+        Call<List<Transaction>> transactionsCall = apiInterface.getTransactionsByMonth(pref.getInt("userid", 0), 2, "Bearer "+ pref.getString("token", ""));
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
