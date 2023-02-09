@@ -1,35 +1,26 @@
 package com.team3.personalfinanceapp;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-
 import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.squareup.picasso.Picasso;
-import com.team3.personalfinanceapp.model.Token;
-import com.team3.personalfinanceapp.network.api.UserApi;
-import com.team3.personalfinanceapp.ui.LoginActivity;
-import com.team3.personalfinanceapp.ui.ProfileFragment;
-import com.team3.personalfinanceapp.util.APIClient;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 import com.team3.personalfinanceapp.insights.InsightsViewPagerFragment;
-import com.team3.personalfinanceapp.transactions.TransactionsFragment;
+import com.team3.personalfinanceapp.model.Token;
 import com.team3.personalfinanceapp.profile_login.LoginActivity;
 import com.team3.personalfinanceapp.profile_login.ProfileFragment;
+import com.team3.personalfinanceapp.transactions.TransactionsFragment;
+import com.team3.personalfinanceapp.utils.APIClient;
+import com.team3.personalfinanceapp.utils.UserApi;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -104,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             }
             @Override
             public void onFailure(Call<Token> call, Throwable t) {
-
+                call.cancel();
             }
         });
     }
