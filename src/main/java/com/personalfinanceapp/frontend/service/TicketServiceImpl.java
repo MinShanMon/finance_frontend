@@ -50,9 +50,11 @@ public class TicketServiceImpl implements TicketService {
     // }
 
     @Override
-    public Ticket update(Ticket tik){
+    public Ticket update(Ticket tik, String token){
         Mono<Ticket> updatedReply = webClient.put()
-            .uri("/ticket")
+            
+            .uri("/admin/ticket")
+            .header("Authorization", "Bearer "+token)
             .body(Mono.just(tik), Ticket.class)
             .retrieve()
             .bodyToMono(Ticket.class);
@@ -61,18 +63,20 @@ public class TicketServiceImpl implements TicketService {
 
 
     @Override
-    public boolean sendEmail(Integer id){
+    public boolean sendEmail(Integer id, String token){
     Mono<Boolean> sendemail = webClient.post()
-            .uri("/sendmail/{id}",id)
+            .uri("/admin/sendmail/{id}",id)
+            .header("Authorization", "Bearer "+token)
             .retrieve()
             .bodyToMono(Boolean.class);
         return sendemail.block();
     }
 
     @Override
-    public boolean sendReview(Integer id){
+    public boolean sendReview(Integer id, String token){
     Mono<Boolean> sendReview = webClient.post()
-            .uri("/sendreview/{id}",id)
+            .uri("/admin/sendreview/{id}",id)
+            .header("Authorization", "Bearer "+token)
             .retrieve()
             .bodyToMono(Boolean.class);
         return sendReview.block();

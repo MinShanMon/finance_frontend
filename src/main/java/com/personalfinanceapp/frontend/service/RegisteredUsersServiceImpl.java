@@ -17,6 +17,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.personalfinanceapp.frontend.model.Token;
 import com.personalfinanceapp.frontend.model.RegisteredUsers;
 
+import javax.servlet.http.HttpSession;
+import com.personalfinanceapp.frontend.model.UserSession;
 import reactor.core.publisher.Mono;
 
 import lombok.RequiredArgsConstructor;
@@ -89,7 +91,8 @@ public class RegisteredUsersServiceImpl implements RegisteredUsersService {
                                 .exchangeToMono(response -> {
                                     if (response.statusCode().equals(HttpStatus.OK)) {
                                         return response.bodyToMono(Token.class);
-                                    } else {
+                                    } 
+                                    else {
                                         return response.createException().flatMap(Mono::error);
                                     }
                                 });

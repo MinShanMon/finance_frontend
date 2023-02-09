@@ -6,8 +6,8 @@ import com.personalfinanceapp.frontend.model.Enquiry;
 
 public interface EnquiryService {
     List<Enquiry> viewDashboard(String token);
-    List<Enquiry> getAllEnquiry(); 
+    List<Enquiry> getAllEnquiry(String token); 
     List<Enquiry> getOpenEnquiry(String token);
-    List<Enquiry> getClosedEnquiry();
-    Enquiry getOneEnquiry(Integer id);
+    List<Enquiry> getClosedEnquiry(String token);
+    Enquiry getOneEnquiry(Integer id, String token);
 }

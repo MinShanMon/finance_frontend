@@ -41,10 +41,12 @@ public class ReviewServiceImpl implements ReviewService {
         };
     }
 
+
+    //open source
     @Override
     public Enquiry getOneReview(Integer id) {
         Mono<Enquiry> enq = webClient.get()
-            .uri("/review/{id}", id)
+            .uri("/customer/review/{id}", id)
             .accept(MediaType.APPLICATION_JSON)
             .exchangeToMono(response -> {
                 if (response.statusCode().equals(HttpStatus.OK)) {
@@ -56,10 +58,11 @@ public class ReviewServiceImpl implements ReviewService {
     return enq.block();
     }
 
+    //open source
     @Override
     public Enquiry updateReview(Enquiry enq){
         Mono<Enquiry> updatedReview = webClient.put()
-            .uri("/rate")
+            .uri("/customer/rate")
             .body(Mono.just(enq), Enquiry.class)
             .retrieve()
             .bodyToMono(Enquiry.class);

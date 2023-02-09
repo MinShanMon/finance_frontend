@@ -46,8 +46,10 @@ public class AdminTicketController {
     }
 
     @GetMapping("/enquiries")
-    public String viewEnquiries(Model model) {
-        List<Enquiry> enquiries = enqService.getAllEnquiry();
+    public String viewEnquiries(Model model, HttpSession session) {
+        UserSession user =(UserSession) session.getAttribute("usersession");
+        String token = user.getToken().getAccess_token();
+        List<Enquiry> enquiries = enqService.getAllEnquiry(token);
         List<Enquiry> openEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
         equals(TicketStatusEnum.OPEN)).collect(Collectors.toList());
 
@@ -60,16 +62,20 @@ public class AdminTicketController {
         return "admin/inbox";
     }
     
-    // @GetMapping("/enquiries/open")
-    // public String viewOpenEnquiries(Model model) {
-    //     List<Enquiry> openEnquiries = enqService.getOpenEnquiry();
-    //     model.addAttribute("open", openEnquiries);
-    //     return "admin/open-tickets";
-    // }
+    @GetMapping("/enquiries/open")
+    public String viewOpenEnquiries(Model model, HttpSession session) {
+        UserSession user =(UserSession) session.getAttribute("usersession");
+        String token = user.getToken().getAccess_token();
+        List<Enquiry> openEnquiries = enqService.getOpenEnquiry(token);
+        model.addAttribute("open", openEnquiries);
+        return "admin/open-tickets";
+    }
 
     @GetMapping("/enquiries/closed")
-    public String viewClosedEnquiries(Model model) {
-        List<Enquiry> closedEnquiries = enqService.getClosedEnquiry();
+    public String viewClosedEnquiries(Model model, HttpSession session) {
+        UserSession user =(UserSession) session.getAttribute("usersession");
+        String token = user.getToken().getAccess_token();
+        List<Enquiry> closedEnquiries = enqService.getClosedEnquiry(token);
         model.addAttribute("closed", closedEnquiries);
         return "admin/closed-tickets";
     }
@@ -88,8 +94,10 @@ public class AdminTicketController {
     // }
 
     @GetMapping("/view/{id}")
-    public String replyEnq(@PathVariable int id, Model model){
-        Enquiry enquiry = enqService.getOneEnquiry(id);
+    public String replyEnq(@PathVariable int id, Model model, HttpSession session){
+        UserSession user =(UserSession) session.getAttribute("usersession");
+        String token = user.getToken().getAccess_token();
+        Enquiry enquiry = enqService.getOneEnquiry(id, token);
         model.addAttribute("enquiry", enquiry);
        // model.addAttribute("ticket", enquiry.getTicket());
         model.addAttribute("ticket", enquiry.getTicket());
@@ -97,37 +105,41 @@ public class AdminTicketController {
     }
     
     @PostMapping("/update")
-    public String reply(String id, String reply,Model model) {
+    public String reply(String id, String reply,Model model, HttpSession session) {
 
         // if (result.hasErrors()) {
         //     return "admin/reply";
         // }
 
-        Ticket currticket = enqService.getOneEnquiry(Integer.parseInt(id)).getTicket();
+        UserSession user =(UserSession) session.getAttribute("usersession");
+        String token = user.getToken().getAccess_token();
+        Ticket currticket = enqService.getOneEnquiry(Integer.parseInt(id), token).getTicket();
         currticket.setReply(reply);
         currticket.setReply_dateTime(LocalDateTime.now());
         
-        tikService.update(currticket);
-        tikService.sendEmail(Integer.parseInt(id));
+        tikService.update(currticket, token);
+        tikService.sendEmail(Integer.parseInt(id), token);
 
         return "redirect:/admin/enquiries/";
     }
 
     @PostMapping("/close_ticket")
-    public String closeTicket(String id, String reply,Model model) {
+    public String closeTicket(String id, String reply,Model model, HttpSession session) {
 
         // if (result.hasErrors()) {
         //     return "admin/reply";
         // }
 
-        Ticket currticket = enqService.getOneEnquiry(Integer.parseInt(id)).getTicket();
+        UserSession user =(UserSession) session.getAttribute("usersession");
+        String token = user.getToken().getAccess_token();
+        Ticket currticket = enqService.getOneEnquiry(Integer.parseInt(id), token).getTicket();
 
         currticket.setReply(reply);
         currticket.setReply_dateTime(LocalDateTime.now());
         currticket.setTikStatus(TicketStatusEnum.CLOSED);
 
-        tikService.update(currticket);
-        tikService.sendReview(Integer.parseInt(id));
+        tikService.update(currticket, token);
+        tikService.sendReview(Integer.parseInt(id), token);
 
         return "redirect:/admin/enquiries/";
     }

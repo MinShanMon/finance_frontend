@@ -1,7 +1,7 @@
 package com.personalfinanceapp.frontend.service;
 
 import com.personalfinanceapp.frontend.model.Token;
-
+import javax.servlet.http.HttpSession;
 import com.personalfinanceapp.frontend.model.RegisteredUsers;
 public interface RegisteredUsersService {
 
@@ -14,4 +14,5 @@ public interface RegisteredUsersService {
     Token refreshToken(String token);
 
     Long logout(Integer id, String token);
+
 }

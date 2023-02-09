@@ -63,9 +63,10 @@ public class EnquiryServiceImpl implements EnquiryService {
     }
 
     @Override
-    public List<Enquiry> getAllEnquiry(){
+    public List<Enquiry> getAllEnquiry(String token){
         Flux<Enquiry> enquiries = webClient.get()
                 .uri("/admin/enquiries")
+                .header("Authorization", "Bearer "+token)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToFlux(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {
@@ -96,9 +97,10 @@ public class EnquiryServiceImpl implements EnquiryService {
     }
 
     @Override
-    public List<Enquiry> getClosedEnquiry(){
+    public List<Enquiry> getClosedEnquiry(String token){
         Flux<Enquiry> closedEnquiries = webClient.get()
                 .uri("/admin/enquiries/closed")
+                .header("Authorization", "Bearer "+token)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToFlux(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {
@@ -112,9 +114,10 @@ public class EnquiryServiceImpl implements EnquiryService {
     }
 
     @Override
-    public Enquiry getOneEnquiry(Integer id) {
+    public Enquiry getOneEnquiry(Integer id, String token) {
         Mono<Enquiry> enq = webClient.get()
                 .uri("/admin/view/{id}", id)
+                .header("Authorization", "Bearer "+token)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToMono(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {
