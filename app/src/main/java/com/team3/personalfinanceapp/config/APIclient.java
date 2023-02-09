@@ -15,7 +15,7 @@ public class APIclient {
 
     private void initializeRetrofit(){
         retrofit= new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080/api/")
+                .baseUrl("http://10.0.2.2:8081/api/")
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .build();
     }

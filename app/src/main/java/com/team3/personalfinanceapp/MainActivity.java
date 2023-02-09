@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             case R.id.products_item:
                 ProductsFragment productsFragment = new ProductsFragment();
                 commitTransaction(productsFragment);
+                return true;
 
             case R.id.transactions_item:
                 
