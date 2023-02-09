@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -101,14 +102,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart(){
         super.onStart();
-        if(pref.contains("token") && pref.contains("userid")){
-            checkToken(pref.getInt("userid",0),pref.getString("token",""));
-        }
-        accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-        if(isLoggedIn){
-            checkToken(pref.getInt("userid", 0), pref.getString("token", ""));
-        }
     }
 
 
@@ -135,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<Token> call, Response<Token> response) {
 
                     if(response.body() == null){
-                        startActivity(new Intent(LoginActivity.this, LoginActivity.class));
+                        Toast.makeText(getApplicationContext(),"Login error", Toast.LENGTH_SHORT).show();
                         editor = pref.edit();
                         editor.clear();
                         editor.commit();

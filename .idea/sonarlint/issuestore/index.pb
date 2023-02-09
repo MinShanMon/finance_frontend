@@ -19,8 +19,6 @@ q
 Aapp/src/main/java/com/team3/personalfinanceapp/ErrorFragment.java,d/9/d9fb5fc74c9b6fa8cab5322cf796d932f76fee12
 }
 Mapp/src/main/java/com/team3/personalfinanceapp/InsightsViewPagerFragment.java,c/5/c5b122c625b141e30499adddc5c77c0ed33673da
-@
-app/build.gradle,f/4/f4a01d6a4fcb971362ec00a83903fd3902f52164
 n
 >app/src/main/java/com/team3/personalfinanceapp/model/Role.java,b/d/bd5ee3fefaa653386c80dfce7c1608fbb8ac17cf
 s
