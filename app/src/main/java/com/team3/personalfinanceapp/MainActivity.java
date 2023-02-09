@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         BottomNavigationView btmNavBar = findViewById(R.id.btm_navbar);
         btmNavBar.setOnItemSelectedListener(this);
         btmNavBar.setSelectedItemId(R.id.manage_profile);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         SharedPreferences pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
 
@@ -50,10 +50,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     public void onStart(){
         super.onStart();
         SharedPreferences pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
-        if(!pref.contains("token")){
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-        }
+//        if(!pref.contains("token")){
+//            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//            startActivity(intent);
+//        }
     }
 
 

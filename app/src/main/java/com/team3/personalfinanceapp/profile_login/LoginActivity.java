@@ -217,7 +217,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<RegisteredUsers> call, Throwable t) {
-
+                call.cancel();
             }
         });
     }

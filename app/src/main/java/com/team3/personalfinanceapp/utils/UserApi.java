@@ -17,34 +17,34 @@ import retrofit2.http.Query;
 
 public interface UserApi {
     @FormUrlEncoded
-    @POST("/api/custom/login")
+    @POST("custom/login")
     Call<Token> userLogin(@Field("email") String email, @Field("password") String password);
 
-    @GET("/api/user/addSessionUser")
+    @GET("user/addSessionUser")
     Call<RegisteredUsers> getUserInfo(@Query("email") String email, @Header("Authorization") String token);
 
-    @POST("/api/user/register")
+    @POST("user/register")
     Call<RegisteredUsers> regUser(@Body RegisteredUsers user);
 
-    @GET("/api/user/sentOTPByEmail")
+    @GET("user/sentOTPByEmail")
     Call<Token> sendOTPByEmail(@Query("email") String email);
 
-    @GET("/api/user/otpverify")
+    @GET("user/otpverify")
     Call<Token> verifyOTP(@Query("email") String email, @Query("otp") String otp, @Header("Authorization")String token);
 
-    @POST("/api/user/resetpassword")
+    @POST("user/resetpassword")
     Call<Object> resetPassword(@Query("email") String email, @Query("password") String password, @Query("otp") String otp, @Header("Authorization")String token);
 
-    @POST("/api/user/loginWithFb")
+    @POST("user/loginWithFb")
     Call<RegisteredUsers> regFbUser(@Body RegisteredUsers user);
 
-    @GET("/api/user/checkToken")
+    @GET("user/checkToken")
     Call<Object> checkToken(@Query("id") Integer id,  @Header("Authorization")String token);
 
-    @POST("/api/user/edit/password")
+    @POST("user/edit/password")
     Call<Object> editPassword(@Query("id") Integer id, @Query("password") String password, @Header("Authorization")String token);
 
-    @POST("/api/user/edit/profile")
+    @POST("user/edit/profile")
     Call<RegisteredUsers> editProfile(@Body RegisteredUsers user, @Header("Authorization")String token);
 
 }

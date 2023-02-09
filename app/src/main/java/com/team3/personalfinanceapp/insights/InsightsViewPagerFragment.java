@@ -92,13 +92,15 @@ public class InsightsViewPagerFragment extends Fragment {
     private void getAllTransactionsAndSetCharts() {
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
         SharedPreferences pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
-        Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(pref.getInt("userid", 0), "Bearer "+ pref.getString("token" , "")); //hardcoded userid
+        Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(pref.getInt("userid", 0), "Bearer "+ pref.getString("token" , ""));
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
-                transactions = new ArrayList<>(response.body());
-                setPieChartAndCategorySpending();
-                setLineChart();
+                if (response.body() != null) {
+                    transactions = new ArrayList<>(response.body());
+                    setPieChartAndCategorySpending();
+                    setLineChart();
+                }
             }
 
             @Override
