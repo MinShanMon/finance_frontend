@@ -38,7 +38,7 @@ public interface UserApi {
     @POST("user/loginWithFb")
     Call<RegisteredUsers> regFbUser(@Body RegisteredUsers user);
 
-    @GET("/api/user/checkToken")
+    @GET("user/checkToken")
     Call<Token> checkToken(@Query("id") Integer id,  @Header("Authorization")String token);
 
     @POST("user/edit/password")
