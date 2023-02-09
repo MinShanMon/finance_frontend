@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -42,6 +43,7 @@ public class ProfileEditFragment extends Fragment {
     LinearLayout current_password;
     TextView profile;
     TextView error_msg;
+    ImageView img_backArrow;
     SharedPreferences.Editor editor;
     SharedPreferences pref;
     UserApi apiInterface;
@@ -79,6 +81,13 @@ public class ProfileEditFragment extends Fragment {
 
         confirm_button.setOnClickListener(v -> confirm());
 
+        img_backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+
         return view;
     }
 
@@ -90,6 +99,7 @@ public class ProfileEditFragment extends Fragment {
         email_display = view.findViewById(R.id.email_display);
         profile = view.findViewById(R.id.profile);
         error_msg = view.findViewById(R.id.error_msg);
+        img_backArrow = view.findViewById(R.id.img_backArrow);
         current_password = view.findViewById(R.id.current_password);
         apiInterface = APIClient.getClient().create(UserApi.class);
         pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);

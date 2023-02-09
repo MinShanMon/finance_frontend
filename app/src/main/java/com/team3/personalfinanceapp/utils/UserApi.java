@@ -38,8 +38,8 @@ public interface UserApi {
     @POST("user/loginWithFb")
     Call<RegisteredUsers> regFbUser(@Body RegisteredUsers user);
 
-    @GET("user/checkToken")
-    Call<Object> checkToken(@Query("id") Integer id,  @Header("Authorization")String token);
+    @GET("/api/user/checkToken")
+    Call<Token> checkToken(@Query("id") Integer id,  @Header("Authorization")String token);
 
     @POST("user/edit/password")
     Call<Object> editPassword(@Query("id") Integer id, @Query("password") String password, @Header("Authorization")String token);
