@@ -35,6 +35,7 @@ import com.team3.personalfinanceapp.config.APIclient;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -90,12 +91,14 @@ public class ForecastPortfolioFragment extends Fragment {
                             period1.setText(Integer.toString(result.getTenure()));
                             amounts.add(Integer.parseInt (amount1.getText().toString()));
                             periods.add(Integer.parseInt (period1.getText().toString()));
+                            System.out.println("p1:"+periods.get(0));
                         }
                         if (fixedDepositsList.size()==2) {
                             amount2.setText(Integer.toString(result.getMinAmount()));
                             period2.setText(Integer.toString(result.getTenure()));
                             amounts.add(Integer.parseInt (amount2.getText().toString()));
                             periods.add(Integer.parseInt (period2.getText().toString()));
+                            System.out.println("p2:"+periods.get(1));
                             initLineChart(amounts,periods);
                         }
 
@@ -139,7 +142,7 @@ public class ForecastPortfolioFragment extends Fragment {
                 if (a1>fixedDepositsList.get(0).getMinAmount()){
                     amount1.setText(Integer.toString(a1-1));
                     amounts.set(0,Integer.parseInt (amount1.getText().toString()));
-                    setLineChartData(amounts);
+                    setLineChartData(amounts,periods);
                 }
             }
         });
@@ -151,7 +154,7 @@ public class ForecastPortfolioFragment extends Fragment {
                     System.out.println(a1);
                     amount1.setText(Integer.toString(a1+1));
                     amounts.set(0,Integer.parseInt (amount1.getText().toString()));
-                    setLineChartData(amounts);
+                    setLineChartData(amounts,periods);
                 }
             }
         });
@@ -162,7 +165,7 @@ public class ForecastPortfolioFragment extends Fragment {
                 if (a2>fixedDepositsList.get(1).getMinAmount()){
                     amount2.setText(Integer.toString(a2-1));
                     amounts.set(1,Integer.parseInt (amount2.getText().toString()));
-                    setLineChartData(amounts);
+                    setLineChartData(amounts,periods);
                 }
             }
         });
@@ -174,7 +177,7 @@ public class ForecastPortfolioFragment extends Fragment {
                     System.out.println(a2);
                     amount2.setText(Integer.toString(a2+1));
                     amounts.set(1,Integer.parseInt (amount2.getText().toString()));
-                    setLineChartData(amounts);
+                    setLineChartData(amounts,periods);
                 }
             }
         });
@@ -220,42 +223,57 @@ public class ForecastPortfolioFragment extends Fragment {
 
         lineChart.getAxisRight().setEnabled(false);
 
-        setLineChartData(amounts);
+        setLineChartData(amounts,periods);
     }
-    private void setLineChartData(List<Integer> amounts) {
+    private void setLineChartData(List<Integer> amounts,List<Integer> periods) {
 
         List<Entry> valsProd1 = new ArrayList<>();
         List<Entry> valsProd2 = new ArrayList<>();
         List<Entry> total = new ArrayList<>();
+        Integer max = Collections.max(periods);
+        for(int i=0;i<=max;i++){
+            if(i<periods.get(0)){
+                valsProd1.add(new Entry(i,-amounts.get(0)));
+            }
+            else
+                valsProd1.add(new Entry(i, (float) (amounts.get(0)*(1+fixedDepositsList.get(0).getInterestRate()))));
+        }
+        for(int i=0;i<=max;i++){
+            if(i<periods.get(1)){
+                valsProd2.add(new Entry(i,-amounts.get(1)));
+            }
+            else
+                valsProd2.add(new Entry(i, (float) (amounts.get(1)*(1+fixedDepositsList.get(1).getInterestRate()))));
+        }
+//
+//        valsProd1.add(new Entry(0, -amounts.get(0)));
+//        valsProd1.add(new Entry(1, -amounts.get(0)));
+//        valsProd1.add(new Entry(2, -amounts.get(0)));
+//        valsProd1.add(new Entry(3, -amounts.get(0)));
+//        valsProd1.add(new Entry(4, -amounts.get(0)));
+//        valsProd1.add(new Entry(5, -amounts.get(0)));
+//        valsProd1.add(new Entry(6, -amounts.get(0)));
+//        valsProd1.add(new Entry(7, -amounts.get(0)));
+//        valsProd1.add(new Entry(8, -amounts.get(0)));
+//        valsProd1.add(new Entry(9, -amounts.get(0)));
+//        valsProd1.add(new Entry(10, -amounts.get(0)));
+//        valsProd1.add(new Entry(11, (float) (amounts.get(0)*(1+fixedDepositsList.get(0).getInterestRate()))));
+//
+//        valsProd2.add(new Entry(0, -amounts.get(1)));
+//        valsProd2.add(new Entry(1, -amounts.get(1)));
+//        valsProd2.add(new Entry(2, -amounts.get(1)));
+//        valsProd2.add(new Entry(3, -amounts.get(1)));
+//        valsProd2.add(new Entry(4, -amounts.get(1)));
+//        valsProd2.add(new Entry(5, -amounts.get(1)));
+//        valsProd2.add(new Entry(6, -amounts.get(1)));
+//        valsProd2.add(new Entry(7, -amounts.get(1)));
+//        valsProd2.add(new Entry(8, -amounts.get(1)));
+//        valsProd2.add(new Entry(9, -amounts.get(1)));
+//        valsProd2.add(new Entry(10, -amounts.get(1)));
+//        valsProd2.add(new Entry(11, (float) (amounts.get(1)*(1+fixedDepositsList.get(1).getInterestRate()))));
 
-        valsProd1.add(new Entry(0, -amounts.get(0)));
-        valsProd1.add(new Entry(1, -amounts.get(0)));
-        valsProd1.add(new Entry(2, -amounts.get(0)));
-        valsProd1.add(new Entry(3, -amounts.get(0)));
-        valsProd1.add(new Entry(4, -amounts.get(0)));
-        valsProd1.add(new Entry(5, -amounts.get(0)));
-        valsProd1.add(new Entry(6, -amounts.get(0)));
-        valsProd1.add(new Entry(7, -amounts.get(0)));
-        valsProd1.add(new Entry(8, -amounts.get(0)));
-        valsProd1.add(new Entry(9, -amounts.get(0)));
-        valsProd1.add(new Entry(10, -amounts.get(0)));
-        valsProd1.add(new Entry(11, (float) (amounts.get(0)*(1+fixedDepositsList.get(0).getInterestRate()))));
-
-        valsProd2.add(new Entry(0, -amounts.get(1)));
-        valsProd2.add(new Entry(1, -amounts.get(1)));
-        valsProd2.add(new Entry(2, -amounts.get(1)));
-        valsProd2.add(new Entry(3, -amounts.get(1)));
-        valsProd2.add(new Entry(4, -amounts.get(1)));
-        valsProd2.add(new Entry(5, -amounts.get(1)));
-        valsProd2.add(new Entry(6, -amounts.get(1)));
-        valsProd2.add(new Entry(7, -amounts.get(1)));
-        valsProd2.add(new Entry(8, -amounts.get(1)));
-        valsProd2.add(new Entry(9, -amounts.get(1)));
-        valsProd2.add(new Entry(10, -amounts.get(1)));
-        valsProd2.add(new Entry(11, (float) (amounts.get(1)*(1+fixedDepositsList.get(1).getInterestRate()))));
-
-        for(int i=0;i<12;i++){
-            total.add(new Entry(i, valsProd1.get(i).getY()+valsProd1.get(i).getY()));
+        for(int i=0;i<=max;i++){
+            total.add(new Entry(i, valsProd1.get(i).getY()+valsProd2.get(i).getY()));
         }
 //        total.add(new Entry(0, valsProd1.get(0).getY()+valsProd1.get(0).getY()));
 //        total.add(new Entry(1, valsProd1.get(1).getY()+valsProd1.get(1).getY()));
