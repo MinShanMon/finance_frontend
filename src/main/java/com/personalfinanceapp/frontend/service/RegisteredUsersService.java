@@ -9,7 +9,7 @@ public interface RegisteredUsersService {
 
     RegisteredUsers addAdminToSession(String email, String token);
 
-    Long checkToken(Integer id, String token);
+    Token checkToken(Integer id, String token);
 
     Token refreshToken(String token);
 

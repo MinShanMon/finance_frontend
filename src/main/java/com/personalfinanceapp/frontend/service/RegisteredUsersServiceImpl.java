@@ -90,19 +90,17 @@ public class RegisteredUsersServiceImpl implements RegisteredUsersService {
     }
 
     @Override
-    public Long checkToken(Integer id, String token){
-        Mono<Long> checkToken = webClient.get()
+    public Token checkToken(Integer id, String token){
+        Mono<Token> checkToken = webClient.get()
                                 .uri("/user/checkToken?id=" + id)
                                 .header("Authorization", "Bearer "+token)
                                 .exchangeToMono(response -> {
                                     if (response.statusCode().equals(HttpStatus.OK)) {
-                                        return response.bodyToMono(Long.class);
+                                        return response.bodyToMono(Token.class);
                                     } else {
                                         return response.createException().flatMap(Mono::error);
                                     }
                                 });
-                      
-
         return checkToken.block();
                                 
     }
