@@ -1,4 +1,4 @@
-package com.personalfinanceapp.frontend.Config;
+package com.personalfinanceapp.frontend.config;
 
 import reactor.netty.http.client.HttpClient;
 
@@ -19,7 +19,7 @@ public class WebClientConfig {
 
        return webClientBuilder
                .clientConnector(new ReactorClientHttpConnector(getHttpClient()))
-               .baseUrl("http://localhost:8080/api")
+               .baseUrl("http://localhost:8081/api")
                .build();
     }
 
