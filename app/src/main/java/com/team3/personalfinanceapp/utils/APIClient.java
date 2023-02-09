@@ -27,7 +27,7 @@ public class APIClient {
 
     public static Retrofit getClient() {
         return new Retrofit.Builder()
-                .baseUrl(BASE_URL_LOCAL)
+                .baseUrl(BASE_URL_CLOUD)
                 .client(client)
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build();

@@ -21,5 +21,3 @@ Aapp/src/main/java/com/team3/personalfinanceapp/ErrorFragment.java,d/9/d9fb5fc7
 Mapp/src/main/java/com/team3/personalfinanceapp/InsightsViewPagerFragment.java,c/5/c5b122c625b141e30499adddc5c77c0ed33673da
 n
 >app/src/main/java/com/team3/personalfinanceapp/model/Role.java,b/d/bd5ee3fefaa653386c80dfce7c1608fbb8ac17cf
-s
-Capp/src/main/java/com/team3/personalfinanceapp/utils/APIClient.java,6/9/69a2fa0c651a06b2a21cbb71c4518975d92fd809
