@@ -7,10 +7,10 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/compare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+<!--    <Button-->
+<!--        android:id="@+id/compare"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content" />-->
 
     <androidx.cardview.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -32,13 +32,13 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="bank"
+                    android:text="update date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1" />
 
                 <TextView
-                    android:id="@+id/bank"
+                    android:id="@+id/update"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2" />
@@ -50,13 +50,13 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="Tenure"
+                    android:text="open price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1" />
 
                 <TextView
-                    android:id="@+id/tenure"
+                    android:id="@+id/open"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2" />
@@ -68,13 +68,13 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="MinDeposits"
+                    android:text="high price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1" />
 
                 <TextView
-                    android:id="@+id/minDeposits"
+                    android:id="@+id/high"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2" />
@@ -86,13 +86,13 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="maxDeposits"
+                    android:text="low price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1" />
 
                 <TextView
-                    android:id="@+id/maxDeposits"
+                    android:id="@+id/low"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2" />
@@ -104,13 +104,13 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="InterestRate"
+                    android:text="close price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1" />
 
                 <TextView
-                    android:id="@+id/interestRate"
+                    android:id="@+id/close"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2" />
@@ -122,13 +122,13 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="UpdateDate"
+                    android:text="volume"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1" />
 
                 <TextView
-                    android:id="@+id/updateDate"
+                    android:id="@+id/volume"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="2" />
@@ -144,22 +144,22 @@
                     android:id="@+id/link"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="click to bank link"
+                    android:text="click more detail"
                     android:layout_column="2"
                     />
             </TableRow>
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<!--            <TableRow-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent">-->
 
-                <Button
-                    android:id="@+id/add"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add to compare"
-                    android:layout_column="2"
-                     />
-            </TableRow>
+<!--                <Button-->
+<!--                    android:id="@+id/add"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Add to compare"-->
+<!--                    android:layout_column="2"-->
+<!--                    />-->
+<!--            </TableRow>-->
 
         </TableLayout>
     </androidx.cardview.widget.CardView>

@@ -44,15 +44,15 @@ public class ProductsFragment extends Fragment {
             }
         });
 
-//        v.findViewById(R.id.etf).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                EtfFragment etfFragment = new EtfFragment();
-//                commitTransaction(etfFragment);
-//
-//            }
-//        });
+        v.findViewById(R.id.etf).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                EtfFragment etfFragment = new EtfFragment();
+                commitTransaction(etfFragment);
+
+            }
+        });
 
         v.findViewById(R.id.stock).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -154,6 +154,19 @@ public class BankDetailFragment extends Fragment {
                     }
                 });
 
+                v.findViewById(R.id.link).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("link", item.getBank().getBankLink());
+
+                        WebViewFragment webViewFragment = new WebViewFragment();
+                        webViewFragment.setArguments(bundle);
+                        commitTransaction(webViewFragment);
+                    }
+                });
+
+
             }
 
             @Override
@@ -164,6 +177,14 @@ public class BankDetailFragment extends Fragment {
 
         getActivity().setTitle("fixed deposists detail");
         return v;
+    }
+
+    private void commitTransaction(Fragment fragment) {
+        FragmentManager fm = getParentFragmentManager();
+        FragmentTransaction trans = fm.beginTransaction();
+        trans.replace(R.id.fragment_container, fragment);
+        trans.addToBackStack(null);
+        trans.commit();
     }
 
 
