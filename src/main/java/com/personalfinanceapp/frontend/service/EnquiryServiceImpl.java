@@ -28,7 +28,7 @@ public class EnquiryServiceImpl implements EnquiryService {
     @Autowired
     WebClient webClient;
 
-    public EnquiryServiceImpl(@Value("${content-service}") String baseURL) {
+    public EnquiryServiceImpl(@Value("${content-service-api}") String baseURL) {
         this.webClient = WebClient.builder()
                 .baseUrl(baseURL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -47,9 +47,10 @@ public class EnquiryServiceImpl implements EnquiryService {
 
 
     @Override
-    public List<Enquiry> viewDashboard(){
+    public List<Enquiry> viewDashboard(String token){
         Flux<Enquiry> enquiries = webClient.get()
-                .uri("/enquiries")
+                .uri("/admin/enquiries")
+                .header("Authorization", "Bearer "+token)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToFlux(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {
@@ -65,7 +66,7 @@ public class EnquiryServiceImpl implements EnquiryService {
     @Override
     public List<Enquiry> getAllEnquiry(){
         Flux<Enquiry> enquiries = webClient.get()
-                .uri("/enquiries")
+                .uri("/admin/enquiries")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToFlux(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {
@@ -81,7 +82,7 @@ public class EnquiryServiceImpl implements EnquiryService {
     @Override
     public List<Enquiry> getOpenEnquiry(){
         Flux<Enquiry> openEnquiries = webClient.get()
-                .uri("/enquiries/open")
+                .uri("/admin/enquiries/open")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToFlux(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {
@@ -97,7 +98,7 @@ public class EnquiryServiceImpl implements EnquiryService {
     @Override
     public List<Enquiry> getClosedEnquiry(){
         Flux<Enquiry> closedEnquiries = webClient.get()
-                .uri("/enquiries/closed")
+                .uri("/admin/enquiries/closed")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToFlux(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {
@@ -113,7 +114,7 @@ public class EnquiryServiceImpl implements EnquiryService {
     @Override
     public Enquiry getOneEnquiry(Integer id) {
         Mono<Enquiry> enq = webClient.get()
-                .uri("/view/{id}", id)
+                .uri("/admin/view/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToMono(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {

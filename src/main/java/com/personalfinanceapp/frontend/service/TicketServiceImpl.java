@@ -21,7 +21,7 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     WebClient webClient;
 
-    public TicketServiceImpl(@Value("${content-service}") String baseURL) {
+    public TicketServiceImpl(@Value("${content-service-admin}") String baseURL) {
         this.webClient = WebClient.builder()
                 .baseUrl(baseURL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)

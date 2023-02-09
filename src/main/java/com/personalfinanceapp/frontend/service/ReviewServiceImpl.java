@@ -24,7 +24,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Autowired
     WebClient webClient;
 
-    public ReviewServiceImpl(@Value("${content-service}") String baseURL) {
+    public ReviewServiceImpl(@Value("${content-service-admin}") String baseURL) {
         this.webClient = WebClient.builder()
                 .baseUrl(baseURL)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)

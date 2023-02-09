@@ -19,7 +19,7 @@ public class WebClientConfig {
 
        return webClientBuilder
                .clientConnector(new ReactorClientHttpConnector(getHttpClient()))
-               .baseUrl("http://localhost:8080/admin")
+               .baseUrl("http://localhost:8081/api")
                .build();
     }
 

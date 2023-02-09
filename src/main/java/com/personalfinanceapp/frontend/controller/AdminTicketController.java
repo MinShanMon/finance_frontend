@@ -3,6 +3,8 @@ package com.personalfinanceapp.frontend.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.personalfinanceapp.frontend.model.Enquiry;
 import com.personalfinanceapp.frontend.model.Ticket;
 import com.personalfinanceapp.frontend.model.TicketStatusEnum;
+import com.personalfinanceapp.frontend.model.UserSession;
 import com.personalfinanceapp.frontend.service.EnquiryService;
 import com.personalfinanceapp.frontend.service.TicketService;
 
@@ -31,8 +34,10 @@ public class AdminTicketController {
 
     // *** mock need to edit again
     @GetMapping("/dashboard")
-    public String view(Model model) {
-        List<Enquiry> enquiries = enqService.viewDashboard();
+    public String view(Model model, HttpSession session) {
+        UserSession user =(UserSession) session.getAttribute("usersession");
+        String token = user.getToken().getAccess_token();
+        List<Enquiry> enquiries = enqService.viewDashboard(token);
         List<Enquiry> openEnquiries = enqService.getOpenEnquiry();
         model.addAttribute("open", openEnquiries);
         model.addAttribute("openSum", openEnquiries.size());
