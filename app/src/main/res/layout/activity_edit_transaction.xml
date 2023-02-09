@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".transactions.AddTransactionActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".transactions.AddTransactionActivity">
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit Transaction" />
+        android:text="Edit Transaction"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/edit_transaction_type_dropdown"
@@ -18,41 +21,72 @@
         android:layout_height="wrap_content" />
 
 
-    <EditText
-        android:id="@+id/edit_transaction_category"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Category" />
+        android:hint="Category">
 
-    <EditText
-        android:id="@+id/edit_transaction_title"
-        android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_transaction_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Title" />
+        android:hint="Title">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_transaction_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
 
-    <EditText
-        android:id="@+id/edit_transaction_description"
-        android:layout_width="wrap_content"
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Description (Optional)" />
+        android:hint="Description (Optional)">
 
-    <EditText
-        android:id="@+id/edit_transaction_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Date (DD/MM/YYYY)" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_transaction_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Amount:" />
 
-    <EditText
-        android:id="@+id/edit_transaction_amount"
-        android:layout_width="wrap_content"
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="$0.00" />
+        android:hint="Date (DD/MM/YYYY)">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_transaction_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Amount:">
+
+        <EditText
+            android:id="@+id/edit_transaction_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/save_btn"
