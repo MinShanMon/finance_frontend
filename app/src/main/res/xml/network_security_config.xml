@@ -4,5 +4,12 @@
         <domain includeSubdomains="true">localhost</domain>
         <domain includeSubdomains="true">10.0.2.2</domain>
 
+
+
+        <domain includeSubdomains="true">adteam3restapi-env.eba-p5rw8sy5.ap-northeast-1.elasticbeanstalk.com</domain>
+<!--        <trust-anchors>-->
+<!--            <certificates src="@raw/mycertificate" />-->
+<!--        </trust-anchors>-->
+
     </domain-config>
 </network-security-config>

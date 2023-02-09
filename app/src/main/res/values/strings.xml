@@ -4,8 +4,63 @@
     <string name="navbar_insights">Insights</string>
     <string name="navbar_transactions">Transactions</string>
     <string name="navbar_products">Products</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="select">Select item</string>
+
+    <string name="largest_transaction_header">Largest Expense:</string>
+    <string name="navbar_profile">Profile</string>
+    <string name="view_all_btn">View others</string>
+    <string name="add_transaction">Add Transaction</string>
+    <string name="link_bankacct">Link Bank Account</string>
+    <string name="sendOTP">Send OTP</string>
+    <string name="logout">Log Out</string>
+    <string name="profile">Edit Profile</string>
+
+    <string-array name="transaction_types_array">
+        <item>Spending</item>
+        <item>Income</item>
+    </string-array>
+    <string name="empty_transaction_message">No transactions found. Please add one, or sync with your bank account.</string>
+    <string name="this_month">This Month</string>
+    <string name="money_in">Income:</string>
+    <string name="money_out">Expenses:</string>
+    <string name="error_message">Error! Please restart the app.</string>
+    <string name="last_month">Last Month</string>
+    <string name="ocbc_auth_header">Bearer 686560f4-ce07-3cdf-a609-103ba0d261d7</string>
+    <string name="spending_by_cat_defaultamt">$0.00</string>
+    <string name="money_format">%,.2f</string>
+    <string name="all_transactions_title">All Transactions</string>
+    <string name="bank_statement_title">Bank Statements</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm">Confirm</string>
+
+    <string name="loginEng">Login</string>
+    <string name="username">User Name</string>
+    <string name="password">Password</string>
+    <string name="forget_password">Forget Password</string>
+    <string name="login">Login</string>
+    <string name="LoginWithFacebook">Login With Facebook</string>
+    <string name="sign_up_here">Sign Up</string>
+    <string name="Verfication_code">Verification OTP Code</string>
+    <string name="please_type_verification_code">Please type the verification code send</string>
+    <string name="to_phone_no">to shan@gmail.com</string>
+    <string name="get_verify_code"><u>Request OTP Again</u></string>
+    <string name="verify">Confirm</string>
+    <string name="phone_number">Email</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">Sign Up</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="facebook_app_id">714343960245033</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">d3f63bd17fdc41378b9316525f82f904</string>
+    <string name="remember_password">Remember Password</string>
+    <string name="change_password">Change Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="username_email">Name And Email</string>
+    <string name="change_name">Change Name</string>
+
 </resources>

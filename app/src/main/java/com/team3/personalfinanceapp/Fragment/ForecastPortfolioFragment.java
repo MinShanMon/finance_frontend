@@ -25,6 +25,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.team3.personalfinanceapp.Models.FixedDeposits;
 import com.team3.personalfinanceapp.MyAxisValueFormatter;
@@ -200,7 +201,7 @@ public class ForecastPortfolioFragment extends Fragment {
         lineChart.getDescription().setEnabled(false);
         lineChart.setBackgroundColor(Color.WHITE);
 
-        IAxisValueFormatter xAxisFormatter = new XAxisValueFormatter();
+        ValueFormatter xAxisFormatter = new XAxisValueFormatter();
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTypeface(null);
@@ -208,7 +209,7 @@ public class ForecastPortfolioFragment extends Fragment {
         xAxis.setValueFormatter(xAxisFormatter);
         xAxis.setDrawLabels(true);
 
-        IAxisValueFormatter custom = new MyAxisValueFormatter();
+        ValueFormatter custom = new MyAxisValueFormatter();
         YAxis leftAxis = lineChart.getAxisLeft();
         leftAxis.setTypeface(null);
         leftAxis.setLabelCount(8, false);
