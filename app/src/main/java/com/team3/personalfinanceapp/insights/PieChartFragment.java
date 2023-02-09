@@ -25,6 +25,7 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.DoubleSupplier;
 import java.util.stream.Collectors;
 
 import retrofit2.Call;
@@ -96,11 +97,17 @@ public class PieChartFragment extends Fragment {
     private void setPieChartData(PieChart pieChart) {
         List<PieEntry> entries = new ArrayList<>();
         Map<String, Double> categoryTotalSpendMap =
-                transactions.stream().collect(Collectors.groupingBy(Transaction::getCategory,
+                transactions.stream().filter( t -> t.getDate().getMonth().equals(LocalDate.now().getMonth()))
+                        .collect(Collectors.groupingBy(Transaction::getCategory,
                         Collectors.summingDouble(Transaction::getAmount)));
 
         categoryTotalSpendMap.forEach((category, spending) ->
                 entries.add(new PieEntry(Math.abs(spending.floatValue()), category)));
+
+        if (entries.isEmpty()) {
+            pieChart.setNoDataText("No transactions for this month");
+            return;
+        }
 
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
@@ -124,7 +131,7 @@ public class PieChartFragment extends Fragment {
                     .filter(t -> t.getAmount() < 0)
                     .filter(t -> t.getDate().getMonth().equals(LocalDate.now().getMonth()))
                     .mapToDouble(Transaction::getAmount)
-                    .reduce(Double::sum).getAsDouble();
+                    .reduce(Double::sum).orElseGet(() -> 0);
         }
 
 
