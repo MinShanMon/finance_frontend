@@ -54,9 +54,9 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="register">Sign Up</string>
     <string name="sign_up">Sign Up</string>
-    <string name="facebook_app_id">714343960245033</string>
+    <string name="facebook_app_id">711073860425774</string>
     <string name="fb_login_protocol_scheme">fb1234</string>
-    <string name="facebook_client_token">d3f63bd17fdc41378b9316525f82f904</string>
+    <string name="facebook_client_token">0efb9672865c8554c2f47d1a129c21a1</string>
     <string name="remember_password">Remember Password</string>
     <string name="change_password">Change Password</string>
     <string name="current_password">Current Password</string>

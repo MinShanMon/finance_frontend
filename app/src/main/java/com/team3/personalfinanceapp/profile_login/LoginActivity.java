@@ -153,10 +153,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.i("here", "fb");
 //                        AccessToken accessToken = AccessToken.getCurrentAccessToken();
 //                        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-
                         loginfb();
-
-
                     }
 
                     @Override
@@ -181,9 +178,7 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject object,
                             GraphResponse response) {
                         // Application code 1319406795267973
-                        Gson gson = new Gson();
-                        String json = gson.toJson(response);
-                        Log.i("response",json);
+
 
                         try {
                             String fullname = object.getString("name");
@@ -221,11 +216,15 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<RegisteredUsers> call, Response<RegisteredUsers> response) {
 
+//                if(response.body() == null){
+//                    startActivity(new Intent(LoginActivity.this, LoginActivity.class));
+//                }
                 pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
                 editor = pref.edit();
                 editor.putInt("userid", response.body().getId());
                 editor.putString("username", response.body().getFullName());
                 editor.putString("token", response.body().getJwtToken());
+                editor.putString("email", response.body().getEmail());
                 editor.putBoolean("fbuser", true);
                 editor.commit();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -233,6 +232,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<RegisteredUsers> call, Throwable t) {
+//                startActivity(new Intent(LoginActivity.this, LoginActivity.class));
                 call.cancel();
             }
         });
