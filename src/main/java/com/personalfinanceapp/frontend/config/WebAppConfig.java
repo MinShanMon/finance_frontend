@@ -13,6 +13,8 @@ import com.personalfinanceapp.frontend.inteceptor.SecurityInterceptor;
 public class WebAppConfig implements WebMvcConfigurer{
   @Autowired
   SecurityInterceptor securityInterceptor;
+
+  
   
   @Override
   public void addInterceptors(InterceptorRegistry registry) {

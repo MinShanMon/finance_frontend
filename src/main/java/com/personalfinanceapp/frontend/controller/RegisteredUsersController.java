@@ -72,7 +72,7 @@ public class RegisteredUsersController {
     
             RegisteredUsers user = registeredUsersService.addAdminToSession(lg.getEmail(), tk.getAccess_token());
             userSession.setRegisteredUsers(user);
-            userSession.setTokentime(System.currentTimeMillis()+ 10 * 1000);
+            userSession.setTokentime(System.currentTimeMillis()+ 60 * 60 * 1000);
             session.setAttribute("usersession", userSession);
             
             return "redirect:/admin/dashboard";

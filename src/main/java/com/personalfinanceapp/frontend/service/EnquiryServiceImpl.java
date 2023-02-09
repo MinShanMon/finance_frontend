@@ -45,7 +45,6 @@ public class EnquiryServiceImpl implements EnquiryService {
         };
     }
 
-
     @Override
     public List<Enquiry> viewDashboard(String token){
         Flux<Enquiry> enquiries = webClient.get()
@@ -80,9 +79,10 @@ public class EnquiryServiceImpl implements EnquiryService {
     }
 
     @Override
-    public List<Enquiry> getOpenEnquiry(){
+    public List<Enquiry> getOpenEnquiry(String token){
         Flux<Enquiry> openEnquiries = webClient.get()
                 .uri("/admin/enquiries/open")
+                .header("Authorization", "Bearer "+token)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToFlux(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {

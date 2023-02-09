@@ -38,7 +38,7 @@ public class AdminTicketController {
         UserSession user =(UserSession) session.getAttribute("usersession");
         String token = user.getToken().getAccess_token();
         List<Enquiry> enquiries = enqService.viewDashboard(token);
-        List<Enquiry> openEnquiries = enqService.getOpenEnquiry();
+        List<Enquiry> openEnquiries = enqService.getOpenEnquiry(token);
         model.addAttribute("open", openEnquiries);
         model.addAttribute("openSum", openEnquiries.size());
         model.addAttribute("enquiries", enquiries);
@@ -60,12 +60,12 @@ public class AdminTicketController {
         return "admin/inbox";
     }
     
-    @GetMapping("/enquiries/open")
-    public String viewOpenEnquiries(Model model) {
-        List<Enquiry> openEnquiries = enqService.getOpenEnquiry();
-        model.addAttribute("open", openEnquiries);
-        return "admin/open-tickets";
-    }
+    // @GetMapping("/enquiries/open")
+    // public String viewOpenEnquiries(Model model) {
+    //     List<Enquiry> openEnquiries = enqService.getOpenEnquiry();
+    //     model.addAttribute("open", openEnquiries);
+    //     return "admin/open-tickets";
+    // }
 
     @GetMapping("/enquiries/closed")
     public String viewClosedEnquiries(Model model) {
