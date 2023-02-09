@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+<TextView
+    android:id="@+id/header_title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="YOUR PORTFOLIO"
+    android:textSize="25sp"
+    android:gravity="center"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:ignore="MissingConstraints"
+    android:layout_marginTop="10dp"/>
+    <GridLayout
+        android:id="@+id/portfolio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/header_title"
+        app:layout_constraintBottom_toTopOf="@+id/chart_view"
+        tools:ignore="MissingConstraints"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:columnCount="9"
+        android:background="@drawable/portfolio_bg"
+        android:alpha="0.9">
+
+        <TextView
+            android:layout_columnSpan="3"
+            android:layout_width="70dp"/>
+        <TextView
+            android:layout_width="120dp"
+            android:layout_columnSpan="3"
+            android:text="Amount/SGD"
+            android:gravity="center"/>
+        <TextView
+            android:layout_columnSpan="3"
+            android:text="Period/Month"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="70dp"
+            android:text="ProductA"
+            android:gravity="center"
+            android:layout_columnSpan="3"/>
+        <ImageButton
+            android:id="@+id/reduce_amount1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:foreground="@drawable/ic_baseline_remove_24"
+            android:layout_columnSpan="1"/>
+        <TextView
+            android:id="@+id/amount1"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:text="10"
+            android:gravity="center"/>
+        <ImageButton
+            android:id="@+id/add_amount1"
+            android:layout_width="20dp"
+            android:foreground="@drawable/ic_baseline_add_24"
+            android:layout_columnSpan="1"/>
+
+        <TextView
+            android:id="@+id/period1"
+            android:layout_width="181dp"
+            android:layout_columnSpan="2"
+            android:layout_gravity="center"
+            android:text="12"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="70dp"
+            android:text="ProductB"
+            android:gravity="center"
+            android:layout_columnSpan="3"/>
+        <ImageButton
+            android:id="@+id/reduce_amount2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:foreground="@drawable/ic_baseline_remove_24"
+            android:layout_columnSpan="1"/>
+        <TextView
+            android:id="@+id/amount2"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:text="10"
+            android:gravity="center"/>
+        <ImageButton
+            android:id="@+id/add_amount2"
+            android:layout_width="20dp"
+            android:foreground="@drawable/ic_baseline_add_24"
+            android:layout_columnSpan="1"/>
+
+        <TextView
+            android:id="@+id/period2"
+            android:layout_width="181dp"
+            android:layout_columnSpan="2"
+            android:layout_gravity="center"
+            android:text="12"
+            android:gravity="center"/>
+    </GridLayout>
+
+    <LinearLayout
+        android:id="@+id/chart_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/portfolio"
+        app:layout_constraintBottom_toTopOf="@+id/save"
+        android:layout_marginTop="10dp"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="CASH FLOW"
+            android:textSize="20sp"/>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_margin="10dp"
+            android:padding="20dp" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/chart_view"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Save"
+        tools:ignore="MissingConstraints" />
+</androidx.constraintlayout.widget.ConstraintLayout>

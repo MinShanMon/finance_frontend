@@ -1,4 +1,4 @@
-package com.team3.personalfinanceapp;
+package com.team3.personalfinanceapp.Fragment;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.team3.personalfinanceapp.R;
 
 public class HomeFragment extends Fragment {
 

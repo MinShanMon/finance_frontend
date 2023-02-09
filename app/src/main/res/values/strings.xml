@@ -4,6 +4,12 @@
     <string name="navbar_insights">Insights</string>
     <string name="navbar_transactions">Transactions</string>
     <string name="navbar_products">Products</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="select">Select item</string>
+
     <string name="largest_transaction_header">Largest Expense:</string>
     <string name="navbar_profile">Profile</string>
     <string name="view_all_btn">View others</string>
@@ -56,4 +62,5 @@
     <string name="current_password">Current Password</string>
     <string name="username_email">Name And Email</string>
     <string name="change_name">Change Name</string>
+
 </resources>

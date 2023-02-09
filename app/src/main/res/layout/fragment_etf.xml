@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/idRLContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <!--on below line we are creating edit text
+         for adding a new item to list-->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/idEdtItemName"
+        android:layout_width="match_parent"
+        android:layout_height="155dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg1"
+        android:text="ETFs"
+        android:textSize="25dp"
+        android:textStyle="italic"/>
+
+
+
+    <!--list view to display list of languages-->
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/idEdtItemName"
+        />
+
+</RelativeLayout>
+

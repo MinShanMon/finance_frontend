@@ -8,9 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-//<<<<<<< HEAD:app/src/main/java/com/team3/personalfinanceapp/ErrorFragment.java
-//=======
+
 import com.team3.personalfinanceapp.R;
+
+//public class InsightsFragment extends Fragment {
+
+import com.team3.personalfinanceapp.R;
+
 
 //public class InsightsFragment extends Fragment {
 //>>>>>>> oscar:app/src/main/java/com/team3/personalfinanceapp/InsightsFragment.java

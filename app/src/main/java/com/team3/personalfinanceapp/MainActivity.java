@@ -14,6 +14,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.facebook.AccessToken;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+
+import com.team3.personalfinanceapp.Fragment.HomeFragment;
+import com.team3.personalfinanceapp.Fragment.InsightsFragment;
+import com.team3.personalfinanceapp.Fragment.ProductsFragment;
+
 import com.team3.personalfinanceapp.insights.InsightsViewPagerFragment;
 import com.team3.personalfinanceapp.model.Token;
 import com.team3.personalfinanceapp.profile_login.LoginActivity;
@@ -25,6 +30,7 @@ import com.team3.personalfinanceapp.utils.UserApi;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
 
@@ -117,6 +123,13 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
                 commitTransaction(insightsFragment);
                 return true;
+
+
+            case R.id.products_item:
+                ProductsFragment productsFragment = new ProductsFragment();
+                commitTransaction(productsFragment);
+                return true;
+
             case R.id.transactions_item:
                 
                 commitTransaction(transactionsFragment);
@@ -124,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             case R.id.manage_profile:
 
                 commitTransaction(profileFragment);
+
                 return true;
         }
         return false;
