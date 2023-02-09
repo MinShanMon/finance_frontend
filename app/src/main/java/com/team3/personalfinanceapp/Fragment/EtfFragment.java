@@ -78,19 +78,12 @@ public class EtfFragment extends Fragment {
                             Bundle bundle = new Bundle();
                             bundle.putString("symbol", etfList.get(position).getSymbol());
 
-
-
-
                             EtfDetailFragment etfDetailFragment = new EtfDetailFragment();
                             etfDetailFragment.setArguments(bundle);
                             commitTransaction(etfDetailFragment);
                         }
                     });
-
-
-
                 }
-
                 Toast.makeText(getContext(),"successful",Toast.LENGTH_SHORT).show();
             }
 

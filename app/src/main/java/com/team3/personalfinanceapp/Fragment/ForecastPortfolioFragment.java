@@ -49,6 +49,7 @@ public class ForecastPortfolioFragment extends Fragment {
     private LineChart lineChart;
     private List<FixedDeposits> fixedDepositsList = new ArrayList<FixedDeposits>();
     List<Integer> amounts = new ArrayList<>();
+    List<Integer> periods = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -83,17 +84,19 @@ public class ForecastPortfolioFragment extends Fragment {
                         FixedDeposits result = response.body();
 
                         fixedDepositsList.add(result);
+
                         if (fixedDepositsList.size()==1) {
                             amount1.setText(Integer.toString(result.getMinAmount()));
                             period1.setText(Integer.toString(result.getTenure()));
                             amounts.add(Integer.parseInt (amount1.getText().toString()));
+                            periods.add(Integer.parseInt (period1.getText().toString()));
                         }
                         if (fixedDepositsList.size()==2) {
-
                             amount2.setText(Integer.toString(result.getMinAmount()));
                             period2.setText(Integer.toString(result.getTenure()));
                             amounts.add(Integer.parseInt (amount2.getText().toString()));
-                            initLineChart(amounts);
+                            periods.add(Integer.parseInt (period2.getText().toString()));
+                            initLineChart(amounts,periods);
                         }
 
                     }
@@ -189,7 +192,7 @@ public class ForecastPortfolioFragment extends Fragment {
 //        amounts.add(Integer.parseInt (amount2.getText().toString()));
 //        initLineChart(amounts);
     }
-    private void initLineChart(List<Integer> amounts) {
+    private void initLineChart(List<Integer> amounts,List<Integer> periods) {
 //        lineChart.setOnChartValueSelectedListener(this);
         lineChart.getDescription().setEnabled(false);
         lineChart.setBackgroundColor(Color.WHITE);

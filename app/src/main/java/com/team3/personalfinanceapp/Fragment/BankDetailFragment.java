@@ -198,13 +198,13 @@ public class BankDetailFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
-    private void commitTransaction(Fragment fragment) {
-        FragmentManager fm = getParentFragmentManager();
-        FragmentTransaction trans = fm.beginTransaction();
-        trans.replace(R.id.fragment_container, fragment);
-        trans.addToBackStack(null);
-        trans.commit();
-    }
+//    private void commitTransaction(Fragment fragment) {
+//        FragmentManager fm = getParentFragmentManager();
+//        FragmentTransaction trans = fm.beginTransaction();
+//        trans.replace(R.id.fragment_container, fragment);
+//        trans.addToBackStack(null);
+//        trans.commit();
+//    }
 
 
 
