@@ -3,6 +3,7 @@ package com.team3.personalfinanceapp.insights;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -92,7 +93,7 @@ public class InsightsViewPagerFragment extends Fragment {
     private void getAllTransactionsAndSetCharts() {
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
         SharedPreferences pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
-        Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(pref.getInt("userid", 0), "Bearer "+ pref.getString("token" , ""));
+        Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(pref.getInt("userid", 0), "Bearer " + pref.getString("token", ""));
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
@@ -134,7 +135,8 @@ public class InsightsViewPagerFragment extends Fragment {
 
         LineDataSet lineDataSet = new LineDataSet(entries, "Spending Trend");
         lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-
+        lineDataSet.setColor(Color.parseColor("#FF0000"));
+        lineDataSet.setDrawFilled(true);
         List<ILineDataSet> lineDataSets = new ArrayList<>();
         lineDataSets.add(lineDataSet);
         LineData lineData = new LineData(lineDataSets);

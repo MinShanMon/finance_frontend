@@ -58,6 +58,7 @@ public class TransactionsFragment extends Fragment {
         setViewAllButton(view);
         setViewStatementsBtn(view);
         setAddTransactionButton(view);
+        setBudgetButton(view);
 
         TextView currentMonthHeader = view.findViewById(R.id.transaction_fragment_month);
         currentMonthHeader.setText(capitalize(LocalDate.now().getMonth()));
@@ -127,6 +128,13 @@ public class TransactionsFragment extends Fragment {
         });
     }
 
+    private void setBudgetButton(View view) {
+        Button setBudgetBtn = view.findViewById(R.id.set_budget_btn);
+        setBudgetBtn.setOnClickListener( v -> {
+            new SetBudgetDialogFragment().show(getParentFragmentManager(), "budget");
+        });
+    }
+
 
     /**
      * Retrieve available balance from OCBC API and display
@@ -168,6 +176,7 @@ public class TransactionsFragment extends Fragment {
 
     private void displayIncome(View view, ArrayList<Transaction> transactions) {
         Double sum = transactions.stream().filter(t -> t.getAmount() > 0)
+                .filter (t -> t.getDate().getMonth().equals(LocalDate.now().getMonth()))
                 .mapToDouble(Transaction::getAmount)
                 .reduce(Double::sum).orElse(0);
         TextView moneyInView = view.findViewById(R.id.money_in_amount);
@@ -176,6 +185,7 @@ public class TransactionsFragment extends Fragment {
 
     private void displayExpenses(View view, ArrayList<Transaction> transactions) {
         Double sum = transactions.stream().filter(t -> t.getAmount() < 0)
+                .filter (t -> t.getDate().getMonth().equals(LocalDate.now().getMonth()))
                 .mapToDouble(Transaction::getAmount)
                 .reduce(Double::sum).orElse(0);
         TextView moneyOutView = view.findViewById(R.id.money_out_amount);

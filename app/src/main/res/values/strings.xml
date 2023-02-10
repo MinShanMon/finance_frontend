@@ -34,6 +34,12 @@
     <string name="money_format">%,.2f</string>
     <string name="all_transactions_title">All Transactions</string>
     <string name="bank_statement_title">Bank Statements</string>
+    <string name="set_budget_btn">Set Monthly Budget</string>
+    <string name="monthly_budget">Monthly Budget</string>
+    <string name="save_budget">Save</string>
+    <string name="cancel_budget">Cancel</string>
+
+
     <string name="reset_password">Reset Password</string>
     <string name="new_password">New Password</string>
     <string name="confirm">Confirm</string>
