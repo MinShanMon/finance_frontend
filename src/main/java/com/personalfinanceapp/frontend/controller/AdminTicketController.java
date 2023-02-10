@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping(value = {"/" ,"/admin"})
 public class AdminTicketController {
     @Autowired
     private EnquiryService enqService;
@@ -33,6 +33,12 @@ public class AdminTicketController {
     private TicketService tikService;
 
     // *** mock need to edit again
+    @GetMapping
+    public String defaultPath() {
+        return "redirect:/admin/dashboard";
+    }
+
+
     @GetMapping("/dashboard")
     public String view(Model model, HttpSession session) {
         UserSession user =(UserSession) session.getAttribute("usersession");
