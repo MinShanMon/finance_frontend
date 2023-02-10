@@ -49,7 +49,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        View view = getView();
         pref = getActivity().getSharedPreferences("user_credentials", Context.MODE_PRIVATE);
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
         userId = pref.getInt("userid", 0);
@@ -62,26 +61,36 @@ public class HomeFragment extends Fragment {
                 int totalSpendingThisMonth = (int) transactions.stream().filter(t -> t.getAmount() < 0)
                         .mapToDouble(Transaction::getAmount)
                         .reduce(Double::sum).orElse(0);
-                ProgressBar budgetBar = view.findViewById(R.id.budget_progress_bar);
-                SharedPreferences budgetPref = getActivity().getSharedPreferences("user_budget", Context.MODE_PRIVATE);
-                int max = (int) budgetPref.getFloat(String.valueOf(userId), 0);
+                setProgressBar(totalSpendingThisMonth);
 
-                if (max > 0) {
-                    budgetBar.setMax(max);
-                    budgetBar.setProgress(Math.abs(totalSpendingThisMonth));
-                } else {
-                    budgetBar.setVisibility(View.GONE);
-                    TextView noBudgetText = new TextView(getContext());
-                    LinearLayout linearLayout = view.findViewById(R.id.budget_card_layout);
-                    noBudgetText.setText("No budget set, please set one.");
-                    linearLayout.addView(noBudgetText);
-                }
             }
 
             @Override
             public void onFailure(Call<List<Transaction>> call, Throwable t) {
-
+                call.cancel();
             }
         });
+    }
+
+
+    private void setProgressBar(int totalSpendingThisMonth) {
+        View view = getView();
+        ProgressBar budgetBar = view.findViewById(R.id.budget_progress_bar);
+        SharedPreferences budgetPref = getActivity().getSharedPreferences("user_budget", Context.MODE_PRIVATE);
+        int max = (int) budgetPref.getFloat(String.valueOf(userId), 0);
+
+        if (max > 0) {
+            TextView budgetAmtText = view.findViewById(R.id.budget_amt_progressbar);
+            budgetAmtText.setText("$" + max);
+            budgetBar.setMax(max);
+            budgetBar.setProgress(Math.abs(totalSpendingThisMonth), true);
+
+        } else {
+            budgetBar.setVisibility(View.GONE);
+            TextView noBudgetText = new TextView(getContext());
+            LinearLayout linearLayout = view.findViewById(R.id.budget_card_layout);
+            noBudgetText.setText("No budget set, please set one.");
+            linearLayout.addView(noBudgetText);
+        }
     }
 }
