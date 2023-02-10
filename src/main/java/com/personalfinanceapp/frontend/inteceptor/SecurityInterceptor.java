@@ -45,6 +45,9 @@ public class SecurityInterceptor implements HandlerInterceptor {
     UserSession userSession = (UserSession) session.getAttribute("usersession");
 
     if (uri.equalsIgnoreCase("/admin/login")) {
+      if(userSession != null){
+        response.sendRedirect("/admin/dashboard");
+      }
       return true;
     }
 
@@ -65,6 +68,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         // response.sendRedirect("/admin/welcome");
       }
       catch(Exception e){
+        session.invalidate();
         response.sendRedirect("/admin/login");
         return false;
       }
