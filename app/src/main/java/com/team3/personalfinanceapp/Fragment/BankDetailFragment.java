@@ -28,6 +28,7 @@ import com.team3.personalfinanceapp.config.APIclient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -89,12 +90,13 @@ public class BankDetailFragment extends Fragment {
                 TextView interest = v.findViewById(R.id.interestRate);
                 TextView date = v.findViewById(R.id.updateDate);
 
-                mtenure.setText(Integer.toString(item.getTenure()));
-                bank.setText(item.getBank().getBankName());
-                min.setText(Integer.toString(item.getMinAmount()));
-                max.setText(Integer.toString(item.getMaxAmount()));
-                interest.setText(Double.toString(item.getInterestRate()));
-                date.setText(item.getUpdateDate());
+                mtenure.setText(Integer.toString(item.getTenure()) + " Months");
+                bank.setText(item.getBank().getBankName().toUpperCase(Locale.ROOT));
+                min.setText(Integer.toString(item.getMinAmount()) +" SGD");
+                max.setText(Integer.toString(item.getMaxAmount()) +" SGD");
+                interest.setText(Double.toString(item.getInterestRate()) + " %");
+                String[] dateDate  = item.getUpdateDate().split("-");
+                date.setText(dateDate[0] + " - " + dateDate[1]);
 
                 List<Long> fixedIdList = new ArrayList<Long>();
 
@@ -114,11 +116,20 @@ public class BankDetailFragment extends Fragment {
                 }
 
                 if(!pref.contains("fixedId-"+Long.toString(item.getId()))){
-                    addbtn.setText("a");
+                    addbtn.setText("Add to Compare");
                 }else {
-                   addbtn.setText("remove");
+                   addbtn.setText("Remove form Compare");
                 }
 
+
+                v.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        BankFragment bankFragment = new BankFragment();
+                        commitTransaction(bankFragment);
+                    }
+                });
 
                 addbtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -136,9 +147,9 @@ public class BankDetailFragment extends Fragment {
 
                         Map<String, Long> fixedIdMap2 = (Map<String, Long>) pref.getAll();
                         if(!fixedIdMap2.containsKey("fixedId-"+Long.toString(item.getId()))){
-                            addbtn.setText("a");
+                            addbtn.setText("Add to Compare");
                         }else {
-                            addbtn.setText("remove");
+                            addbtn.setText("Remove form Compare");
                         }
                         compare.setText("comapre "+Integer.toString(fixedIdMap2.size()) + " items");
 
@@ -148,6 +159,13 @@ public class BankDetailFragment extends Fragment {
                 compare.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
+
+                        if(fixedIdMap.size() == 1 || fixedIdMap.size() == 0){
+                            Toast.makeText(getContext(), "You Need to choose two or more items to compare", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
                         CompareFragment compareFragment = new CompareFragment();
                         commitTransaction(compareFragment);
 

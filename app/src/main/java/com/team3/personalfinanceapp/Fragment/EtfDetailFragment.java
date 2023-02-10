@@ -67,11 +67,11 @@ public class EtfDetailFragment extends Fragment {
                 TextView volume = v.findViewById(R.id.volume);
 
                 update.setText(priceList.getDatetime());
-                open.setText(priceList.getOpen());
-                high.setText(priceList.getHigh());
-                low.setText(priceList.getLow());
-                close.setText(priceList.getClose());
-                volume.setText(priceList.getVolume());
+                open.setText(priceList.getOpen() + "%");
+                high.setText(priceList.getHigh() + "%");
+                low.setText(priceList.getLow() + "%");
+                close.setText(priceList.getClose() + "%");
+                volume.setText(priceList.getVolume() + "%");
 
                 Toast.makeText(getContext(),"successful",Toast.LENGTH_SHORT).show();
 
@@ -85,6 +85,15 @@ public class EtfDetailFragment extends Fragment {
                         EtfWebViewFragment webViewFragment = new EtfWebViewFragment();
                         webViewFragment.setArguments(bundle);
                         commitTransaction(webViewFragment);
+                    }
+                });
+
+                v.findViewById(R.id.backk).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        EtfFragment etfFragment = new EtfFragment();
+                        commitTransaction(etfFragment);
                     }
                 });
 

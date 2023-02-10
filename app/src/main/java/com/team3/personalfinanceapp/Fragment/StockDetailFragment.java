@@ -107,6 +107,15 @@ public class StockDetailFragment extends Fragment {
           }
       });
 
+        v.findViewById(R.id.backkk).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                StockFragment stockFragment = new StockFragment();
+                commitTransaction(stockFragment);
+            }
+        });
+
 
 
         return v;
