@@ -1,5 +1,7 @@
 package com.team3.personalfinanceapp.Fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -37,6 +39,7 @@ import retrofit2.Response;
 
 public class BankDetailFragment extends Fragment {
 
+    SharedPreferences pref;
     public BankDetailFragment() {
         // Required empty public constructor
     }
@@ -51,6 +54,7 @@ public class BankDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_bank_detail, container, false);
 
+        pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
         TransitionInflater tInflater = TransitionInflater.from(requireContext());
         setEnterTransition(tInflater.inflateTransition(R.transition.slide_right));
 
@@ -68,7 +72,7 @@ public class BankDetailFragment extends Fragment {
         APIclient api = new APIclient();
 
         fixedDeposistsServics fs = api.getRetrofit().create(fixedDeposistsServics.class);
-        Call<List<FixedDeposits>> call = fs.getAll();
+        Call<List<FixedDeposits>> call = fs.getAll("Bearer "+ pref.getString("token", ""));
         System.out.println(call.request());
         call.enqueue(new Callback<List<FixedDeposits>>() {
 

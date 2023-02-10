@@ -1,5 +1,7 @@
 package com.team3.personalfinanceapp.Fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.transition.TransitionInflater;
 
+import com.facebook.share.Share;
 import com.team3.personalfinanceapp.Models.FixedDeposits;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.Services.fixedDeposistsServics;
@@ -32,6 +35,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CompareFragment extends Fragment {
+    SharedPreferences pref;
+    SharedPreferences prefs;
     public  CompareFragment(){
 
     }
@@ -47,7 +52,7 @@ public class CompareFragment extends Fragment {
 //        int id = getArguments().getInt("deposists");
         getActivity().setTitle("compare products");
 
-        SharedPreferences pref = getActivity().getSharedPreferences("bankIdList", getContext().MODE_PRIVATE);
+        pref = getActivity().getSharedPreferences("bankIdList", getContext().MODE_PRIVATE);
 
         Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
         Collection<Long> Ids = fixedIdMap.values();
@@ -61,7 +66,8 @@ public class CompareFragment extends Fragment {
         for (Long id:IdList) {
 
             if (id!=null){
-                Call<FixedDeposits> call = fs.getById(id);
+                prefs = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
+                Call<FixedDeposits> call = fs.getById(id, "Bearer "+ prefs.getString("token", ""));
 //                System.out.println(call.request());
 
                 call.enqueue(new Callback<FixedDeposits>() {

@@ -1,5 +1,7 @@
 package com.team3.personalfinanceapp.Fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -46,6 +48,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ForecastPortfolioFragment extends Fragment {
+    SharedPreferences prefs;
     public ForecastPortfolioFragment() {
     }
     private LineChart lineChart;
@@ -58,7 +61,7 @@ public class ForecastPortfolioFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_forecast_portfolio, container, false);
         TransitionInflater tInflater = TransitionInflater.from(requireContext());
         setEnterTransition(tInflater.inflateTransition(R.transition.slide_right));
-
+        prefs = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
 
         SharedPreferences pref = getActivity().getSharedPreferences("bankIdList", getContext().MODE_PRIVATE);
         Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
@@ -74,7 +77,7 @@ public class ForecastPortfolioFragment extends Fragment {
         fixedDeposistsServics fs = api.getRetrofit().create(fixedDeposistsServics.class);
         for (Long id : IdList) {
             if (id != null) {
-                Call<FixedDeposits> call = fs.getById(id);
+                Call<FixedDeposits> call = fs.getById(id, "Bearer "+ prefs.getString("token", ""));
                 call.enqueue(new Callback<FixedDeposits>() {
                     @SuppressLint("SetTextI18n")
                     @Override

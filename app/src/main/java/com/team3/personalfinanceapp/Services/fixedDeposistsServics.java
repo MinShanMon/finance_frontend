@@ -9,13 +9,15 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface fixedDeposistsServics {
 
     @GET("fixeds")
-    Call<List<FixedDeposits>> getAll();
+    Call<List<FixedDeposits>> getAll(@Header("Authorization") String token);
+
     @GET("fixed/{id}")
-    Call<FixedDeposits> getById(@Path("id") Long id);
+    Call<FixedDeposits> getById(@Path("id") Long id, @Header("Authorization") String token);
 }
