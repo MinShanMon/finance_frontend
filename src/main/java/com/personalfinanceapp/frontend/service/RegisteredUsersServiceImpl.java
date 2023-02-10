@@ -91,13 +91,12 @@ public class RegisteredUsersServiceImpl implements RegisteredUsersService {
                                 .exchangeToMono(response -> {
                                     if (response.statusCode().equals(HttpStatus.OK)) {
                                         return response.bodyToMono(Token.class);
-                                    } 
-                                    else {
+
+                                    } else {
+
                                         return response.createException().flatMap(Mono::error);
                                     }
                                 });
-                      
-
         return checkToken.block();
                                 
     }

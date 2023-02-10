@@ -54,7 +54,6 @@ public class SecurityInterceptor implements HandlerInterceptor {
     }
 
   
-
     String email = userSession.getRegisteredUsers().getEmail();
     Integer id = userSession.getRegisteredUsers().getId();
     String token = userSession.getToken().getAccess_token();
@@ -70,7 +69,10 @@ public class SecurityInterceptor implements HandlerInterceptor {
         return false;
       }
     }
-   
+    if (uri.equalsIgnoreCase("/admin/login") && userSession != null) {
+      response.sendRedirect("/admin/welcome");
+      return true;
+    }
     if(userSession.getTokentime()<= System.currentTimeMillis()){
       Token refreshToken = registeredUsersService.refreshToken(token);
       registeredUsersService.addAdminToSession(userSession.getRegisteredUsers().getEmail(), refreshToken.getAccess_token());
