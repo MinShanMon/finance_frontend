@@ -12,10 +12,14 @@ import android.widget.EditText;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import com.facebook.share.Share;
 import com.team3.personalfinanceapp.R;
 
 public class SetBudgetDialogFragment extends DialogFragment {
 
+    private String userId;
+    private EditText budgetAmtField;
+    private SharedPreferences budgetPref;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -23,8 +27,18 @@ public class SetBudgetDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
 
+        SharedPreferences pref = getActivity().getSharedPreferences("user_credentials", Context.MODE_PRIVATE);
+        userId = String.valueOf(pref.getInt("userid", 0));
+
+        budgetPref = getActivity().getSharedPreferences("user_budget", Context.MODE_PRIVATE);
+        float prevBudget = budgetPref.getFloat(userId, 0);
+
+        View budgetView = inflater.inflate(R.layout.fragment_set_budget_dialog, null);
+        budgetAmtField = budgetView.findViewById(R.id.budget_amt);
+        budgetAmtField.setText(String.valueOf(prevBudget));
+
         builder.setTitle(R.string.monthly_budget)
-                .setView(inflater.inflate(R.layout.fragment_set_budget_dialog, null))
+                .setView(budgetView)
                 .setPositiveButton(R.string.save_budget, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         saveBudget();
@@ -42,15 +56,8 @@ public class SetBudgetDialogFragment extends DialogFragment {
     private void saveBudget() {
         EditText budgetAmtField = getDialog().findViewById(R.id.budget_amt);
         float budget = Float.parseFloat(budgetAmtField.getText().toString());
-        SharedPreferences pref = getActivity().getSharedPreferences("user_credentials", Context.MODE_PRIVATE);
-        String userid = String.valueOf(pref.getInt("userid", 0));
-        SharedPreferences budgetPref = getActivity().getSharedPreferences("user_budget", Context.MODE_PRIVATE);
         SharedPreferences.Editor budgetPrefEditor = budgetPref.edit();
-        budgetPrefEditor.putFloat(userid, budget);
+        budgetPrefEditor.putFloat(userId, budget);
         budgetPrefEditor.commit();
-}
-
-
-
-
+    }
 }
