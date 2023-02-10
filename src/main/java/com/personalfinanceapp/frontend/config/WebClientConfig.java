@@ -19,7 +19,7 @@ public class WebClientConfig {
 
        return webClientBuilder
                .clientConnector(new ReactorClientHttpConnector(getHttpClient()))
-               .baseUrl("http://localhost:8081/api")
+               .baseUrl("http://adteam3restapi-env.eba-p5rw8sy5.ap-northeast-1.elasticbeanstalk.com/api")
                .build();
     }
 
