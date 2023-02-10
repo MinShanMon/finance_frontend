@@ -12,7 +12,7 @@
 
     <string name="largest_transaction_header">Largest Expense:</string>
     <string name="navbar_profile">Profile</string>
-    <string name="view_all_btn">View others</string>
+    <string name="view_all_btn">View All Transactions</string>
     <string name="add_transaction">Add Transaction</string>
     <string name="link_bankacct">Link Bank Account</string>
     <string name="sendOTP">Send OTP</string>

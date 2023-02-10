@@ -76,7 +76,7 @@ public class TransactionsFragment extends Fragment {
     private void getTransactionsAndDisplayData(View view) {
         SharedPreferences pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-        Call<List<Transaction>> transactionsCall = apiInterface.getTransactionsByMonth(pref.getInt("userid", 0), 2, "Bearer "+ pref.getString("token", ""));
+        Call<List<Transaction>> transactionsCall = apiInterface.getTransactionsByMonth(pref.getInt("userid", 0), 2, "Bearer " + pref.getString("token", ""));
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
@@ -100,7 +100,9 @@ public class TransactionsFragment extends Fragment {
         });
     }
 
-    /** Set view other transactions button **/
+    /**
+     * Set view other transactions button
+     **/
     private void setViewAllButton(View view) {
 
         TextView viewAllBtn = view.findViewById(R.id.view_all_btn);
@@ -119,7 +121,9 @@ public class TransactionsFragment extends Fragment {
         });
     }
 
-    /** Set add transaction button **/
+    /**
+     * Set add transaction button
+     **/
     private void setAddTransactionButton(View view) {
         Button addTransactionBtn = view.findViewById(R.id.add_transaction_btn);
         addTransactionBtn.setOnClickListener(v -> {
@@ -130,9 +134,8 @@ public class TransactionsFragment extends Fragment {
 
     private void setBudgetButton(View view) {
         Button setBudgetBtn = view.findViewById(R.id.set_budget_btn);
-        setBudgetBtn.setOnClickListener( v -> {
-            new SetBudgetDialogFragment().show(getParentFragmentManager(), "budget");
-        });
+        setBudgetBtn.setOnClickListener(v ->
+                new SetBudgetDialogFragment().show(getParentFragmentManager(), "budget"));
     }
 
 
@@ -154,6 +157,7 @@ public class TransactionsFragment extends Fragment {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<BankResponse> call, Throwable t) {
                 call.cancel();
@@ -162,21 +166,21 @@ public class TransactionsFragment extends Fragment {
     }
 
     private void displayLargestTransaction(View view, ArrayList<Transaction> transactions) {
-        Transaction latestTransaction = transactions.stream().max( (t1, t2) -> (int) (t2.getAmount() - t1.getAmount())).orElse(null);
+        Transaction largestTransaction = transactions.stream().max((t1, t2) -> (int) (t2.getAmount() - t1.getAmount())).orElse(null);
         TextView title = view.findViewById(R.id.largest_transaction_title);
-        if (latestTransaction == null) {
+        if (largestTransaction == null) {
             title.setText("No transactions found");
             return;
         }
-        title.setText(latestTransaction.getTitle());
+        title.setText(largestTransaction.getTitle());
         TextView amount = view.findViewById(R.id.largest_transaction_amount);
-        String amountStr = "$" + String.format(moneyFormat, latestTransaction.getAmount());
+        String amountStr = "$" + String.format(moneyFormat, largestTransaction.getAmount());
         amount.setText(amountStr);
     }
 
     private void displayIncome(View view, ArrayList<Transaction> transactions) {
         Double sum = transactions.stream().filter(t -> t.getAmount() > 0)
-                .filter (t -> t.getDate().getMonth().equals(LocalDate.now().getMonth()))
+                .filter(t -> t.getDate().getMonth().equals(LocalDate.now().getMonth()))
                 .mapToDouble(Transaction::getAmount)
                 .reduce(Double::sum).orElse(0);
         TextView moneyInView = view.findViewById(R.id.money_in_amount);
@@ -185,7 +189,7 @@ public class TransactionsFragment extends Fragment {
 
     private void displayExpenses(View view, ArrayList<Transaction> transactions) {
         Double sum = transactions.stream().filter(t -> t.getAmount() < 0)
-                .filter (t -> t.getDate().getMonth().equals(LocalDate.now().getMonth()))
+                .filter(t -> t.getDate().getMonth().equals(LocalDate.now().getMonth()))
                 .mapToDouble(Transaction::getAmount)
                 .reduce(Double::sum).orElse(0);
         TextView moneyOutView = view.findViewById(R.id.money_out_amount);
