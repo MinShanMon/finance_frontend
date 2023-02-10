@@ -140,7 +140,11 @@ public class ProfileEditFragment extends Fragment {
                 error_msg.setText("Email cannot be empty");
                 return;
             }
-            if(!pass.equals(pref.getString("password", "")) && pass.isEmpty()){
+            if(pass.isEmpty()){
+                error_msg.setText("Password cannot be empty");
+                return;
+            }
+            if(!pass.equals(pref.getString("password", ""))){
                 error_msg.setText("Wrong Password");
                 return;
             }
