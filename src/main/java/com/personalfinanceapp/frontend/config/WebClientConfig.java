@@ -1,4 +1,4 @@
-package com.personalfinanceapp.frontend.Config;
+package com.personalfinanceapp.frontend.config;
 
 import reactor.netty.http.client.HttpClient;
 
