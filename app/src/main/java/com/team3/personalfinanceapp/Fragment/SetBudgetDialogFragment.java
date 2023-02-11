@@ -22,7 +22,7 @@ public class SetBudgetDialogFragment extends DialogFragment {
     private EditText budgetAmtField;
     private SharedPreferences budgetPref;
 
-    setBudgetListener listener;
+    private setBudgetListener listener;
 
     public interface setBudgetListener {
         public void onDialogPositiveClick();
