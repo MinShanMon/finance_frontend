@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.team3.personalfinanceapp.ListAdapterEtf;
@@ -37,7 +38,7 @@ public class StockFragment extends Fragment {
     public StockFragment() {
         // Required empty public constructor
     }
-
+    ProgressBar progressBar;
 
     List<String> validSotck = Arrays.asList("D05","SVI","511880","BOTHE","INFY","005930","GMEXICOB","TKMIT","EBS");
     @Override
@@ -48,6 +49,10 @@ public class StockFragment extends Fragment {
 
         TransitionInflater tInflater = TransitionInflater.from(requireContext());
         setEnterTransition(tInflater.inflateTransition(R.transition.slide_right));
+
+        progressBar = v.findViewById(R.id.barrr);
+
+        progressBar.setVisibility(View.VISIBLE);
 
 
         APIclientstock apIclientstock = new APIclientstock();
@@ -60,7 +65,7 @@ public class StockFragment extends Fragment {
             public void onResponse(Call<StockData> call, Response<StockData> response) {
 
                 List<Stock> stockList = response.body().getData().stream().filter(e -> validSotck.contains(e.getSymbol())).collect(Collectors.toList());
-
+                progressBar.setVisibility(View.INVISIBLE);
                 ListView listView = v.findViewById(R.id.listView);
                 if (listView != null) {
                     listView.setAdapter(new ListAdapterStock(getContext(), stockList));
@@ -82,7 +87,7 @@ public class StockFragment extends Fragment {
 
 
                 }
-                Toast.makeText(getContext(),"successful",Toast.LENGTH_SHORT).show();
+
             }
 
             @Override

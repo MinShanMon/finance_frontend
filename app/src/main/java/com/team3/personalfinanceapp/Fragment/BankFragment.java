@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,8 @@ public class BankFragment extends Fragment {
     }
     private List<FixedDeposits> fixedList;
 
+    ProgressBar progressBar;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +54,10 @@ public class BankFragment extends Fragment {
 
         TransitionInflater tInflater = TransitionInflater.from(requireContext());
         setEnterTransition(tInflater.inflateTransition(R.transition.slide_right));
+
+        progressBar = v.findViewById(R.id.bar);
+
+        progressBar.setVisibility(View.VISIBLE);
 
 
         APIclient api = new APIclient();
@@ -67,7 +74,7 @@ public class BankFragment extends Fragment {
                     return;
                 }
 
-
+        progressBar.setVisibility(View.INVISIBLE);
                 fixedList= response.body();
                 ListView listView = v.findViewById(R.id.listView);
                 if (listView != null) {
@@ -107,6 +114,7 @@ public class BankFragment extends Fragment {
         trans.addToBackStack(null);
         trans.commit();
     }
+
 }
 //
 //        ListView listView = v.findViewById(R.id.listView);

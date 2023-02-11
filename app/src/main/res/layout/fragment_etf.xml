@@ -20,7 +20,11 @@
         android:textSize="25dp"
         android:textStyle="italic"/>
 
-
+    <ProgressBar
+        android:id="@+id/barr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="400dp"/>
 
     <!--list view to display list of languages-->
     <ListView

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.team3.personalfinanceapp.ListAdapter;
@@ -41,6 +42,8 @@ public class EtfFragment extends Fragment {
         // Required empty public constructor
     }
 
+    ProgressBar progressBar;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,6 +52,10 @@ public class EtfFragment extends Fragment {
 
         TransitionInflater tInflater = TransitionInflater.from(requireContext());
         setEnterTransition(tInflater.inflateTransition(R.transition.slide_right));
+
+        progressBar = v.findViewById(R.id.barr);
+
+        progressBar.setVisibility(View.VISIBLE);
 
 
         List<String> validEtfs = Arrays.asList("SPY","SPCZ");
@@ -66,7 +73,7 @@ public class EtfFragment extends Fragment {
 
 
                 List<Etf> etfList = response.body().getData().stream().filter(e -> validEtfs.contains(e.getSymbol())).collect(Collectors.toList());
-
+                progressBar.setVisibility(View.INVISIBLE);
                 ListView listView = v.findViewById(R.id.listView);
                 if (listView != null) {
                     listView.setAdapter(new ListAdapterEtf(getContext(), etfList));
