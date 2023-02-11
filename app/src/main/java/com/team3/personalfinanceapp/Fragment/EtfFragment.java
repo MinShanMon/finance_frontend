@@ -91,7 +91,7 @@ public class EtfFragment extends Fragment {
                         }
                     });
                 }
-                Toast.makeText(getContext(),"successful",Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
