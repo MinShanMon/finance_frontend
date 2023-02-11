@@ -227,17 +227,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/largest_transaction_card" />
 
-    <Button
-        android:id="@+id/set_budget_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top"
-        android:text="@string/set_budget_btn"
-        android:textSize="20dp"
-        android:textAllCaps="false"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_transaction_btn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

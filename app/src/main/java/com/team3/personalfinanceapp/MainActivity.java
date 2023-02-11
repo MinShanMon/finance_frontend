@@ -148,4 +148,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         trans.addToBackStack(null);
         trans.commit();
     }
+
+    public HomeFragment getHomeFragment() {
+        return homeFragment;
+    }
 }
