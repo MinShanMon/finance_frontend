@@ -70,4 +70,22 @@
     <string name="change_name">Change Name</string>
     <string name="link_bank_account">Link Bank Account</string>
 
+    <string name="ask_question">Submit an enquiry</string>
+    <string name="enquiry">Enquiry Form</string>
+    <string name="type_hint">Enquiry Type</string>
+    <string name="name">Your Full Name</string>
+    <string name="email">Your Email</string>
+    <string name="enquiries">Let us know about your enquiries</string>
+    <string name="back">Back to previous page</string>
+    <string name="submit">Submit</string>
+    <string-array name="type">
+        <item>ACCOUNT</item>
+        <item>PRODUCT</item>
+        <item>FEEDBACK</item>
+        <item>OTHER</item>
+    </string-array>
+
+
+
+
 </resources>

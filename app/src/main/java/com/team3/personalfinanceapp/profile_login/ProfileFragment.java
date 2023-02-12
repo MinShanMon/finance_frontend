@@ -32,6 +32,7 @@ public class ProfileFragment extends Fragment {
     SharedPreferences.Editor editor;
     LinearLayout email_display;
     ImageView img_icon;
+    LinearLayout fill_enquiry;
 
     ProfileEditFragment profileEditFragment = new ProfileEditFragment();
 
@@ -60,6 +61,11 @@ public class ProfileFragment extends Fragment {
             startActivity(intent);
         });
 
+        fill_enquiry.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+            intent.putExtra("fill_enquiry", true);
+            startActivity(intent);
+        });
 
         profile.setOnClickListener(v -> commitTransaction(profileEditFragment));
 

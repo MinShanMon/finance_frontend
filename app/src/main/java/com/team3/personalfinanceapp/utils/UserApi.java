@@ -1,9 +1,12 @@
 package com.team3.personalfinanceapp.utils;
 
 import com.google.gson.JsonObject;
+import com.team3.personalfinanceapp.model.Enquiry;
 import com.team3.personalfinanceapp.model.RegisteredUsers;
 import com.team3.personalfinanceapp.model.Status;
 import com.team3.personalfinanceapp.model.Token;
+
+
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -47,4 +50,6 @@ public interface UserApi {
     @POST("user/edit/profile")
     Call<RegisteredUsers> editProfile(@Body RegisteredUsers user, @Header("Authorization")String token);
 
+    @POST("user/enquiry")
+    Call<Enquiry> createEnquiry(@Body Enquiry enquiryObj);
 }
