@@ -62,7 +62,7 @@ public class ProfileFragment extends Fragment {
         });
 
         fill_enquiry.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+            Intent intent = new Intent(getActivity(), EnquiryActivity.class);
             intent.putExtra("fill_enquiry", true);
             startActivity(intent);
         });
@@ -90,6 +90,7 @@ public class ProfileFragment extends Fragment {
         change_password = view.findViewById(R.id.change_password);
         img_icon = view.findViewById(R.id.img_icon);
         profile = view.findViewById(R.id.profile);
+        fill_enquiry = view.findViewById(R.id.fill_enquiry);
         txtUsername.setText(pref.getString("username",""));
         edtRegisterEmail.setText(pref.getString("email",""));
         SpannableString content = new SpannableString("Edit Profile");

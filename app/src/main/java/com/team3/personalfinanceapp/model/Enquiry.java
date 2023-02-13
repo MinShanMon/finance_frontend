@@ -36,7 +36,7 @@ public class Enquiry implements Serializable{
 
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime enquiry_dateTime;
+    private LocalDateTime enquiryDateTime;
 
 //    @SerializedName("rating")
 //    @Expose
@@ -48,6 +48,7 @@ public class Enquiry implements Serializable{
 
     public Enquiry() {
         // default constructor for Jackson
+        this.enquiryDateTime = LocalDateTime.now();
     }
 
     public int getId() {
@@ -82,11 +83,11 @@ public class Enquiry implements Serializable{
         this.question = question;
     }
 
-    public LocalDateTime getEnquiry_dateTime() {
-        return enquiry_dateTime;
+    public LocalDateTime getEnquiryDateTime() {
+        return enquiryDateTime;
     }
-    public void setEnquiry_dateTime(LocalDateTime enquiry_dateTime) {
-        this.enquiry_dateTime =enquiry_dateTime;
+    public void setEnquiryDateTime(LocalDateTime enquiry_dateTime) {
+        this.enquiryDateTime =enquiry_dateTime;
     }
 
 

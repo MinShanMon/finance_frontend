@@ -51,5 +51,5 @@ public interface UserApi {
     Call<RegisteredUsers> editProfile(@Body RegisteredUsers user, @Header("Authorization")String token);
 
     @POST("user/enquiry")
-    Call<Enquiry> createEnquiry(@Body Enquiry enquiryObj);
+    Call<Boolean> createEnquiry(@Body Enquiry enquiryObj, @Header("Authorization")String token);
 }

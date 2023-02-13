@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,12 +72,7 @@ public class EnquiryActivity extends AppCompatActivity {
             }
         });
 
-        sub.setOnClickListener(v -> {
-            if(fill_enquiry) {
-                fillEnquiry();
-            }
-        });
-
+        sub.setOnClickListener(v -> fillEnquiry());
     }
 
     private void init() {
@@ -89,7 +85,7 @@ public class EnquiryActivity extends AppCompatActivity {
         sub = findViewById(R.id.submit);
         type = findViewById(R.id.type);
 
-        adapterItems = new ArrayAdapter<String>(this, R.layout.enquiry_item, items);
+        adapterItems = new ArrayAdapter<>(this, R.layout.enquiry_item, items);
         type.setAdapter(adapterItems);
         type.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -100,18 +96,25 @@ public class EnquiryActivity extends AppCompatActivity {
         });
 
         intent = getIntent();
-        fill_enquiry = intent.getBooleanExtra("enquiry", false);
-        fullName = intent.getStringExtra("username");
-        email = intent.getStringExtra("email");
+        pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+        fullName = pref.getString("username", "");
+        if (!fullName.isEmpty()) {
+            name.setText(fullName);
+        }
+
+        email = pref.getString("email", "");
+        if (!email.isEmpty()) {
+            mail.setText(email);
+        }
+
     }
 
-    private void fillEnquiry(){
+    private void fillEnquiry() {
 
         enquiryObj = new Enquiry();
-        pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
         id = pref.getInt("userid", 0);
-        fullName= pref.getString("username","");
-        email = pref.getString("email","");
+        fullName = pref.getString("username", "");
+        email = mail.getText().toString();
         question = inquiry.getText().toString();
         enquiryType = type.getText().toString();
 
@@ -120,38 +123,69 @@ public class EnquiryActivity extends AppCompatActivity {
         enquiryObj.setEnquiryType(enquiryType);
         enquiryObj.setQuestion(question);
 
-        if(email.isEmpty() && fullName.isEmpty() && enquiryType.isEmpty() && question.isEmpty()){
-            error_msg.setText("Field cannot be empty");
-            return;
-        }
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-
-            error_msg.setText("please enter valid email");
+        if (!validateForm()) {
             return;
         }
 
-        Call<Enquiry> createEnquiryCall = apiInterface.createEnquiry(enquiryObj);
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            mail.setText("please enter valid email");
+            return;
+        }
 
-        createEnquiryCall.enqueue(new Callback<Enquiry>() {
+        Call<Boolean> createEnquiryCall = apiInterface.createEnquiry(enquiryObj, "Bearer " + pref.getString("token", ""));
+        System.out.println(createEnquiryCall.request());
+        createEnquiryCall.enqueue(new Callback<Boolean>() {
             @Override
-            public void onResponse(Call<Enquiry> call, Response<Enquiry> response) {
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
 
-                Intent intent = new Intent(EnquiryActivity.this, LoginActivity.class);
-                error_msg.setText("");
-                editor = pref.edit();
-                editor.clear();
-                editor.commit();
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
                 finish();
             }
 
             @Override
-            public void onFailure(Call<Enquiry> call, Throwable t) {
-
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                call.cancel();
             }
 
         });
     }
 
+    private boolean validateForm() {
+        if (email.isEmpty() || fullName.isEmpty() || enquiryType.isEmpty() || question.isEmpty()) {
+
+            TextView enquiryError = findViewById(R.id.enquiry_type_error);
+            TextView fullNameError = findViewById(R.id.fullname_error);
+            TextView emailError = findViewById(R.id.email_error);
+            TextView questionError = findViewById(R.id.question_error);
+
+            if (enquiryType.isEmpty()) {
+
+                enquiryError.setVisibility(View.VISIBLE);
+            } else {
+                enquiryError.setVisibility(View.GONE);
+            }
+
+
+            if (fullName.isEmpty()) {
+
+                fullNameError.setVisibility(View.VISIBLE);
+            } else {
+                fullNameError.setVisibility(View.GONE);
+            }
+
+            if (email.isEmpty()) {
+                emailError.setVisibility(View.VISIBLE);
+            } else {
+                emailError.setVisibility(View.GONE);
+            }
+
+            if (question.isEmpty()) {
+                questionError.setVisibility(View.VISIBLE);
+            } else {
+                questionError.setVisibility(View.GONE);
+            }
+
+            return false;
+        }
+        return true;
+    }
 }

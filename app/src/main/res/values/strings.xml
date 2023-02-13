@@ -90,4 +90,8 @@
 
     <string name="enquiry">Enquiry Form</string>
     <string name="submit">Submit</string>
+    <string name="please_select_an_enquiry_type">Please select an enquiry type.</string>
+    <string name="please_enter_your_name">Please enter your name</string>
+    <string name="please_enter_your_email">Please enter your email</string>
+    <string name="please_enter_the_details_of_your_enquiry">Please enter the details of your enquiry</string>
 </resources>
