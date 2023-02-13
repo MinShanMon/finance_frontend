@@ -94,4 +94,5 @@
     <string name="please_enter_your_name">Please enter your name</string>
     <string name="please_enter_your_email">Please enter your email</string>
     <string name="please_enter_the_details_of_your_enquiry">Please enter the details of your enquiry</string>
+    <string name="get_spending_forecast">Get Spending Forecast</string>
 </resources>

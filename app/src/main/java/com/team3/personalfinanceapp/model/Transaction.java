@@ -1,5 +1,6 @@
 package com.team3.personalfinanceapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -39,6 +40,11 @@ public class Transaction implements Serializable {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    @JsonIgnore
+    public long getMonthYearEpoch() {
+        return LocalDate.of(date.getYear(), date.getMonth(), 1).toEpochDay();
     }
 
     public String getCategory() {

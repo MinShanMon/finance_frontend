@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.LineChart;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.Transaction;
 import com.team3.personalfinanceapp.utils.APIClient;
@@ -23,6 +24,7 @@ import com.team3.personalfinanceapp.utils.APIInterface;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,6 +51,7 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
 
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
         setBudgetButton(view);
+        setSpendingForecastButton(view);
         return view;
     }
 
@@ -76,12 +79,6 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
                 call.cancel();
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        setBudgetBar(totalSpendingThisMonth);
     }
 
     private void setBudgetBar(int totalSpendingThisMonth) {
@@ -115,5 +112,31 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
     @Override
     public void onDialogPositiveClick() {
         setBudgetBar(totalSpendingThisMonth);
+    }
+
+    private void setSpendingForecastButton(View view) {
+        Button forecastBtn = view.findViewById(R.id.get_forecast_btn);
+        forecastBtn.setOnClickListener( v -> {
+            APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+            Call<Map<String,Float>> getForecastCall =  apiInterface.getSpendingForecastById(userId, "Bearer "+ pref.getString("token", ""));
+            getForecastCall.enqueue(new Callback<Map<String, Float>>() {
+                @Override
+                public void onResponse(Call<Map<String, Float>> call, Response<Map<String, Float>> response) {
+                    Map<String, Float> forecastByMonth = response.body();
+                    setForecastLineChart(forecastByMonth, view);
+                    System.out.println(forecastByMonth);
+                }
+
+                @Override
+                public void onFailure(Call<Map<String, Float>> call, Throwable t) {
+                    call.cancel();
+                }
+            });
+        });
+    }
+
+    private void setForecastLineChart(Map<String, Float> spendingForecastByMonth, View view) {
+        LineChart forecastChart = view.findViewById(R.id.forecast_chart);
+
     }
 }
