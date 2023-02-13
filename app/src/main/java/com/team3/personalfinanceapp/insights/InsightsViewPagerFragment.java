@@ -139,6 +139,9 @@ public class InsightsViewPagerFragment extends Fragment {
 
     private void setForecastLine(Map<String, Float> forecastByMonth) {
         List<Entry> entries = new ArrayList<>();
+        if (transactions == null) {
+            return;
+        }
         int currentYear = transactions.get(transactions.size() - 1).getDate().getYear();
 
         List<Map.Entry<String, Float>> forecastDataList =
