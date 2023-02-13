@@ -114,6 +114,38 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/fill_enquiry"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_baseline_chat_24" />
+
+        <TextView
+            android:text="@string/ask_question"
+            android:textSize="24dp"
+            android:layout_weight="2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_baseline_arrow_circle_right_24"
+            app:tint="@color/purple_500" />
+
+    </LinearLayout>
+
+
     <TextView
         android:id="@+id/logout"
         android:layout_width="wrap_content"

@@ -268,6 +268,8 @@ public class LoginActivity extends AppCompatActivity {
                     error.setText("Check Your Password Or Email");
                     return;
                 }
+                txtUsername.setFocusable(false);
+                txtPassword.setFocusable(false);
                 pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
                 editor = pref.edit();
                 editor.putString("token", response.body().refresh_token);
