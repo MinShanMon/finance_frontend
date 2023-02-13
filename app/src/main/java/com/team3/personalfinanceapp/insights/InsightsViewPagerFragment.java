@@ -34,6 +34,7 @@ import com.team3.personalfinanceapp.model.Transaction;
 import com.team3.personalfinanceapp.utils.APIClient;
 import com.team3.personalfinanceapp.utils.APIInterface;
 
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,6 +56,10 @@ public class InsightsViewPagerFragment extends Fragment {
 
     LineChart lineChart;
 
+    APIInterface apiInterface;
+    SharedPreferences pref;
+
+
 
     public InsightsViewPagerFragment() {
         // Required empty public constructor
@@ -65,6 +70,8 @@ public class InsightsViewPagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        apiInterface = APIClient.getClient().create(APIInterface.class);
+        pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
         return inflater.inflate(R.layout.fragment_insights_view_pager, container, false);
     }
 
@@ -87,12 +94,12 @@ public class InsightsViewPagerFragment extends Fragment {
         );
         tabLayoutMediator.attach();
         getAllTransactionsAndSetCharts();
+        getForecastAndSetLine();
+
 
     }
 
     private void getAllTransactionsAndSetCharts() {
-        APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-        SharedPreferences pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
         Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(pref.getInt("userid", 0), "Bearer " + pref.getString("token", ""));
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
@@ -112,6 +119,55 @@ public class InsightsViewPagerFragment extends Fragment {
         });
     }
 
+    private void getForecastAndSetLine() {
+
+        Call<Map<String, Float>> getForecastCall =
+                apiInterface.getSpendingForecastById(pref.getInt("userid", 0), pref.getString("token", ""));
+        getForecastCall.enqueue(new Callback<Map<String, Float>>() {
+            @Override
+            public void onResponse(Call<Map<String, Float>> call, Response<Map<String, Float>> response) {
+                Map<String, Float> forecastByMonth = response.body();
+                setForecastLine(forecastByMonth);
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, Float>> call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
+    private void setForecastLine(Map<String, Float> forecastByMonth) {
+        List<Entry> entries = new ArrayList<>();
+        if (transactions == null) {
+            return;
+        }
+        int currentYear = transactions.get(transactions.size() - 1).getDate().getYear();
+
+        List<Map.Entry<String, Float>> forecastDataList =
+                forecastByMonth.entrySet().stream()
+                .sorted((e1, e2) -> Integer.parseInt(e1.getKey()) - Integer.parseInt(e2.getKey()))
+                .collect(Collectors.toList());
+        forecastDataList.forEach( e -> {
+            LocalDate date = LocalDate.of(currentYear, Integer.parseInt(e.getKey()) + 1, 1);
+            long epochDay = date.toEpochDay();
+            entries.add(new Entry(epochDay, e.getValue()));
+        });
+
+//        forecastByMonth.forEach( (monthStr, forecastSpending) -> {
+//            LocalDate date = LocalDate.of(currentYear, Integer.parseInt(monthStr) + 1, 1);
+//            long epochDay = date.toEpochDay();
+//            entries.add(new Entry(epochDay, forecastSpending));
+//        });
+
+        LineDataSet lineDataSet = new LineDataSet(entries, "Spending Forecast");
+        lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+        lineDataSet.setColor(Color.parseColor("magenta"));
+        List<ILineDataSet> lineDataSets = lineChart.getLineData().getDataSets();
+        lineDataSets.add(lineDataSet);
+        lineChart.invalidate();
+    }
+
     private void setPieChartAndCategorySpending() {
         InsightsViewPagerAdapter insightsPagerAdapter = new InsightsViewPagerAdapter(InsightsViewPagerFragment.this, transactions);
         viewPager.setAdapter(insightsPagerAdapter);
@@ -120,23 +176,23 @@ public class InsightsViewPagerFragment extends Fragment {
     private void setLineChart() {
 
         configureLineChart(lineChart);
-        Map<Month, Double> sumPerMonthMap = transactions.stream().collect(
+        Map<Long, Double> sumPerMonthMap = transactions.stream().collect(
                 Collectors.groupingBy(
-                        t -> t.getDate().getMonth(),
+                        t -> t.getMonthYearEpoch(),
                         Collectors.summingDouble(Transaction::getAmount)
                 ));
         List<Entry> entries = new ArrayList<>();
         sumPerMonthMap.forEach((m, s) ->
-                entries.add(new Entry(m.getValue(), Math.abs(s.floatValue())))
+                entries.add(new Entry(m, Math.abs(s.floatValue())))
         );
 
-        // sort entries by month in ascending order
+        // sort entries by date in ascending order
         Collections.sort(entries, (o1, o2) -> (int) (o1.getX() - o2.getX()));
 
         LineDataSet lineDataSet = new LineDataSet(entries, "Spending Trend");
         lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
         lineDataSet.setColor(Color.parseColor("#FF0000"));
-        lineDataSet.setDrawFilled(true);
+        lineDataSet.setDrawFilled(false);
         List<ILineDataSet> lineDataSets = new ArrayList<>();
         lineDataSets.add(lineDataSet);
         LineData lineData = new LineData(lineDataSets);
@@ -153,12 +209,13 @@ public class InsightsViewPagerFragment extends Fragment {
     }
 
     private void setXLabels(LineChart lineChart) {
-
-        Month[] months = Month.values();
         ValueFormatter formatter = new ValueFormatter() {
             @Override
             public String getAxisLabel(float value, AxisBase axis) {
-                return months[(int) value - 1].toString();
+                LocalDate epochToLocalDate = LocalDate.ofEpochDay((long) value);
+
+                return epochToLocalDate.getMonth().toString().substring(0, 3) + " '"
+                        + String.valueOf(epochToLocalDate.getYear()).substring(2, 4);
             }
         };
 

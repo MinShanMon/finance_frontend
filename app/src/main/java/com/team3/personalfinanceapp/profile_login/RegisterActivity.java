@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -40,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
     String username;
     String password;
     String confirmPassword;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,10 +60,14 @@ public class RegisterActivity extends AppCompatActivity {
         img_backArrow = findViewById(R.id.img_backArrow);
         error_msg = findViewById(R.id.error_msg);
         btnRegister = findViewById(R.id.btnRegister);
+        progressBar = findViewById(R.id.barrr);
         apiInterface = APIClient.getClient().create(UserApi.class);
+
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     private void register(){
+
 
         user = new RegisteredUsers();
         email = edtRegisterEmail.getText().toString();
@@ -72,7 +78,21 @@ public class RegisterActivity extends AppCompatActivity {
         user.setFullName(username);
         user.setPassword(confirmPassword);
 
-        if(email.isEmpty() && username.isEmpty() && password.isEmpty() && confirmPassword.isEmpty()){
+        error_msg.setText("");
+        if(username.isEmpty()){
+            error_msg.setText("Username cannot be empty");
+            return;
+        }
+
+        if(password.isEmpty()){
+            error_msg.setText("password cannot be empty");
+            return;
+        }
+        if(confirmPassword.isEmpty()){
+            error_msg.setText("confirm password cannot be empty");
+            return;
+        }
+        if(email.isEmpty() ){
             error_msg.setText("Fileds cannot be empty");
             return;
         }
@@ -96,6 +116,13 @@ public class RegisterActivity extends AppCompatActivity {
                     error_msg.setText("email already exit");
                     return;
                 }
+                error_msg.setText("");
+                btnRegister.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                edtRegisterEmail.setFocusable(false);
+                edtRegisterConfirmPassword.setFocusable(false);
+                edtRegisterPassword.setFocusable(false);
+                edtRegisterUsername.setFocusable(false);
                 editor = pref.edit();
                 editor.clear();
                 editor.commit();

@@ -1,6 +1,8 @@
 
 package com.team3.personalfinanceapp.utils;
 
+import com.team3.personalfinanceapp.UserService;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -31,6 +33,11 @@ public class APIClient {
                 .client(client)
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build();
+    }
+
+    public static UserService getUserService() {
+        UserService userService = getClient().create(UserService.class);
+        return userService;
     }
 
     public static Retrofit getBankClient() {

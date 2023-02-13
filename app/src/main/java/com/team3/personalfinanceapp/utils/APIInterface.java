@@ -3,6 +3,7 @@ package com.team3.personalfinanceapp.utils;
 import com.team3.personalfinanceapp.model.Transaction;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -32,6 +33,9 @@ public interface APIInterface {
 
     @DELETE("transaction")
     Call<Long> deleteTransactionById(@Query("transactionId") long transactionId, @Header("Authorization") String token);
+
+    @GET("forecast/{userId}")
+    Call<Map<String, Float>> getSpendingForecastById(@Path("userId") int userId, @Header("Authorization") String token);
 
 
 }

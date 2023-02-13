@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -36,6 +37,9 @@ public class VerifyAccountActivity extends AppCompatActivity {
     String token;
     Boolean register;
     Intent intent;
+    TextView txtTime;
+
+    int second;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +64,35 @@ public class VerifyAccountActivity extends AppCompatActivity {
         txtGetVerify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                second = 30;
+                txtGetVerify.setEnabled(false);
+                runTimer();
                 sendEmail(email);
+            }
+        });
+
+
+    }
+    private void runTimer() {
+
+        final Handler handler = new Handler();
+
+        //rud background thread
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                txtTime.setText(" in " + second + " sec");
+
+                if (second > 0) {
+                    txtGetVerify.setEnabled(false);
+                    second--;
+                } else {
+                    txtGetVerify.setEnabled(true);
+                    txtTime.setVisibility(View.INVISIBLE);
+                }
+
+                handler.postDelayed(this, 1000);
             }
         });
     }
@@ -72,6 +104,7 @@ public class VerifyAccountActivity extends AppCompatActivity {
         apiInterface = APIClient.getClient().create(UserApi.class);
         edtCodeSix = findViewById(R.id.edtCodeSix);
         txtVerifyEmail = findViewById(R.id.txtVerifyEmail);
+        txtTime = findViewById(R.id.sec);
         intent = getIntent();
         email = intent.getStringExtra("email");
         token=intent.getStringExtra("token");
