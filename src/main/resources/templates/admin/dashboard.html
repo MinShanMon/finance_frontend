@@ -140,7 +140,7 @@
   
   <div class="navbar-nav">
     <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" href="/admin/logout">Sign out</a>
+      <a class="nav-link px-3" href="#">Sign out</a>
     </div>
   </div>
 </header>
@@ -150,29 +150,21 @@
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
-
-         
           <li class="nav-item">
             <p class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" style="font-size: 20px;">
-              <a class="nav-link active" th:href="@{/admin/dashboard/}">Dashboard</a>
+              <span>Dashboard</span>
             </p>
           </li>
-
           <li class="nav-item">
-            <p class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" style="font-size: 20px;">
-              <a class="nav-link" th:href="@{/admin/enquiries/}">Ticketing System</a>
-            </p>
-          </li>
-         
-
+            <a class="nav-link active" th:href="@{/admin/enquiries/}">
+             Inbox
+            </a>
+          </li>   
           <li class="nav-item">
-            <p class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"
-              style="font-size: 20px;">
-              <a  class="nav-link " th:href="@{'/admin/managefixeddeposits'}">Bank Fixed Deposits</a>
-            </p>
+            <a class="nav-link">
+             Dashboard
+            </a>
           </li>
-
-
         </ul>
       </div>
     </nav>
@@ -235,9 +227,15 @@
                 <!-- Uncomment these two lines if you want to use bmap extension
                 <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=YOUR_API_KEY"></script>
                 <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.1/dist/extension/bmap.min.js"></script>
-                -->
+                -->  
                 <script type="text/javascript" src="js/echarts.min.js"></script>
-                <script type="text/javascript">
+                <script type="text/javascript" th:inline="javascript">
+                  var val5 = [[${rate5}]];
+                  var val4 = [[${rate4}]];
+                  var val3 = [[${rate3}]];
+                  var val2 = [[${rate2}]];
+                  var val1 = [[${rate1}]];
+
                   var dom = document.getElementById('container');
                   var myChart = echarts.init(dom, null, {
                     renderer: 'canvas',
@@ -250,7 +248,7 @@
                   text: 'Service Satisfication Report',
                   subtext: 'Rating Summary',
                   left: 'center'
-                },
+                },  
                 tooltip: {
                   trigger: 'item'
                 },
@@ -264,11 +262,11 @@
                     type: 'pie',
                     radius: '50%',
                     data: [
-                      { value: 1048, name: '5 Stars' },
-                      { value: 735, name: '4 Stars' },
-                      { value: 580, name: '3 Stars' },
-                      { value: 484, name: '2 Stars' },
-                      { value: 300, name: '1 Star' }
+                      { value: val5, name: '5 Stars' },
+                      { value: val4, name: '4 Stars' },
+                      { value: val3, name: '3 Stars' },
+                      { value: val2, name: '2 Stars' },
+                      { value: val1, name: '1 Star' }
                     ],
                     emphasis: {
                       itemStyle: {
