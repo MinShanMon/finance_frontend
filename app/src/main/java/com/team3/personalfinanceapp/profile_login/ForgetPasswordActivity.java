@@ -60,7 +60,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         super.onStart();
         sendOTP.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
-        txtForgetPassword.setFocusable(true);
+        txtForgetPassword.setEnabled(true);
     }
 
     private void init(){
@@ -80,7 +80,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     private void sendEmail(String emails){
         sendOTP.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-        txtForgetPassword.setFocusable(false);
+        txtForgetPassword.setEnabled(false);
         Call<Token> userLoginCall = apiInterface.sendOTPByEmail(emails);
         userLoginCall.enqueue(new Callback<Token>() {
             @Override
@@ -90,11 +90,11 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                     error_msg.setText("Email Not Exit In Database");
                     sendOTP.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.INVISIBLE);
-                    txtForgetPassword.setFocusable(true);
+                    txtForgetPassword.setEnabled(true);
                     return;
                 }
 
-                txtForgetPassword.setFocusable(false);
+                txtForgetPassword.setEnabled(false);
                 Intent intent = new Intent(ForgetPasswordActivity.this, VerifyAccountActivity.class);
                 error_msg.setText("");
                 intent.putExtra("email", emails);
