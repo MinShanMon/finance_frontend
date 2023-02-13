@@ -119,7 +119,7 @@ public class BankDetailFragment extends Fragment {
                     compare.setText("comapre "+Integer.toString(fixedIdMap.size()) + " items");
                 }
 
-                if(!pref.contains("fixedId-"+Long.toString(item.getId()))){
+                if(!pref.contains("fixedId-"+Long.toString(item.getId() -1 ))){
                     addbtn.setText("Add to Compare");
                 }else {
                    addbtn.setText("Remove form Compare");
@@ -140,17 +140,23 @@ public class BankDetailFragment extends Fragment {
                     public void onClick(View v) {
 
                         Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
-                        if(fixedIdMap.containsKey("fixedId-"+Long.toString(item.getId()))){
-                            editor.remove("fixedId-"+Long.toString(item.getId()));
+
+                        if(fixedIdMap.size() == 2){
+                            Toast.makeText(getContext(), "can not add anymore",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if(fixedIdMap.containsKey("fixedId-"+Long.toString(item.getId() -1 ))){
+                            editor.remove("fixedId-"+Long.toString(item.getId() -1));
                             editor.commit();
 
                         }else{
-                            editor.putLong ("fixedId-"+Long.toString(item.getId()),item.getId());
+                            editor.putLong ("fixedId-"+Long.toString(item.getId() - 1),item.getId() -1);
                             editor.commit();
                         }
 
                         Map<String, Long> fixedIdMap2 = (Map<String, Long>) pref.getAll();
-                        if(!fixedIdMap2.containsKey("fixedId-"+Long.toString(item.getId()))){
+                        if(!fixedIdMap2.containsKey("fixedId-"+Long.toString(item.getId() -1 ))){
                             addbtn.setText("Add to Compare");
                         }else {
                             addbtn.setText("Remove form Compare");
