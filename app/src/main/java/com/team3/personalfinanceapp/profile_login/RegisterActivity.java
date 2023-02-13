@@ -79,7 +79,20 @@ public class RegisterActivity extends AppCompatActivity {
         user.setPassword(confirmPassword);
 
         error_msg.setText("");
-        if(email.isEmpty() && username.isEmpty() && password.isEmpty() && confirmPassword.isEmpty()){
+        if(username.isEmpty()){
+            error_msg.setText("Username cannot be empty");
+            return;
+        }
+
+        if(password.isEmpty()){
+            error_msg.setText("password cannot be empty");
+            return;
+        }
+        if(confirmPassword.isEmpty()){
+            error_msg.setText("confirm password cannot be empty");
+            return;
+        }
+        if(email.isEmpty() ){
             error_msg.setText("Fileds cannot be empty");
             return;
         }
