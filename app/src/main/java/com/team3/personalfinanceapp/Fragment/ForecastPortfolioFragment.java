@@ -7,10 +7,13 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +50,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ForecastPortfolioFragment extends Fragment {
+public class ForecastPortfolioFragment extends Fragment{
     SharedPreferences prefs;
     public ForecastPortfolioFragment() {
     }
@@ -68,9 +71,9 @@ public class ForecastPortfolioFragment extends Fragment {
         Collection<Long> Ids = fixedIdMap.values();
         List<Long> IdList = new ArrayList<Long>();
         IdList.addAll(Ids);
-        TextView amount1 = v.findViewById(R.id.amount1);
+        EditText amount1 = v.findViewById(R.id.amount1);
         TextView period1 = v.findViewById(R.id.period1);
-        TextView amount2 = v.findViewById(R.id.amount2);
+        EditText amount2 = v.findViewById(R.id.amount2);
         TextView period2 = v.findViewById(R.id.period2);
 
         APIclient api = new APIclient();
@@ -87,9 +90,7 @@ public class ForecastPortfolioFragment extends Fragment {
                             return;
                         }
                         FixedDeposits result = response.body();
-
                         fixedDepositsList.add(result);
-
                         if (fixedDepositsList.size()==1) {
                             amount1.setText(Integer.toString(result.getMinAmount()));
                             period1.setText(Integer.toString(result.getTenure()));
@@ -105,7 +106,6 @@ public class ForecastPortfolioFragment extends Fragment {
                             System.out.println("p2:"+periods.get(1));
                             initLineChart(amounts,periods);
                         }
-
                     }
                     @Override
                     public void onFailure(Call<FixedDeposits> call, Throwable t) {
@@ -115,30 +115,83 @@ public class ForecastPortfolioFragment extends Fragment {
 
             }
         }
-
         return v;
     }
 
     @Override
-    public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState)   {
         super.onViewCreated(v, savedInstanceState);
         lineChart = v.findViewById(R.id.lineChart);
         ImageButton addAmountBtn1=v.findViewById(R.id.add_amount1);
         ImageButton addAmountBtn2=v.findViewById(R.id.add_amount2);
         ImageButton reduceAmountBtn1=v.findViewById(R.id.reduce_amount1);
         ImageButton reduceAmountBtn2=v.findViewById(R.id.reduce_amount2);
-//        ImageButton addPeriodBtn1=v.findViewById(R.id.add_period1);
-//        ImageButton addPeriodBtn2=v.findViewById(R.id.add_period2);
-//        ImageButton reducePeriodBtn1=v.findViewById(R.id.reduce_period1);
-//        ImageButton reducePeriodBtn2=v.findViewById(R.id.reduce_period2);
+        EditText amount1 = v.findViewById(R.id.amount1);
+        EditText amount2 = v.findViewById(R.id.amount2);
+        amount1.addTextChangedListener(new TextWatcher() {
+                private CharSequence word;
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    word = s;
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (amounts.size() > 0) {
+                        try {
+                            if(word.length()==0||Integer.parseInt(word.toString())<fixedDepositsList.get(0).getMinAmount()) {
+                                Toast.makeText(getContext(), "Can not less than" + fixedDepositsList.get(0).getMinAmount(), Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            if(Integer.parseInt(word.toString())>fixedDepositsList.get(0).getMaxAmount()) {
 
-        TextView amount1 = v.findViewById(R.id.amount1);
-        TextView amount2 = v.findViewById(R.id.amount2);
-        TextView period1 = v.findViewById(R.id.period1);
-        TextView period2 = v.findViewById(R.id.period2);
+                                Toast.makeText(getContext(), "Can not more than" + fixedDepositsList.get(0).getMaxAmount(), Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            amounts.set(0, Integer.parseInt(amount1.getText().toString()));
+                            setLineChartData(amounts, periods);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), "Invalid input", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            });
+        amount2.addTextChangedListener(new TextWatcher() {
+            private CharSequence word;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                word = s;
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (amounts.size() > 1) {
+                    try {
+                        if(word.length()==0||Integer.parseInt(word.toString())<fixedDepositsList.get(1).getMinAmount()) {
+                            Toast.makeText(getContext(), "Amount can not less than" + fixedDepositsList.get(1).getMinAmount(), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if(Integer.parseInt(word.toString())>fixedDepositsList.get(1).getMaxAmount()) {
 
+                            Toast.makeText(getContext(), "Amount can not more than" + fixedDepositsList.get(1).getMaxAmount(), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        amounts.set(1, Integer.parseInt(amount2.getText().toString()));
+                        setLineChartData(amounts, periods);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getContext(), "Invalid input!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
         Button saveBtn = v.findViewById(R.id.save);
-//        int a2=Integer.parseInt (amount1.getText().toString());
+
         reduceAmountBtn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -193,11 +246,7 @@ public class ForecastPortfolioFragment extends Fragment {
                 Toast.makeText(getContext(), "Image saved successfully", Toast.LENGTH_SHORT).show();
             }
         });
-//
-//        List<Integer> amounts = new ArrayList<>();
-//        amounts.add(Integer.parseInt (amount1.getText().toString()));
-//        amounts.add(Integer.parseInt (amount2.getText().toString()));
-//        initLineChart(amounts);
+
     }
     private void initLineChart(List<Integer> amounts,List<Integer> periods) {
 //        lineChart.setOnChartValueSelectedListener(this);
@@ -249,43 +298,12 @@ public class ForecastPortfolioFragment extends Fragment {
             else
                 valsProd2.add(new Entry(i, (float) (amounts.get(1)*(1+fixedDepositsList.get(1).getInterestRate()))));
         }
-//
-//        valsProd1.add(new Entry(0, -amounts.get(0)));
-//        valsProd1.add(new Entry(1, -amounts.get(0)));
-//        valsProd1.add(new Entry(2, -amounts.get(0)));
-//        valsProd1.add(new Entry(3, -amounts.get(0)));
-//        valsProd1.add(new Entry(4, -amounts.get(0)));
-//        valsProd1.add(new Entry(5, -amounts.get(0)));
-//        valsProd1.add(new Entry(6, -amounts.get(0)));
-//        valsProd1.add(new Entry(7, -amounts.get(0)));
-//        valsProd1.add(new Entry(8, -amounts.get(0)));
-//        valsProd1.add(new Entry(9, -amounts.get(0)));
-//        valsProd1.add(new Entry(10, -amounts.get(0)));
-//        valsProd1.add(new Entry(11, (float) (amounts.get(0)*(1+fixedDepositsList.get(0).getInterestRate()))));
-//
-//        valsProd2.add(new Entry(0, -amounts.get(1)));
-//        valsProd2.add(new Entry(1, -amounts.get(1)));
-//        valsProd2.add(new Entry(2, -amounts.get(1)));
-//        valsProd2.add(new Entry(3, -amounts.get(1)));
-//        valsProd2.add(new Entry(4, -amounts.get(1)));
-//        valsProd2.add(new Entry(5, -amounts.get(1)));
-//        valsProd2.add(new Entry(6, -amounts.get(1)));
-//        valsProd2.add(new Entry(7, -amounts.get(1)));
-//        valsProd2.add(new Entry(8, -amounts.get(1)));
-//        valsProd2.add(new Entry(9, -amounts.get(1)));
-//        valsProd2.add(new Entry(10, -amounts.get(1)));
-//        valsProd2.add(new Entry(11, (float) (amounts.get(1)*(1+fixedDepositsList.get(1).getInterestRate()))));
+
 
         for(int i=0;i<=max;i++){
             total.add(new Entry(i, valsProd1.get(i).getY()+valsProd2.get(i).getY()));
         }
-//        total.add(new Entry(0, valsProd1.get(0).getY()+valsProd1.get(0).getY()));
-//        total.add(new Entry(1, valsProd1.get(1).getY()+valsProd1.get(1).getY()));
-//        total.add(new Entry(2, valsProd1.get(2).getY()+valsProd1.get(2).getY()));
-//        total.add(new Entry(3, valsProd1.get(3).getY()+valsProd1.get(3).getY()));
-//        total.add(new Entry(4, valsProd1.get(4).getY()+valsProd1.get(4).getY()));
 
-//        total.add(new Entry(3, 1000*1.03f+2000*1.035f));
 
         LineDataSet setProd1 = new LineDataSet(valsProd1, "Product 1 ");
         setProd1.setAxisDependency(YAxis.AxisDependency.LEFT);
@@ -319,5 +337,4 @@ public class ForecastPortfolioFragment extends Fragment {
 
         lineChart.invalidate();
     }
-
 }

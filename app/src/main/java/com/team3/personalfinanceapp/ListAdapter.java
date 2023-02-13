@@ -47,7 +47,7 @@ public class ListAdapter extends ArrayAdapter<Object> {
         TextView minterest = view.findViewById(R.id.whatinterest);
         bank.setText(bankName);
         period.setText(months+"months");
-        minterest.setText(interest+"%");
+        minterest.setText(interest);
 
         return view;
     }

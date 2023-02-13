@@ -96,7 +96,9 @@ public class CompareFragment extends Fragment {
                             min1.setText(Integer.toString(result.getMinAmount()));
                             max1.setText(Integer.toString(result.getMaxAmount()));
                             interest1.setText(Double.toString(result.getInterestRate()));
-                            date1.setText(result.getUpdateDate());
+//                            date1.setText(result.getUpdateDate());
+                            String[] dateDate  = result.getUpdateDate().split("-");
+                            date1.setText(dateDate[0] + " - " + dateDate[1]);
 
                         }
                         else if (fixedDepositsList.size()==2) {
@@ -114,7 +116,9 @@ public class CompareFragment extends Fragment {
                             min2.setText(Integer.toString(result.getMinAmount()));
                             max2.setText(Integer.toString(result.getMaxAmount()));
                             interest2.setText(Double.toString(result.getInterestRate()));
-                            date2.setText(result.getUpdateDate());
+//                            date2.setText(result.getUpdateDate());
+                            String[] dateDate  = result.getUpdateDate().split("-");
+                            date2.setText(dateDate[0] + " - " + dateDate[1]);
                         }
                     }
 
