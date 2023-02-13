@@ -71,12 +71,12 @@ public class AdminTicketController {
         List<Enquiry> openEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
         equals(TicketStatusEnum.OPEN)).collect(Collectors.toList());
 
-        List<Enquiry> closeEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
+        List<Enquiry> closedEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
         equals(TicketStatusEnum.CLOSED)).collect(Collectors.toList());
 
         model.addAttribute("enquiries", enquiries);
         model.addAttribute("openSum", openEnquiries.size());
-        model.addAttribute("closeSum", closeEnquiries.size());
+        model.addAttribute("closeSum", closedEnquiries.size());
         return "admin/inbox";
     }
     
@@ -86,6 +86,8 @@ public class AdminTicketController {
         String token = user.getToken().getAccess_token();
         List<Enquiry> openEnquiries = enqService.getOpenEnquiry(token);
         model.addAttribute("open", openEnquiries);
+        model.addAttribute("openSum", openEnquiries.size());
+
         return "admin/open-tickets";
     }
 
@@ -95,6 +97,7 @@ public class AdminTicketController {
         String token = user.getToken().getAccess_token();
         List<Enquiry> closedEnquiries = enqService.getClosedEnquiry(token);
         model.addAttribute("closed", closedEnquiries);
+        model.addAttribute("closeSum", closedEnquiries.size());
         return "admin/closed-tickets";
     }
 
