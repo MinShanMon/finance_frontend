@@ -12,7 +12,7 @@
 
     <string name="largest_transaction_header">Largest Expense:</string>
     <string name="navbar_profile">Profile</string>
-    <string name="view_all_btn">View others</string>
+    <string name="view_all_btn">View All Transactions</string>
     <string name="add_transaction">Add Transaction</string>
     <string name="link_bankacct">Link Bank Account</string>
     <string name="sendOTP">Send OTP</string>
@@ -34,6 +34,12 @@
     <string name="money_format">%,.2f</string>
     <string name="all_transactions_title">All Transactions</string>
     <string name="bank_statement_title">Bank Statements</string>
+    <string name="set_budget_btn">Set Monthly Budget</string>
+    <string name="monthly_budget">Monthly Budget</string>
+    <string name="save_budget">Save</string>
+    <string name="cancel_budget">Cancel</string>
+
+
     <string name="reset_password">Reset Password</string>
     <string name="new_password">New Password</string>
     <string name="confirm">Confirm</string>
@@ -62,5 +68,6 @@
     <string name="current_password">Current Password</string>
     <string name="username_email">Name And Email</string>
     <string name="change_name">Change Name</string>
+    <string name="link_bank_account">Link Bank Account</string>
 
 </resources>

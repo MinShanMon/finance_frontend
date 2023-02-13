@@ -14,11 +14,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.facebook.AccessToken;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-
 import com.team3.personalfinanceapp.Fragment.HomeFragment;
-import com.team3.personalfinanceapp.Fragment.InsightsFragment;
 import com.team3.personalfinanceapp.Fragment.ProductsFragment;
-
 import com.team3.personalfinanceapp.insights.InsightsViewPagerFragment;
 import com.team3.personalfinanceapp.model.Token;
 import com.team3.personalfinanceapp.profile_login.LoginActivity;
@@ -150,5 +147,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         trans.replace(R.id.fragment_container, fragment);
         trans.addToBackStack(null);
         trans.commit();
+    }
+
+    public HomeFragment getHomeFragment() {
+        return homeFragment;
     }
 }

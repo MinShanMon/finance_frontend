@@ -86,7 +86,6 @@ public class StockDetailFragment extends Fragment {
 
 
 
-              Toast.makeText(getContext(),"succ",Toast.LENGTH_SHORT).show();
 
               v.findViewById(R.id.link).setOnClickListener(new View.OnClickListener() {
                   @Override
@@ -103,7 +102,7 @@ public class StockDetailFragment extends Fragment {
 
           @Override
           public void onFailure(Call<StockPriceData> call, Throwable t) {
-              Toast.makeText(getContext(),"failur",Toast.LENGTH_SHORT).show();
+              Toast.makeText(getContext(),"data unavalibale",Toast.LENGTH_SHORT).show();
           }
       });
 

@@ -124,10 +124,20 @@ public class CategorySpendFragment extends Fragment {
             }
         });
 
-        foodAmtChange.setText("$" + String.format(moneyFormat, foodSpending[0] - foodSpending[1]));
-        transportAmtChange.setText("$" + String.format(moneyFormat, transportSpending[0] - transportSpending[1]));
-        othersAmtChange.setText("$" + String.format(moneyFormat, othersSpending[0] - othersSpending[1]));
+        setChangeText(foodAmtChange, foodSpending);
+        setChangeText(transportAmtChange, transportSpending);
+        setChangeText(othersAmtChange, othersSpending);
 
+    }
+
+    private void setChangeText(TextView changeText, double[] spending) {
+        double spendingChange = spending[0] - spending[1];
+        changeText.setText("$" + String.format(moneyFormat, spendingChange));
+        if (spendingChange > 0) {
+            changeText.setTextColor(Color.GREEN);
+        } else if (spendingChange < 0) {
+            changeText.setTextColor(Color.RED);
+        }
     }
 
 

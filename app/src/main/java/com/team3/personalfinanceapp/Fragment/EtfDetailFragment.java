@@ -72,7 +72,7 @@ public class EtfDetailFragment extends Fragment {
                 close.setText(priceList.getClose() + "%");
                 volume.setText(priceList.getVolume() + "%");
 
-                Toast.makeText(getContext(),"successful",Toast.LENGTH_SHORT).show();
+
 
 
                 v.findViewById(R.id.link).setOnClickListener(new View.OnClickListener() {

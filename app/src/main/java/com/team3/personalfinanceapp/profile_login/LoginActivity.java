@@ -75,12 +75,12 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
-        if(pref.contains("token") && pref.contains("userid")){
-            checkToken(pref.getInt("userid",0),pref.getString("token",""));
+        if (pref.contains("token") && pref.contains("userid")) {
+            checkToken(pref.getInt("userid", 0), pref.getString("token", ""));
         }
         accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-        if(isLoggedIn){
+        if (isLoggedIn) {
             checkToken(pref.getInt("userid", 0), pref.getString("token", ""));
         }
 
@@ -100,13 +100,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
     }
 
 
-
-    private void init(){
+    private void init() {
         txtUsername = findViewById(R.id.txtLoginUsername);
         txtPassword = findViewById(R.id.txtLoginPassword);
         btnLogin = findViewById(R.id.btnLogin);
@@ -121,22 +120,23 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
     }
 
-    private void checkToken(Integer uid, String token){
+    private void checkToken(Integer uid, String token) {
         Call<Token> userLoginCall = apiInterface.checkToken(uid, "Bearer " + token);
         userLoginCall.enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
 
-                    if(response.body() == null){
-                        Toast.makeText(getApplicationContext(),"Login error", Toast.LENGTH_SHORT).show();
-                        editor = pref.edit();
-                        editor.clear();
-                        editor.commit();
-                        return;
-                    }
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
+                if (response.body() == null) {
+                    Toast.makeText(getApplicationContext(), "Login error", Toast.LENGTH_SHORT).show();
+                    editor = pref.edit();
+                    editor.clear();
+                    editor.commit();
+                    return;
+                }
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
             }
+
             @Override
             public void onFailure(Call<Token> call, Throwable t) {
 
@@ -144,13 +144,13 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void login(){
+    private void login() {
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                            Log.i("here", "fb");
+                        Log.i("here", "fb");
 //                        AccessToken accessToken = AccessToken.getCurrentAccessToken();
 //                        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
                         loginfb();
@@ -169,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void loginfb(){
+    private void loginfb() {
         accessToken = AccessToken.getCurrentAccessToken();
         GraphRequest request = GraphRequest.newMeRequest(
                 accessToken, new GraphRequest.GraphJSONObjectCallback() {
@@ -178,7 +178,9 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject object,
                             GraphResponse response) {
                         // Application code 1319406795267973
-
+                        Gson gson = new Gson();
+                        String json = gson.toJson(response);
+                        Log.i("response", json);
 
                         try {
                             String fullname = object.getString("name");
@@ -192,7 +194,7 @@ public class LoginActivity extends AppCompatActivity {
                             user.setFbid(fbid);
                             user.setFullName(fullname);
                             register(user);
-                            Log.i("response",fullname);
+                            Log.i("response", fullname);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -204,7 +206,7 @@ public class LoginActivity extends AppCompatActivity {
         request.executeAsync();
     }
 
-    private void register(RegisteredUsers ruser){
+    private void register(RegisteredUsers ruser) {
 
         RegisteredUsers user = new RegisteredUsers();
 
@@ -216,9 +218,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<RegisteredUsers> call, Response<RegisteredUsers> response) {
 
-//                if(response.body() == null){
-//                    startActivity(new Intent(LoginActivity.this, LoginActivity.class));
-//                }
                 pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
                 editor = pref.edit();
                 editor.putInt("userid", response.body().getId());
@@ -230,9 +229,9 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             }
+
             @Override
             public void onFailure(Call<RegisteredUsers> call, Throwable t) {
-//                startActivity(new Intent(LoginActivity.this, LoginActivity.class));
                 call.cancel();
             }
         });
@@ -245,7 +244,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void register(){
+    private void register() {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intent);
     }
@@ -257,7 +256,7 @@ public class LoginActivity extends AppCompatActivity {
 //        Log.i("check", c);
         username = txtUsername.getText().toString();
         password = txtPassword.getText().toString();
-        if(txtPassword.getText().toString().isEmpty() && txtUsername.getText().toString().isEmpty()){
+        if (txtPassword.getText().toString().isEmpty() && txtUsername.getText().toString().isEmpty()) {
             error.setText("Field cannot empty");
             return;
         }
@@ -265,7 +264,7 @@ public class LoginActivity extends AppCompatActivity {
         login.enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
-                if(response.body().access_token.equals("400")){
+                if (response.body().access_token.equals("400")) {
                     error.setText("Check Your Password Or Email");
                     return;
                 }
@@ -277,13 +276,12 @@ public class LoginActivity extends AppCompatActivity {
 
                 pref_rember = getSharedPreferences("remember_password", MODE_PRIVATE);
                 editor_rember = pref_rember.edit();
-                if(checkBox.isChecked()){
-                    editor_rember.putString("email",username);
-                    editor_rember.putString("password",password);
+                if (checkBox.isChecked()) {
+                    editor_rember.putString("email", username);
+                    editor_rember.putString("password", password);
                     editor_rember.putBoolean("check", true);
                     editor_rember.commit();
-                }
-                else{
+                } else {
                     editor_rember.clear();
                     editor_rember.commit();
                 }
@@ -298,17 +296,16 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void fetchUserId(String token, String email){
+    private void fetchUserId(String token, String email) {
 
-        Call<RegisteredUsers> userLoginCall = apiInterface.getUserInfo(email, "Bearer "+ token);
+        Call<RegisteredUsers> userLoginCall = apiInterface.getUserInfo(email, "Bearer " + token);
         userLoginCall.enqueue(new Callback<RegisteredUsers>() {
             @Override
             public void onResponse(Call<RegisteredUsers> call, Response<RegisteredUsers> response) {
 
-                if(response.body().getStatus().equals("PENDING")){
+                if (response.body().getStatus().equals("PENDING")) {
                     sendEmail(email);
-                }
-                else{
+                } else {
                     pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
                     editor = pref.edit();
                     editor.putInt("userid", response.body().getId());
@@ -330,12 +327,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void sendEmail(String email){
+    private void sendEmail(String email) {
         Call<Token> userLoginCall = apiInterface.sendOTPByEmail(email);
         userLoginCall.enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
-              Intent intent = new Intent(LoginActivity.this, VerifyAccountActivity.class);
+                Intent intent = new Intent(LoginActivity.this, VerifyAccountActivity.class);
                 intent.putExtra("email", email);
                 intent.putExtra("token", response.body().access_token);
                 intent.putExtra("register", true);
@@ -349,11 +346,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
 
 
 }
