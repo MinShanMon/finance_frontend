@@ -34,6 +34,12 @@ public class APIClient {
     }
 
     public static Retrofit getBankClient() {
+    static UserService getUserService(){
+        UserService userService = getClient().create(UserService.class);
+        return userService;
+    }
+
+    static Retrofit getBankClient() {
         return new Retrofit.Builder()
                 .baseUrl(BANK_URL)
                 .client(client)

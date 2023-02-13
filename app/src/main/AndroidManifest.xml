@@ -52,6 +52,15 @@
                 android:value="" />
         </activity>
 
+
+        <activity
+            android:name=".EnqActivity"
+            android:exported="false" >
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
         <activity
             android:name=".profile_login.ChangePasswordActivity"
             android:exported="false"
