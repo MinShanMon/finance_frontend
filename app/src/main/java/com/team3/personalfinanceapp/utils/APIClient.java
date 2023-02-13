@@ -1,6 +1,8 @@
 
 package com.team3.personalfinanceapp.utils;
 
+import com.team3.personalfinanceapp.UserService;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -33,13 +35,12 @@ public class APIClient {
                 .build();
     }
 
-    public static Retrofit getBankClient() {
-    static UserService getUserService(){
+    public static UserService getUserService() {
         UserService userService = getClient().create(UserService.class);
         return userService;
     }
 
-    static Retrofit getBankClient() {
+    public static Retrofit getBankClient() {
         return new Retrofit.Builder()
                 .baseUrl(BANK_URL)
                 .client(client)
