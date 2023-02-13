@@ -34,8 +34,8 @@ public interface APIInterface {
     @DELETE("transaction")
     Call<Long> deleteTransactionById(@Query("transactionId") long transactionId, @Header("Authorization") String token);
 
-    @GET("/forecast/{userId}")
-    Call<Map<String, Float>> getSpendingForecastById(@Path("userId") int userId);
+    @GET("forecast/{userId}")
+    Call<Map<String, Float>> getSpendingForecastById(@Path("userId") int userId, @Header("Authorization") String token);
 
 
 }
