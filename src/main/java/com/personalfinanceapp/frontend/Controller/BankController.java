@@ -19,10 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.personalfinanceapp.frontend.Models.Bank;
 import com.personalfinanceapp.frontend.Models.FixedDeposits;
 import com.personalfinanceapp.frontend.Models.FixedDepositsRecords;
+import com.personalfinanceapp.frontend.model.UserSession;
 import com.personalfinanceapp.frontend.service.BankService;
 import com.personalfinanceapp.frontend.service.FixedDepositsRecordsService;
 import com.personalfinanceapp.frontend.service.FixedDepostisService;
-
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin")
@@ -41,14 +42,15 @@ public class BankController {
 
 
     @GetMapping("/managefixeddeposits")
-    public String retrieveAllBank(Model model){
+    public String retrieveAllBank(Model model, HttpSession session){
 
 
         LocalDate date = LocalDate.now();
-
+        UserSession user =(UserSession) session.getAttribute("usersession");
+        String token = user.getToken().getAccess_token();
 
         if(date.getDayOfMonth() == 1){
-            List<FixedDeposits> listfor_r= fixedDepostisService.findAllFixeds();
+            List<FixedDeposits> listfor_r= fixedDepostisService.findAllFixeds(token);
 
             if(date.getMonthValue() == 1){
 
@@ -58,7 +60,7 @@ public class BankController {
                 for(int i =0 ; i< finalFilter.size(); i++){
                     FixedDeposits f = finalFilter.get(i);
                     fixedDepositsRecordsService.recordFixed(new FixedDepositsRecords(
-                        f.getTenure(),f.getMinAmount(),f.getMaxAmount(),f.getInterestRate(),f.getUpdateDate().getMonthValue(),f.getUpdateDate().getYear(),f.getFd_bank().getBankName()));
+                        f.getTenure(),f.getMinAmount(),f.getMaxAmount(),f.getInterestRate(),f.getUpdateDate().getMonthValue(),f.getUpdateDate().getYear(),f.getFd_bank().getBankName()), token);
                 }
             }else{
 
@@ -67,15 +69,15 @@ public class BankController {
                 for(int i =0 ; i< finalFilter_else.size(); i++){
                     FixedDeposits f = finalFilter_else.get(i);
                     fixedDepositsRecordsService.recordFixed(new FixedDepositsRecords(
-                        f.getTenure(),f.getMinAmount(),f.getMaxAmount(),f.getInterestRate(),f.getUpdateDate().getMonthValue(),f.getUpdateDate().getYear(),f.getFd_bank().getBankName()));
+                        f.getTenure(),f.getMinAmount(),f.getMaxAmount(),f.getInterestRate(),f.getUpdateDate().getMonthValue(),f.getUpdateDate().getYear(),f.getFd_bank().getBankName()), token);
 
             }
         }
     }
 
-        List<Bank> bankList = bankService.findAllBank();
+        List<Bank> bankList = bankService.findAllBank(token);
         model.addAttribute("bankList", bankList);
-        List<FixedDeposits> fixedList = fixedDepostisService.findAllFixeds();
+        List<FixedDeposits> fixedList = fixedDepostisService.findAllFixeds(token);
         model.addAttribute("fixedList", fixedList);
         return "admin/managebankfixeddeposits";
     }
@@ -91,9 +93,11 @@ public class BankController {
    
 
     @RequestMapping(value = "/managefixeddeposits/addbank", method = RequestMethod.POST)
-    public String savebank(String name, String link, Model model){
+    public String savebank(String name, String link, Model model, HttpSession session){
 
-        List<Bank> banklist = bankService.findAllBank();
+        UserSession user =(UserSession) session.getAttribute("usersession");
+        String token = user.getToken().getAccess_token();
+        List<Bank> banklist = bankService.findAllBank(token);
        
         for(Bank bank: banklist){
             if(bank.getBankName().compareTo(name) == 0){
@@ -103,34 +107,39 @@ public class BankController {
             }
         }
         Bank bank = new Bank(name, link);
-            bankService.addBank(bank);
+            bankService.addBank(bank, token);
             return "redirect:/admin/managefixeddeposits";
        
     }
 
 
     @GetMapping("/managefixeddeposits/{id}")
-    public String retrievefixedbybankid(Model model,@PathVariable(value = "id") long id){
+    public String retrievefixedbybankid(Model model,@PathVariable(value = "id") long id, HttpSession session){
 
-       
-        List<FixedDeposits> fixedList = fixedDepostisService.findfixedbybankid(id);
+        UserSession user =(UserSession) session.getAttribute("usersession");
+        String token = user.getToken().getAccess_token();
+        List<FixedDeposits> fixedList = fixedDepostisService.findfixedbybankid(id, token);
         model.addAttribute("fixedList", fixedList);
-        List<Bank> bankList = bankService.findAllBank();
+        List<Bank> bankList = bankService.findAllBank(token);
         model.addAttribute("bankList", bankList);
         return "admin/managebankfixeddeposits";
     }
 
     @GetMapping("/managefixeddeposits/deletebank/{id}")
-    public String deletebank(@PathVariable(value = "id") long id) {
-        bankService.deletebank(id);
+    public String deletebank(@PathVariable(value = "id") long id, HttpSession session) {
+        UserSession user =(UserSession) session.getAttribute("usersession");
+        String token = user.getToken().getAccess_token();
+        bankService.deletebank(id, token);
         return "redirect:/admin/managefixeddeposits";
 
     }
 
     @GetMapping("/managefixeddeposits/editbank/{id}")
-    public String editbank(@PathVariable(value = "id") long id,Model model) {
+    public String editbank(@PathVariable(value = "id") long id,Model model, HttpSession session) {
 
-        Bank bank = bankService.findBankById(id);
+        UserSession user =(UserSession) session.getAttribute("usersession");
+        String token = user.getToken().getAccess_token();
+        Bank bank = bankService.findBankById(id, token);
 
         model.addAttribute("bank", bank);
         return "/admin/bankedit";
@@ -138,14 +147,16 @@ public class BankController {
     }
 
     @PostMapping("/managefixeddeposits/editbank/")
-    public String editbank(Long id,String name, String link) {
+    public String editbank(Long id,String name, String link, HttpSession session) {
 
-        Bank bank = bankService.findBankById(id);
+        UserSession user =(UserSession) session.getAttribute("usersession");
+        String token = user.getToken().getAccess_token();
+        Bank bank = bankService.findBankById(id, token);
 
         bank.setBankName(name);
         bank.setBankLink(link);
 
-        bankService.editbank(bank);
+        bankService.editbank(bank, token);
         return "redirect:/admin/managefixeddeposits";
 
     }

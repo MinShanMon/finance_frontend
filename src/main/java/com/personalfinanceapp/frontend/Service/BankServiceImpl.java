@@ -47,10 +47,11 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public List<Bank> findAllBank(){
+    public List<Bank> findAllBank(String token){
 
         Flux<Bank> bankList = webClient.get()
                 .uri("/banks")
+                .header("Authorization", "Bearer "+token)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToFlux(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {
@@ -65,9 +66,10 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public Bank addBank(Bank bank) {
+    public Bank addBank(Bank bank, String token) {
         Mono<Bank> a_bank = webClient.post()
                 .uri("/addbank")
+                .header("Authorization", "Bearer "+token)
                 .body(Mono.just(bank), Bank.class)
                 .retrieve()
                 .bodyToMono(Bank.class)
@@ -77,9 +79,10 @@ public class BankServiceImpl implements BankService {
     
 
     @Override
-    public Bank findBankById(Long id) {
+    public Bank findBankById(Long id, String token) {
         Mono<Bank> bank = webClient.get()
                 .uri("/bank/" + id)
+                .header("Authorization", "Bearer "+token)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToMono(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {
@@ -92,9 +95,10 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public Bank editbank(Bank bank) {
+    public Bank editbank(Bank bank, String token) {
         Mono<Bank> _editbank = webClient.put()
                 .uri("/editbank/")
+                .header("Authorization", "Bearer "+token)
                 .body(Mono.just(bank), Bank.class)
                 .retrieve()
                 .bodyToMono(Bank.class);
@@ -102,9 +106,10 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public Long deletebank(Long id){
+    public Long deletebank(Long id, String token){
         Mono<Long> _deletebank = webClient.delete()
         .uri("/deletebank/" + id)
+        .header("Authorization", "Bearer "+token)
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
         .onStatus(HttpStatus::is4xxClientError, response -> {

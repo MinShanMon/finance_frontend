@@ -6,15 +6,15 @@ import com.personalfinanceapp.frontend.Models.Bank;
 
 public interface BankService {
     
-    List<Bank> findAllBank();
+    List<Bank> findAllBank(String token);
 
-    Bank addBank(Bank bank);
+    Bank addBank(Bank bank, String token);
 
-    Bank findBankById(Long id);
+    Bank findBankById(Long id, String token);
 
-    Long deletebank(Long id);
+    Long deletebank(Long id, String token);
 
-    Bank editbank(Bank bank);
+    Bank editbank(Bank bank, String token);
 
 
 }

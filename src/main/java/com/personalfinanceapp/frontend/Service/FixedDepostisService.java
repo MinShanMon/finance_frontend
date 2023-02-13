@@ -6,16 +6,16 @@ import com.personalfinanceapp.frontend.Models.FixedDeposits;
 
 public interface FixedDepostisService {
 
-    List<FixedDeposits> findAllFixeds();
+    List<FixedDeposits> findAllFixeds(String token);
 
-    List<FixedDeposits> findfixedbybankid(Long id);
+    List<FixedDeposits> findfixedbybankid(Long id, String token);
 
-    FixedDeposits addFixedDeposits(FixedDeposits fixedDeposits);
+    FixedDeposits addFixedDeposits(FixedDeposits fixedDeposits, String token);
 
-    Long deletefixed(Long id);
+    Long deletefixed(Long id, String token);
 
-    FixedDeposits editfixed(FixedDeposits fixedDeposits);
+    FixedDeposits editfixed(FixedDeposits fixedDeposits, String token);
 
-    FixedDeposits findbyid(Long id);
+    FixedDeposits findbyid(Long id, String token);
 
 }

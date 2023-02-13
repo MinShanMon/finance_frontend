@@ -59,7 +59,7 @@ public class RegisteredUsers {
     private String jwtToken;
     
     
-    @ManyToMany(targetEntity = Role.class, cascade = {CascadeType.ALL, CascadeType.PERSIST}, fetch=FetchType.EAGER)
+    @ManyToMany(targetEntity = Role.class)
     @JoinTable(name = "userrole", joinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "UserId") }, inverseJoinColumns = {
             @JoinColumn(name = "role_id", referencedColumnName = "RoleId") }

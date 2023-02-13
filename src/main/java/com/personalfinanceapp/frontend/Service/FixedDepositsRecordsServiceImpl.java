@@ -48,9 +48,10 @@ public class FixedDepositsRecordsServiceImpl implements FixedDepositsRecordsServ
 
 
     @Override
-    public FixedDepositsRecords recordFixed(FixedDepositsRecords fixedDeposisRecords){
+    public FixedDepositsRecords recordFixed(FixedDepositsRecords fixedDeposisRecords, String token){
         Mono<FixedDepositsRecords> recordF = webClient.post()
             .uri("/recordfixed")
+            .header("Authorization", "Bearer "+token)
             .body(Mono.just(fixedDeposisRecords), FixedDepositsRecords.class)
             .retrieve()
             .bodyToMono(FixedDepositsRecords.class)

@@ -47,10 +47,11 @@ public class FixedDepostisServiceImpl implements FixedDepostisService {
     }
 
     @Override
-    public List<FixedDeposits> findAllFixeds(){
+    public List<FixedDeposits> findAllFixeds(String token){
 
         Flux<FixedDeposits> fixedList = webClient.get()
                 .uri("/fixeds")
+                .header("Authorization", "Bearer "+token)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToFlux(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {
@@ -65,9 +66,10 @@ public class FixedDepostisServiceImpl implements FixedDepostisService {
     }
 
     @Override
-    public FixedDeposits editfixed(FixedDeposits fixedDeposits) {
+    public FixedDeposits editfixed(FixedDeposits fixedDeposits, String token) {
         Mono<FixedDeposits> _editfixed = webClient.put()
                 .uri("/editfixed/")
+                .header("Authorization", "Bearer "+token)
                 .body(Mono.just(fixedDeposits), FixedDeposits.class)
                 .retrieve()
                 .bodyToMono(FixedDeposits.class);
@@ -75,9 +77,10 @@ public class FixedDepostisServiceImpl implements FixedDepostisService {
     }
 
     @Override
-    public FixedDeposits findbyid(Long id) {
+    public FixedDeposits findbyid(Long id, String token) {
         Mono<FixedDeposits> bank = webClient.get()
                 .uri("/fixed/" + id)
+                .header("Authorization", "Bearer "+token)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToMono(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {
@@ -92,10 +95,11 @@ public class FixedDepostisServiceImpl implements FixedDepostisService {
 
 
     @Override
-    public List<FixedDeposits> findfixedbybankid(Long id){
+    public List<FixedDeposits> findfixedbybankid(Long id, String token){
 
         Flux<FixedDeposits> fixedList = webClient.get()
                 .uri("/fixeds/"+ id)
+                .header("Authorization", "Bearer "+token)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchangeToFlux(response -> {
                     if (response.statusCode().equals(HttpStatus.OK)) {
@@ -110,20 +114,23 @@ public class FixedDepostisServiceImpl implements FixedDepostisService {
     }
 
     @Override
-    public FixedDeposits addFixedDeposits(FixedDeposits fixedDeposits) {
+    public FixedDeposits addFixedDeposits(FixedDeposits fixedDeposits, String token) {
         Mono<FixedDeposits> a_fixed = webClient.post()
                 .uri("/addfixed")
+                .header("Authorization", "Bearer "+token)
                 .body(Mono.just(fixedDeposits), FixedDeposits.class)
                 .retrieve()
                 .bodyToMono(FixedDeposits.class)
                 .timeout(Duration.ofMillis(10_000));
+                
         return a_fixed.block();
     }
 
     @Override
-    public Long deletefixed(Long id){
+    public Long deletefixed(Long id, String token){
         Mono<Long> _deletefixed = webClient.delete()
         .uri("/deletefixed/" + id)
+        .header("Authorization", "Bearer "+token)
         .accept(MediaType.APPLICATION_JSON)
         .retrieve()
         .onStatus(HttpStatus::is4xxClientError, response -> {

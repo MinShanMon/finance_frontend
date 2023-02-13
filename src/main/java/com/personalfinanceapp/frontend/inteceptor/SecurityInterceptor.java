@@ -44,6 +44,10 @@ public class SecurityInterceptor implements HandlerInterceptor {
     HttpSession session = request.getSession();
     UserSession userSession = (UserSession) session.getAttribute("usersession");
 
+    if(uri.contains("/customer")){
+      return true;
+    }
+
     if (uri.equalsIgnoreCase("/admin/login")) {
       if(userSession != null){
         response.sendRedirect("/admin/dashboard");

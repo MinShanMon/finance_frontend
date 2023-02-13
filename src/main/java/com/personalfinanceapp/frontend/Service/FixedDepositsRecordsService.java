@@ -7,5 +7,5 @@ import com.personalfinanceapp.frontend.Models.FixedDepositsRecords;
 
 public interface FixedDepositsRecordsService {
 
-    FixedDepositsRecords recordFixed(FixedDepositsRecords fixedDeposisRecords);
+    FixedDepositsRecords recordFixed(FixedDepositsRecords fixedDeposisRecords, String token);
 }

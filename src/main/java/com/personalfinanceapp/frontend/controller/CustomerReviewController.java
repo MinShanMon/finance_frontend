@@ -25,13 +25,9 @@ public class CustomerReviewController {
         return "customer/review";
     }
 
-    @PostMapping("/feedback/{id}")
-    public String reply(@ModelAttribute ("enq") Enquiry enquiry, @PathVariable int id ,String comment,Model model) {
-
-        Enquiry currEnq = rivService.getOneReview(enquiry.getId());
-        currEnq.setComment(comment);
-        //currEnq.setRating(2);
-        rivService.updateReview(currEnq);
+    @PostMapping("/review")
+    public String reply(@ModelAttribute("enquiry") Enquiry enquiry) {
+        rivService.updateReview(enquiry);
         return "customer/thanks";
     }
 }    
