@@ -109,6 +109,15 @@
                 app:layout_constraintStart_toStartOf="@+id/verify_layout"
                 app:layout_constraintTop_toBottomOf="@+id/verify_layout" />
 
+            <TextView
+                android:id="@+id/sec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/txtGetVerify"
+                app:layout_constraintTop_toBottomOf="@+id/verify_layout" />
+
             <LinearLayout
                 android:id="@+id/btnVerify_layout"
                 android:layout_width="wrap_content"

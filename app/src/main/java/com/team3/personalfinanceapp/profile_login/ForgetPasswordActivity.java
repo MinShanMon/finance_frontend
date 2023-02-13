@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -32,6 +33,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     UserApi apiInterface;
     String email;
     TextView error_msg;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +46,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         init();
         sendOTP.setOnClickListener(v -> {
             email = txtForgetPassword.getText().toString();
+            error_msg.setText("");
             if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-
-
                 error_msg.setText("please enter valid email");
                 return;
             }
@@ -54,12 +55,21 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart(){
+        super.onStart();
+        sendOTP.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
+        txtForgetPassword.setEnabled(true);
+    }
+
     private void init(){
         txtForgetPassword = findViewById(R.id.txtForgetPassword);
         error_msg = findViewById(R.id.error_msg);
         sendOTP = findViewById(R.id.sendOTP);
         apiInterface = APIClient.getClient().create(UserApi.class);
-
+        progressBar = findViewById(R.id.barrr);
+        progressBar.setVisibility(View.INVISIBLE);
 //        editor = pref.edit();
 //        editor.clear();
 //        editor.commit();
@@ -68,6 +78,9 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     }
 
     private void sendEmail(String emails){
+        sendOTP.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+        txtForgetPassword.setEnabled(false);
         Call<Token> userLoginCall = apiInterface.sendOTPByEmail(emails);
         userLoginCall.enqueue(new Callback<Token>() {
             @Override
@@ -75,8 +88,13 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                 Log.i("here", "success");
                 if(response.body().access_token.equals("400")){
                     error_msg.setText("Email Not Exit In Database");
+                    sendOTP.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
+                    txtForgetPassword.setEnabled(true);
                     return;
                 }
+
+                txtForgetPassword.setEnabled(false);
                 Intent intent = new Intent(ForgetPasswordActivity.this, VerifyAccountActivity.class);
                 error_msg.setText("");
                 intent.putExtra("email", emails);
