@@ -119,8 +119,12 @@ public class CategorySpendFragment extends Fragment {
         XAxis xAxis = barChart.getXAxis();
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f);
-        Month currentMonth = LocalDate.now().getMonth();
-        String[] labels = new String[] {currentMonth.minus(1).toString().substring(0, 3), currentMonth.toString().substring(0, 3)};
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        String currMonthStr = LocalDate.now().getMonth().toString().substring(0, 3)
+                + " '" + String.valueOf(LocalDate.now().getYear()).substring(2, 4);
+        String prevMonthStr = LocalDate.now().getMonth().minus(1).toString().substring(0, 3)
+                + " '" + String.valueOf(LocalDate.now().getYear()).substring(2, 4);
+        String[] labels = new String[] {prevMonthStr, currMonthStr};
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getAxisLabel(float value, AxisBase axis) {

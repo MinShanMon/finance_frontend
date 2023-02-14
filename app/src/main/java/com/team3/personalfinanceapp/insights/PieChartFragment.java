@@ -135,7 +135,7 @@ public class PieChartFragment extends Fragment {
         }
 
 
-        pieChart.setCenterText("Total\n$" +  String.format(getString(R.string.money_format), Math.abs(sum)));
+        pieChart.setCenterText("Current Spend\n$" +  String.format(getString(R.string.money_format), Math.abs(sum)));
     }
 
 }
