@@ -186,6 +186,7 @@ public class TransactionsFragment extends Fragment {
     }
 
     private void displayLargestTransaction(View view, ArrayList<Transaction> transactions) {
+        TextView amount = view.findViewById(R.id.largest_transaction_amount);
         Transaction largestTransaction = transactions.stream()
                 .filter(t -> !t.getCategory().equalsIgnoreCase("income"))
                 .filter(t -> t.getDate().withDayOfMonth(1).equals(LocalDate.now().withDayOfMonth(1)))
@@ -193,10 +194,10 @@ public class TransactionsFragment extends Fragment {
         TextView title = view.findViewById(R.id.largest_transaction_title);
         if (largestTransaction == null) {
             title.setText("No transactions found");
+            amount.setText("");
             return;
         }
         title.setText(largestTransaction.getTitle());
-        TextView amount = view.findViewById(R.id.largest_transaction_amount);
         String amountStr = "$" + String.format(moneyFormat, largestTransaction.getAmount());
         amount.setText(amountStr);
     }
