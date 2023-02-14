@@ -33,6 +33,7 @@
                 android:layout_gravity="center">
 
                 <TextView
+                    android:id="@+id/progress_bar_startlabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="$0"

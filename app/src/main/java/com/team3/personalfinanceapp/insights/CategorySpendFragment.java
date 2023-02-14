@@ -131,11 +131,6 @@ public class CategorySpendFragment extends Fragment {
                 return labels[(int) value];
             }
         });
-
         barChart.invalidate();
     }
-
-
-
-
 }

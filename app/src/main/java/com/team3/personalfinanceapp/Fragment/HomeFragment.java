@@ -52,7 +52,7 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view =  inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
         moneyFormat = getString(R.string.money_format);
         setBudgetButton(view);
         setSpendingForecastButton(view);
@@ -67,14 +67,15 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
         userId = pref.getInt("userid", 0);
         Call<List<Transaction>> transactionsCall = apiInterface.getTransactionsByMonth(userId,
-                LocalDate.now().getMonth().getValue(), "Bearer "+ pref.getString("token", ""));
+                LocalDate.now().getMonth().getValue(), "Bearer " + pref.getString("token", ""));
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
                 transactions = response.body();
-                totalSpendingThisMonth = (int) transactions.stream().filter(t -> t.getAmount() < 0)
-                        .mapToDouble(Transaction::getAmount)
-                        .reduce(Double::sum).orElse(0);
+                totalSpendingThisMonth = transactions.stream()
+                        .filter(t -> !t.getCategory().equalsIgnoreCase("income"))
+                        .map(t -> t.getAmount()).reduce(Double::sum)
+                        .orElse(Double.valueOf(0)).intValue();
                 setBudgetBar(totalSpendingThisMonth);
             }
 
@@ -88,22 +89,23 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
     private void setBudgetBar(int totalSpendingThisMonth) {
         View view = getView();
         ProgressBar budgetBar = view.findViewById(R.id.budget_progress_bar);
+        TextView budgetAmtText = view.findViewById(R.id.budget_amt_progressbar);
+        TextView progressBarStartLabel = view.findViewById(R.id.progress_bar_startlabel);
         SharedPreferences budgetPref = getActivity().getSharedPreferences("user_budget", Context.MODE_PRIVATE);
         int max = (int) budgetPref.getFloat(String.valueOf(userId), 0);
 
         if (max > 0) {
-            TextView budgetAmtText = view.findViewById(R.id.budget_amt_progressbar);
             budgetAmtText.setText("$" + max);
+            progressBarStartLabel.setText("$0");
             budgetBar.setMax(max);
+            budgetBar.setVisibility(View.VISIBLE);
             ObjectAnimator.ofInt(budgetBar, "progress", Math.abs(totalSpendingThisMonth))
                     .setDuration(1000)
                     .start();
         } else {
             budgetBar.setVisibility(View.GONE);
-            TextView noBudgetText = new TextView(getContext());
-            LinearLayout linearLayout = view.findViewById(R.id.budget_card_layout);
-            noBudgetText.setText("No budget set, please set one.");
-            linearLayout.addView(noBudgetText);
+            budgetAmtText.setText("");
+            progressBarStartLabel.setText("No budget set, please set one.");
         }
     }
 
@@ -120,9 +122,9 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
 
     private void setSpendingForecastButton(View view) {
         Button forecastBtn = view.findViewById(R.id.get_forecast_btn);
-        forecastBtn.setOnClickListener( v -> {
+        forecastBtn.setOnClickListener(v -> {
             APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-            Call<Map<String,Float>> getForecastCall =  apiInterface.getSpendingForecastById(userId, "Bearer "+ pref.getString("token", ""));
+            Call<Map<String, Float>> getForecastCall = apiInterface.getSpendingForecastById(userId, "Bearer " + pref.getString("token", ""));
             getForecastCall.enqueue(new Callback<Map<String, Float>>() {
                 @Override
                 public void onResponse(Call<Map<String, Float>> call, Response<Map<String, Float>> response) {
@@ -203,5 +205,13 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
             changeText.setTextColor(Color.GREEN);
         }
     }
+
+    private void setCurrentCategorySpend() {
+        Double currentFoodSpend = transactions.stream()
+                .filter(t -> t.getCategory().equalsIgnoreCase("food"))
+                .map(t -> t.getAmount())
+                .reduce(Double::sum).orElseGet(() -> (double) 0);
+    }
+
 
 }
