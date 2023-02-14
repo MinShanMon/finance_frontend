@@ -52,7 +52,7 @@ public class LinkBankActivity extends AppCompatActivity {
     private boolean submitBank() {
 
         SharedPreferences bankPref = getSharedPreferences("user_banklist", MODE_PRIVATE);
-        Set<String> userBankList = new HashSet<>(bankPref.getStringSet(userId, new HashSet<>()));
+        Set<String> userBankList = new HashSet<>();
         SharedPreferences.Editor editor = bankPref.edit();
 
         String bankName = bankList.getText().toString();

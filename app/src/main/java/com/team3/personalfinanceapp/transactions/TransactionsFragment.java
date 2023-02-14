@@ -26,7 +26,9 @@ import com.team3.personalfinanceapp.utils.BankAPIInterface;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +39,7 @@ public class TransactionsFragment extends Fragment {
     private ArrayList<Transaction> transactions;
 
     private String moneyFormat;
+    private SharedPreferences pref;
 
     public TransactionsFragment() {
         // Required empty public constructor
@@ -53,6 +56,7 @@ public class TransactionsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         View view = getView();
+        pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
         moneyFormat = getString(R.string.money_format);
         getTransactionsAndDisplayData(view);
         getAvailableBalanceAndDisplay(view);
@@ -75,9 +79,9 @@ public class TransactionsFragment extends Fragment {
      * Retrieve all transactions and display the data
      **/
     private void getTransactionsAndDisplayData(View view) {
-        SharedPreferences pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
+
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-        Call<List<Transaction>> transactionsCall = apiInterface.getTransactionsByMonth(pref.getInt("userid", 0), 2, "Bearer " + pref.getString("token", ""));
+        Call<List<Transaction>> transactionsCall = apiInterface.getTransactionsByMonth(pref.getInt("userid", 0), LocalDate.now().getMonth().getValue(), "Bearer " + pref.getString("token", ""));
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
@@ -134,13 +138,33 @@ public class TransactionsFragment extends Fragment {
     }
 
 
-
     /**
      * Retrieve available balance from OCBC API and display
      **/
     private void getAvailableBalanceAndDisplay(View view) {
+        TextView balanceTextView = view.findViewById(R.id.available_balance_amt);
         BankAPIInterface bankAPIInterface = APIClient.getBankClient().create(BankAPIInterface.class);
-        Call<BankResponse> bankResponseCall = bankAPIInterface.getAccountDetails(getString(R.string.ocbc_auth_header));
+        SharedPreferences bankPref = this.getActivity().getSharedPreferences("user_banklist", MODE_PRIVATE);
+        Set<String> bankAccountSet =
+                bankPref.getStringSet(String.valueOf(pref.getInt("userid", 0)), new HashSet<>());
+
+        if (bankAccountSet.isEmpty()) {
+            balanceTextView.setText("No bank account linked");
+            balanceTextView.setTextSize(30);
+            return;
+        }
+
+        String[] bankAccts = bankAccountSet.toArray(new String[0]);
+        String[] bankDetail = bankAccts[0].split(":");
+
+        if (bankDetail.length == 0) {
+            balanceTextView.setText("No bank account linked");
+            balanceTextView.setTextSize(30);
+            return;
+        }
+
+        Call<BankResponse> bankResponseCall =
+                bankAPIInterface.getAccountDetails(getString(R.string.ocbc_auth_header), bankDetail[1]);
         bankResponseCall.enqueue(new Callback<BankResponse>() {
             @Override
             public void onResponse(Call<BankResponse> call, Response<BankResponse> response) {
@@ -148,7 +172,7 @@ public class TransactionsFragment extends Fragment {
                     BankResponse bankResponse = response.body();
                     if (bankResponse != null) {
                         double balance = bankResponse.getAvailableBalance();
-                        TextView balanceTextView = view.findViewById(R.id.available_balance_amt);
+
                         balanceTextView.setText("$" + String.format(moneyFormat, balance));
                     }
                 }
@@ -162,6 +186,7 @@ public class TransactionsFragment extends Fragment {
     }
 
     private void displayLargestTransaction(View view, ArrayList<Transaction> transactions) {
+        TextView amount = view.findViewById(R.id.largest_transaction_amount);
         Transaction largestTransaction = transactions.stream()
                 .filter(t -> !t.getCategory().equalsIgnoreCase("income"))
                 .filter(t -> t.getDate().withDayOfMonth(1).equals(LocalDate.now().withDayOfMonth(1)))
@@ -169,10 +194,10 @@ public class TransactionsFragment extends Fragment {
         TextView title = view.findViewById(R.id.largest_transaction_title);
         if (largestTransaction == null) {
             title.setText("No transactions found");
+            amount.setText("");
             return;
         }
         title.setText(largestTransaction.getTitle());
-        TextView amount = view.findViewById(R.id.largest_transaction_amount);
         String amountStr = "$" + String.format(moneyFormat, largestTransaction.getAmount());
         amount.setText(amountStr);
     }
