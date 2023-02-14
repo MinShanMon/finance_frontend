@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.BankResponse;
 import com.team3.personalfinanceapp.model.Transaction;
+import com.team3.personalfinanceapp.statements.LinkBankActivity;
 import com.team3.personalfinanceapp.statements.StatementsActivity;
 import com.team3.personalfinanceapp.utils.APIClient;
 import com.team3.personalfinanceapp.utils.APIInterface;
@@ -58,6 +59,7 @@ public class TransactionsFragment extends Fragment {
         setViewAllButton(view);
         setViewStatementsBtn(view);
         setAddTransactionButton(view);
+        setLinkBankButton(view);
 
         TextView currentMonthHeader = view.findViewById(R.id.transaction_fragment_month);
         currentMonthHeader.setText(capitalize(LocalDate.now().getMonth()));
@@ -160,7 +162,10 @@ public class TransactionsFragment extends Fragment {
     }
 
     private void displayLargestTransaction(View view, ArrayList<Transaction> transactions) {
-        Transaction largestTransaction = transactions.stream().max((t1, t2) -> (int) (t2.getAmount() - t1.getAmount())).orElse(null);
+        Transaction largestTransaction = transactions.stream()
+                .filter(t -> !t.getCategory().equalsIgnoreCase("income"))
+                .filter(t -> t.getDate().withDayOfMonth(1).equals(LocalDate.now().withDayOfMonth(1)))
+                .max((t1, t2) -> (int) (t1.getAmount() - t2.getAmount())).orElse(null);
         TextView title = view.findViewById(R.id.largest_transaction_title);
         if (largestTransaction == null) {
             title.setText("No transactions found");
@@ -173,8 +178,9 @@ public class TransactionsFragment extends Fragment {
     }
 
     private void displayIncome(View view, ArrayList<Transaction> transactions) {
-        Double sum = transactions.stream().filter(t -> t.getAmount() > 0)
-                .filter(t -> t.getDate().getMonth().equals(LocalDate.now().getMonth()))
+        Double sum = transactions.stream()
+                .filter(t -> t.getCategory().equalsIgnoreCase("income"))
+                .filter(t -> t.getDate().withDayOfMonth(1).equals(LocalDate.now().withDayOfMonth(1)))
                 .mapToDouble(Transaction::getAmount)
                 .reduce(Double::sum).orElse(0);
         TextView moneyInView = view.findViewById(R.id.money_in_amount);
@@ -182,12 +188,18 @@ public class TransactionsFragment extends Fragment {
     }
 
     private void displayExpenses(View view, ArrayList<Transaction> transactions) {
-        Double sum = transactions.stream().filter(t -> t.getAmount() < 0)
-                .filter(t -> t.getDate().getMonth().equals(LocalDate.now().getMonth()))
+        Double sum = transactions.stream()
+                .filter(t -> !t.getCategory().equalsIgnoreCase("income"))
+                .filter(t -> t.getDate().withDayOfMonth(1).equals(LocalDate.now().withDayOfMonth(1)))
                 .mapToDouble(Transaction::getAmount)
                 .reduce(Double::sum).orElse(0);
         TextView moneyOutView = view.findViewById(R.id.money_out_amount);
         moneyOutView.setText("$" + String.format(moneyFormat, Math.abs(sum)));
+    }
+
+    private void setLinkBankButton(View view) {
+        Button linkBankBtn = view.findViewById(R.id.link_bank_btn);
+        linkBankBtn.setOnClickListener(v -> startActivity(new Intent(getContext(), LinkBankActivity.class)));
     }
 
 }
