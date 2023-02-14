@@ -7,11 +7,14 @@ import com.team3.personalfinanceapp.model.BankStatementResponse;
 import com.team3.personalfinanceapp.utils.APIClient;
 import com.team3.personalfinanceapp.utils.BankAPIInterface;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,9 +35,25 @@ public class StatementsActivity extends AppCompatActivity {
     private void getAllStatementsAndDisplay() {
         TextView title = findViewById(R.id.transaction_list_title);
         title.setText(getString(R.string.bank_statement_title));
+
+        SharedPreferences pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
+        SharedPreferences bankPref = getSharedPreferences("user_banklist", MODE_PRIVATE);
+        Set<String> bankAccountSet =
+                bankPref.getStringSet(String.valueOf(pref.getInt("userid", 0)), new HashSet<>());
+
+//        if (bankAccountSet.isEmpty()) {
+//            balanceTextView.setText("No bank account linked");
+//            return;
+//        }
+
+        String[] bankAccts = bankAccountSet.toArray(new String[0]);
+        String[] bankDetail = bankAccts[0].split(":");
+
+
+
         BankAPIInterface bankAPIInterface = APIClient.getBankClient().create(BankAPIInterface.class);
         Call<BankStatementResponse> bankStatementResponseCall =
-                bankAPIInterface.getStatementDetails(getString(R.string.ocbc_auth_header));
+                bankAPIInterface.getStatementDetails(getString(R.string.ocbc_auth_header), bankDetail[1]);
 
         bankStatementResponseCall.enqueue(new Callback<BankStatementResponse>() {
             @Override
