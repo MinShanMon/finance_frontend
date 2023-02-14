@@ -151,9 +151,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         Log.i("here", "fb");
-//                        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-//                        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-                        loginfb();
+                        startActivity(new Intent(LoginActivity.this, LoadingActivity.class));
                     }
 
                     @Override
@@ -166,75 +164,6 @@ public class LoginActivity extends AppCompatActivity {
                         // App code
                     }
                 });
-    }
-
-
-    private void loginfb() {
-        accessToken = AccessToken.getCurrentAccessToken();
-        GraphRequest request = GraphRequest.newMeRequest(
-                accessToken, new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(
-                            JSONObject object,
-                            GraphResponse response) {
-                        // Application code 1319406795267973
-                        Gson gson = new Gson();
-                        String json = gson.toJson(response);
-                        Log.i("response", json);
-
-                        try {
-                            String fullname = object.getString("name");
-                            String fbid = object.getString("id");
-//                            SharedPreferences pref = getPreferences()
-//                            //setting profile picture
-//                            String url = object.getJSONObject("picture").getJSONObject("data").getString("url");
-//                            Picasso.get().load(url).into(imageView);
-//                            txt.setText(fullname);
-                            RegisteredUsers user = new RegisteredUsers();
-                            user.setFbid(fbid);
-                            user.setFullName(fullname);
-                            register(user);
-                            Log.i("response", fullname);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,link, picture.type(large)");
-        request.setParameters(parameters);
-        request.executeAsync();
-    }
-
-    private void register(RegisteredUsers ruser) {
-
-        RegisteredUsers user = new RegisteredUsers();
-
-        user.setFullName(ruser.getFullName());
-        user.setFbid(ruser.getFbid());
-
-        Call<RegisteredUsers> userLoginCall = apiInterface.regFbUser(user);
-        userLoginCall.enqueue(new Callback<RegisteredUsers>() {
-            @Override
-            public void onResponse(Call<RegisteredUsers> call, Response<RegisteredUsers> response) {
-
-                pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
-                editor = pref.edit();
-                editor.putInt("userid", response.body().getId());
-                editor.putString("username", response.body().getFullName());
-                editor.putString("token", response.body().getJwtToken());
-                editor.putString("email", response.body().getEmail());
-                editor.putBoolean("fbuser", true);
-                editor.commit();
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                finish();
-            }
-
-            @Override
-            public void onFailure(Call<RegisteredUsers> call, Throwable t) {
-                call.cancel();
-            }
-        });
     }
 
 
