@@ -59,7 +59,7 @@ public class BankDetailFragment extends Fragment {
         setEnterTransition(tInflater.inflateTransition(R.transition.slide_right));
 
 
-        int id = getArguments().getInt("deposists");
+        int id = getArguments().getInt("deposits");
 
 
 
@@ -80,7 +80,7 @@ public class BankDetailFragment extends Fragment {
             public void onResponse(Call<List<FixedDeposits>> call, Response<List<FixedDeposits>> response) {
 
                 if(!response.isSuccessful()){
-                    Toast.makeText(getContext(),"unsuccessful",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"unsuccressful",Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -88,17 +88,17 @@ public class BankDetailFragment extends Fragment {
                 FixedDeposits item =fixedList.get(id);
 
                 TextView bank = v.findViewById(R.id.bank);
-                TextView mTenure = v.findViewById(R.id.tenure);
+                TextView mtenure = v.findViewById(R.id.tenure);
                 TextView min = v.findViewById(R.id.minDeposits);
                 TextView max = v.findViewById(R.id.maxDeposits);
                 TextView interest = v.findViewById(R.id.interestRate);
                 TextView date = v.findViewById(R.id.updateDate);
 
-                mTenure.setText(Integer.toString(item.getTenure()) + " Months");
+                mtenure.setText(Integer.toString(item.getTenure()) + " Months");
                 bank.setText(item.getBank().getBankName().toUpperCase(Locale.ROOT));
                 min.setText(Integer.toString(item.getMinAmount()) +" SGD");
                 max.setText(Integer.toString(item.getMaxAmount()) +" SGD");
-                interest.setText(Double.toString(item.getInterestRate()) );
+                interest.setText(Double.toString(item.getInterestRate()) + " %");
                 String[] dateDate  = item.getUpdateDate().split("-");
                 date.setText(dateDate[0] + " - " + dateDate[1]);
 
@@ -116,7 +116,7 @@ public class BankDetailFragment extends Fragment {
                 if(fixedIdMap.size() == 0){
                     compare.setText("0");
                 }else{
-                    compare.setText("compare "+Integer.toString(fixedIdMap.size()) + " items");
+                    compare.setText("comapre "+Integer.toString(fixedIdMap.size()) + " items");
                 }
 
                 if(!pref.contains("fixedId-"+Long.toString(item.getId() -1 ))){
@@ -139,32 +139,38 @@ public class BankDetailFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
 
-                        Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
+                                                  Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
 
-                        if(fixedIdMap.size() == 2){
-                            Toast.makeText(getContext(), "can not add anymore",Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+                                                  if(fixedIdMap.size() == 2){
+                                                      if(fixedIdMap.containsKey("fixedId-"+Long.toString(item.getId() -1 ))){
+                                                          editor.remove("fixedId-"+Long.toString(item.getId() -1));
+                                                          editor.commit();
 
-                        if(fixedIdMap.containsKey("fixedId-"+Long.toString(item.getId() -1 ))){
-                            editor.remove("fixedId-"+Long.toString(item.getId() -1));
-                            editor.commit();
+                                                      }else{
+                                                          Toast.makeText(getContext(), "can not add anymore", Toast.LENGTH_SHORT).show();
+                                                          return;
+                                                      }
+                                                  }
 
-                        }else{
-                            editor.putLong ("fixedId-"+Long.toString(item.getId() - 1),item.getId() -1);
-                            editor.commit();
-                        }
+                                                  if(fixedIdMap.containsKey("fixedId-"+Long.toString(item.getId() -1 ))){
+                                                      editor.remove("fixedId-"+Long.toString(item.getId() -1));
+                                                      editor.commit();
 
-                        Map<String, Long> fixedIdMap2 = (Map<String, Long>) pref.getAll();
-                        if(!fixedIdMap2.containsKey("fixedId-"+Long.toString(item.getId() -1 ))){
-                            addbtn.setText("Add to Compare");
-                        }else {
-                            addbtn.setText("Remove form Compare");
-                        }
-                        compare.setText("compare "+Integer.toString(fixedIdMap2.size()) + " items");
+                                                  }else{
+                                                      editor.putLong ("fixedId-"+Long.toString(item.getId() - 1),item.getId() -1);
+                                                      editor.commit();
+                                                  }
 
-                    }
-                }
+                                                  Map<String, Long> fixedIdMap2 = (Map<String, Long>) pref.getAll();
+                                                  if(!fixedIdMap2.containsKey("fixedId-"+Long.toString(item.getId() -1 ))){
+                                                      addbtn.setText("Add to Compare");
+                                                  }else {
+                                                      addbtn.setText("Remove form Compare");
+                                                  }
+                                                  compare.setText("compare "+Integer.toString(fixedIdMap2.size()) + " items");
+
+                                              }
+                                          }
                 );
                 compare.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -203,7 +209,7 @@ public class BankDetailFragment extends Fragment {
             }
         });
 
-        getActivity().setTitle("fixed deposits detail");
+        getActivity().setTitle("fixed deposists detail");
         return v;
     }
 
