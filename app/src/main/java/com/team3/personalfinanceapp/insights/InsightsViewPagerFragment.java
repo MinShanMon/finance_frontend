@@ -94,7 +94,6 @@ public class InsightsViewPagerFragment extends Fragment {
         );
         tabLayoutMediator.attach();
         getAllTransactionsAndSetCharts();
-        getForecastAndSetLine();
     }
 
     private void getAllTransactionsAndSetCharts() {
