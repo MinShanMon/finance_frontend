@@ -33,7 +33,6 @@ public class AdminTicketController {
     @Autowired
     private TicketService tikService;
 
-    // *** mock need to edit again
     @GetMapping
     public String defaultPath() {
         return "redirect:/admin/dashboard";
@@ -46,6 +45,18 @@ public class AdminTicketController {
         String token = user.getToken().getAccess_token();
         List<Enquiry> enquiries = enqService.viewDashboard(token);
         List<Enquiry> openEnquiries = enqService.getOpenEnquiry(token);
+
+        List<Enquiry> rate5 = enquiries.stream().filter(u -> u.getRating()==5).collect(Collectors.toList());
+        List<Enquiry> rate4 = enquiries.stream().filter(u -> u.getRating()==4).collect(Collectors.toList());
+        List<Enquiry> rate3 = enquiries.stream().filter(u -> u.getRating()==3).collect(Collectors.toList());
+        List<Enquiry> rate2 = enquiries.stream().filter(u -> u.getRating()==2).collect(Collectors.toList());
+        List<Enquiry> rate1 = enquiries.stream().filter(u -> u.getRating()==1).collect(Collectors.toList());
+        model.addAttribute("rate5", rate5.size());
+        model.addAttribute("rate4", rate4.size());
+        model.addAttribute("rate3", rate3.size());
+        model.addAttribute("rate2", rate2.size());
+        model.addAttribute("rate1", rate1.size());
+
         model.addAttribute("open", openEnquiries);
         model.addAttribute("openSum", openEnquiries.size());
         model.addAttribute("enquiries", enquiries);
@@ -60,12 +71,12 @@ public class AdminTicketController {
         List<Enquiry> openEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
         equals(TicketStatusEnum.OPEN)).collect(Collectors.toList());
 
-        List<Enquiry> closeEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
+        List<Enquiry> closedEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
         equals(TicketStatusEnum.CLOSED)).collect(Collectors.toList());
 
         model.addAttribute("enquiries", enquiries);
         model.addAttribute("openSum", openEnquiries.size());
-        model.addAttribute("closeSum", closeEnquiries.size());
+        model.addAttribute("closeSum", closedEnquiries.size());
         return "admin/inbox";
     }
     
@@ -75,6 +86,8 @@ public class AdminTicketController {
         String token = user.getToken().getAccess_token();
         List<Enquiry> openEnquiries = enqService.getOpenEnquiry(token);
         model.addAttribute("open", openEnquiries);
+        model.addAttribute("openSum", openEnquiries.size());
+
         return "admin/open-tickets";
     }
 
@@ -84,6 +97,7 @@ public class AdminTicketController {
         String token = user.getToken().getAccess_token();
         List<Enquiry> closedEnquiries = enqService.getClosedEnquiry(token);
         model.addAttribute("closed", closedEnquiries);
+        model.addAttribute("closeSum", closedEnquiries.size());
         return "admin/closed-tickets";
     }
 
