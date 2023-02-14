@@ -138,12 +138,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 commitTransaction(transactionsFragment);
                 return true;
             case R.id.manage_profile:
-
                 commitTransaction(profileFragment);
-
                 return true;
         }
-        return false;
+        return true;
     }
 
     private void commitTransaction(Fragment fragment) {

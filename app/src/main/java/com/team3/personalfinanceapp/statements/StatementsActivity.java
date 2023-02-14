@@ -41,15 +41,17 @@ public class StatementsActivity extends AppCompatActivity {
         Set<String> bankAccountSet =
                 bankPref.getStringSet(String.valueOf(pref.getInt("userid", 0)), new HashSet<>());
 
-//        if (bankAccountSet.isEmpty()) {
-//            balanceTextView.setText("No bank account linked");
-//            return;
-//        }
+        if (bankAccountSet.isEmpty()) {
+            return;
+        }
 
         String[] bankAccts = bankAccountSet.toArray(new String[0]);
+
         String[] bankDetail = bankAccts[0].split(":");
 
-
+        if (bankDetail.length == 0) {
+            return;
+        }
 
         BankAPIInterface bankAPIInterface = APIClient.getBankClient().create(BankAPIInterface.class);
         Call<BankStatementResponse> bankStatementResponseCall =
