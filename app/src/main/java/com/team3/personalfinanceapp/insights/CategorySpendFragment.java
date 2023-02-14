@@ -10,10 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.Transaction;
@@ -72,79 +80,58 @@ public class CategorySpendFragment extends Fragment {
                 transactions.stream().filter(t -> t.getDate().withDayOfMonth(1).equals(currDate.minusMonths(1)))
                         .collect(Collectors.groupingBy(Transaction::getCategory,
                                 Collectors.summingDouble(Transaction::getAmount)));
-
-        setSpendingDataText(view, currMonthCategorySpending, prevMonthCategorySpending);
+        setBarChart(view, currMonthCategorySpending, prevMonthCategorySpending);
     }
 
     private void setBarChart(View view, Map<String, Double> currMonthSpendingMap, Map<String, Double> prevMonthSpendingMap) {
+        BarChart foodBarChart = view.findViewById(R.id.food_barchart);
+        BarChart transportBarChart = view.findViewById(R.id.transport_barchart);
+        BarChart othersBarChart = view.findViewById(R.id.others_barchart);
+
+        setBarData(foodBarChart, "Food", currMonthSpendingMap, prevMonthSpendingMap);
+        setBarData(transportBarChart, "Transport", currMonthSpendingMap, prevMonthSpendingMap);
+        setBarData(othersBarChart, "Others", currMonthSpendingMap, prevMonthSpendingMap);
 
     }
 
-    private void setSpendingDataText(View view, Map<String, Double> currMonthSpendingMap, Map<String, Double> prevMonthSpendingMap) {
+    private void setBarData(BarChart barChart, String category, Map<String, Double> currMonthSpendingMap, Map<String, Double> prevMonthSpendingMap) {
+        List<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(0f, prevMonthSpendingMap.getOrDefault(category, Double.valueOf(0)).floatValue()));
+        entries.add(new BarEntry(1f, currMonthSpendingMap.getOrDefault(category, Double.valueOf(0)).floatValue()));
 
-        TextView foodAmtThisMonth = view.findViewById(R.id.food_insights_thismonthamt);
-        TextView foodAmtLastMonth = view.findViewById(R.id.food_insights_lastmonthamt);
-        TextView foodAmtChange = view.findViewById(R.id.food_insights_changeamt);
+        BarData data = new BarData(new BarDataSet(entries, category + " Spending"));
 
-        TextView transportAmtThisMonth = view.findViewById(R.id.transport_insights_thismonthamt);
-        TextView transportAmtLastMonth = view.findViewById(R.id.transport_insights_lastmonthamt);
-        TextView transportAmtChange = view.findViewById(R.id.transport_insights_changeamt);
 
-        TextView othersAmtThisMonth = view.findViewById(R.id.others_insights_thismonthamt);
-        TextView othersAmtLastMonth = view.findViewById(R.id.others_insights_lastmonthamt);
-        TextView othersAmtChange = view.findViewById(R.id.others_insights_changeamt);
+        barChart.setData(data);
+        barChart.setFitBars(true);
+        barChart.setDescription(null);
 
-        double[] foodSpending = new double[2];
-        double[] transportSpending = new double[2];
-        double[] othersSpending = new double[2];
+        YAxis leftAxis = barChart.getAxisLeft();
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setDrawLabels(false);
+        leftAxis.setDrawAxisLine(false);
 
-        currMonthSpendingMap.forEach((cat, spend) -> {
-            if (cat.equalsIgnoreCase("food")) {
-                foodAmtThisMonth.setText("$" + String.format(moneyFormat, spend));
-                foodSpending[0] = spend;
-            }
-            if (cat.equalsIgnoreCase("transport")) {
-                transportAmtThisMonth.setText("$" + String.format(moneyFormat, spend));
-                transportSpending[0] = spend;
-            }
-            if (cat.equalsIgnoreCase("others")) {
-                othersAmtThisMonth.setText("$" + String.format(moneyFormat, spend));
-                othersSpending[0] = spend;
+        YAxis rightAxis = barChart.getAxisRight();
+        rightAxis.setDrawGridLines(false);
+        rightAxis.setDrawLabels(false);
+        rightAxis.setDrawAxisLine(false);
+
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1f);
+        Month currentMonth = LocalDate.now().getMonth();
+        String[] labels = new String[] {currentMonth.minus(1).toString().substring(0, 3), currentMonth.toString().substring(0, 3)};
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                return labels[(int) value];
             }
         });
 
-        prevMonthSpendingMap.forEach((cat, spend) -> {
-            if (cat.equalsIgnoreCase("food")) {
-                foodAmtLastMonth.setText("$" + String.format(moneyFormat, spend));
-                foodSpending[1] = spend;
-            }
-            if (cat.equalsIgnoreCase("transport")) {
-                transportAmtLastMonth.setText("$" + String.format(moneyFormat, spend));
-                transportSpending[1] = spend;
-            }
-            if (cat.equalsIgnoreCase("others")) {
-                othersAmtLastMonth.setText("$" + String.format(moneyFormat, spend));
-                othersSpending[1] = spend;
-            }
-        });
-
-        setChangeText(foodAmtChange, foodSpending);
-        setChangeText(transportAmtChange, transportSpending);
-        setChangeText(othersAmtChange, othersSpending);
-
+        barChart.invalidate();
     }
 
-    private void setChangeText(TextView changeText, double[] spending) {
-        double spendingChange = spending[0] - spending[1];
 
-        if (spendingChange > 0) {
-            changeText.setText("$" + "+" + String.format(moneyFormat, spendingChange));
-            changeText.setTextColor(Color.RED);
-        } else if (spendingChange < 0) {
-            changeText.setText("$" + String.format(moneyFormat, spendingChange));
-            changeText.setTextColor(Color.GREEN);
-        }
-    }
 
 
 }

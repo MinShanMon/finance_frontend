@@ -3,6 +3,7 @@ package com.team3.personalfinanceapp.Fragment;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -40,6 +41,8 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
 
     private int totalSpendingThisMonth;
 
+    String moneyFormat;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -50,6 +53,7 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
                              Bundle savedInstanceState) {
 
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
+        moneyFormat = getString(R.string.money_format);
         setBudgetButton(view);
         setSpendingForecastButton(view);
         return view;
@@ -132,6 +136,72 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
                 }
             });
         });
+    }
+
+    private void setSpendingDataText(View view, Map<String, Double> currMonthSpendingMap, Map<String, Double> prevMonthSpendingMap) {
+
+        TextView foodAmtThisMonth = view.findViewById(R.id.food_insights_thismonthamt);
+        TextView foodAmtLastMonth = view.findViewById(R.id.food_insights_lastmonthamt);
+        TextView foodAmtChange = view.findViewById(R.id.food_insights_changeamt);
+
+        TextView transportAmtThisMonth = view.findViewById(R.id.transport_insights_thismonthamt);
+        TextView transportAmtLastMonth = view.findViewById(R.id.transport_insights_lastmonthamt);
+        TextView transportAmtChange = view.findViewById(R.id.transport_insights_changeamt);
+
+        TextView othersAmtThisMonth = view.findViewById(R.id.others_insights_thismonthamt);
+        TextView othersAmtLastMonth = view.findViewById(R.id.others_insights_lastmonthamt);
+        TextView othersAmtChange = view.findViewById(R.id.others_insights_changeamt);
+
+        double[] foodSpending = new double[2];
+        double[] transportSpending = new double[2];
+        double[] othersSpending = new double[2];
+
+        currMonthSpendingMap.forEach((cat, spend) -> {
+            if (cat.equalsIgnoreCase("food")) {
+                foodAmtThisMonth.setText("$" + String.format(moneyFormat, spend));
+                foodSpending[0] = spend;
+            }
+            if (cat.equalsIgnoreCase("transport")) {
+                transportAmtThisMonth.setText("$" + String.format(moneyFormat, spend));
+                transportSpending[0] = spend;
+            }
+            if (cat.equalsIgnoreCase("others")) {
+                othersAmtThisMonth.setText("$" + String.format(moneyFormat, spend));
+                othersSpending[0] = spend;
+            }
+        });
+
+        prevMonthSpendingMap.forEach((cat, spend) -> {
+            if (cat.equalsIgnoreCase("food")) {
+                foodAmtLastMonth.setText("$" + String.format(moneyFormat, spend));
+                foodSpending[1] = spend;
+            }
+            if (cat.equalsIgnoreCase("transport")) {
+                transportAmtLastMonth.setText("$" + String.format(moneyFormat, spend));
+                transportSpending[1] = spend;
+            }
+            if (cat.equalsIgnoreCase("others")) {
+                othersAmtLastMonth.setText("$" + String.format(moneyFormat, spend));
+                othersSpending[1] = spend;
+            }
+        });
+
+        setChangeText(foodAmtChange, foodSpending);
+        setChangeText(transportAmtChange, transportSpending);
+        setChangeText(othersAmtChange, othersSpending);
+
+    }
+
+    private void setChangeText(TextView changeText, double[] spending) {
+        double spendingChange = spending[0] - spending[1];
+
+        if (spendingChange > 0) {
+            changeText.setText("$" + "+" + String.format(moneyFormat, spendingChange));
+            changeText.setTextColor(Color.RED);
+        } else if (spendingChange < 0) {
+            changeText.setText("$" + String.format(moneyFormat, spendingChange));
+            changeText.setTextColor(Color.GREEN);
+        }
     }
 
 }
