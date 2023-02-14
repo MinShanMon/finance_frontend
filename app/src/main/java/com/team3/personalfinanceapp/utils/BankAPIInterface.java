@@ -7,12 +7,13 @@ import com.team3.personalfinanceapp.model.BankStatementResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Query;
 
 public interface BankAPIInterface {
 
-    @GET("summary*?accountNo=201770161001&accountType=D") //hardcoded account number
-    Call<BankResponse> getAccountDetails(@Header("Authorization") String authHeader);
+    @GET("summary*?accountType=D")
+    Call<BankResponse> getAccountDetails(@Header("Authorization") String authHeader, @Query("accountNo") String accountNo);
 
-    @GET("recentAccountActivity*?accountNo=201770161001&accountType=D")
-    Call<BankStatementResponse> getStatementDetails(@Header("Authorization") String authHeader);
+    @GET("recentAccountActivity*?accountType=D")
+    Call<BankStatementResponse> getStatementDetails(@Header("Authorization") String authHeader, @Query("accountNo") String accountNo);
 }
