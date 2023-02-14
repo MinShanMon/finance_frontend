@@ -60,7 +60,6 @@ public class InsightsViewPagerFragment extends Fragment {
     SharedPreferences pref;
 
 
-
     public InsightsViewPagerFragment() {
         // Required empty public constructor
     }
@@ -120,7 +119,7 @@ public class InsightsViewPagerFragment extends Fragment {
     private void getForecastAndSetLine() {
 
         Call<Map<String, Float>> getForecastCall =
-                apiInterface.getSpendingForecastById(pref.getInt("userid", 0), pref.getString("token", ""));
+                apiInterface.getSpendingForecastById(pref.getInt("userid", 0), "Bearer " + pref.getString("token", ""));
         getForecastCall.enqueue(new Callback<Map<String, Float>>() {
             @Override
             public void onResponse(Call<Map<String, Float>> call, Response<Map<String, Float>> response) {
@@ -136,17 +135,17 @@ public class InsightsViewPagerFragment extends Fragment {
     }
 
     private void setForecastLine(Map<String, Float> forecastByMonth) {
-        List<Entry> entries = new ArrayList<>();
-        if (transactions == null) {
+        if (forecastByMonth == null || transactions == null) {
             return;
         }
+        List<Entry> entries = new ArrayList<>();
         int currentYear = transactions.get(transactions.size() - 1).getDate().getYear();
 
         List<Map.Entry<String, Float>> forecastDataList =
                 forecastByMonth.entrySet().stream()
-                .sorted((e1, e2) -> Integer.parseInt(e1.getKey()) - Integer.parseInt(e2.getKey()))
-                .collect(Collectors.toList());
-        forecastDataList.forEach( e -> {
+                        .sorted((e1, e2) -> Integer.parseInt(e1.getKey()) - Integer.parseInt(e2.getKey()))
+                        .collect(Collectors.toList());
+        forecastDataList.forEach(e -> {
             LocalDate date = LocalDate.of(currentYear, Integer.parseInt(e.getKey()), 1);
             long epochDay = date.toEpochDay();
             entries.add(new Entry(epochDay, e.getValue()));
@@ -170,7 +169,10 @@ public class InsightsViewPagerFragment extends Fragment {
     private void setLineChart() {
 
         configureLineChart(lineChart);
-        Map<Long, Double> sumPerMonthMap = transactions.stream().collect(
+        Map<Long, Double> sumPerMonthMap =
+                transactions.stream()
+                        .filter(t -> !t.getCategory().equalsIgnoreCase("income"))
+                        .collect(
                 Collectors.groupingBy(
                         t -> t.getMonthYearEpoch(),
                         Collectors.summingDouble(Transaction::getAmount)

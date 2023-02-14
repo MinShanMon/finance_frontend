@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -18,7 +19,9 @@ import com.team3.personalfinanceapp.transactions.EditTransactionActivity;
 import com.team3.personalfinanceapp.utils.APIClient;
 import com.team3.personalfinanceapp.utils.APIInterface;
 
+import java.lang.reflect.Type;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -94,24 +97,40 @@ public class TransactionsActivity extends AppCompatActivity {
 
         transactionsByDate.forEach((date, ts) -> {
             TextView dateText = new TextView(this);
-            dateText.setText(date.toString());
+            String dateString = DateTimeFormatter.ofPattern("dd MMM yyyy").format(date);
+            dateText.setText(dateString);
             dateText.setTypeface(null, Typeface.BOLD);
             dateText.setBackgroundColor(Color.parseColor("#DCDCDC"));
+            dateText.setPadding(50,20,50,30);
             linearLayout.addView(dateText);
 
             ts.forEach(t -> {
-                TextView transactionText = new TextView(this);
-                String transStr = t.getTitle() + "\n"
-                        + t.getCategory() + "\n"
-                        + t.getAmount();
-                transactionText.setText(transStr);
-                transactionText.setOnClickListener(v -> {
+                LinearLayout linearLayoutTransaction = new LinearLayout(this);
+                linearLayoutTransaction.setOrientation(LinearLayout.VERTICAL);
+                linearLayoutTransaction.setPadding(50, 20,50,30);
+
+                TextView transactionTitleText = new TextView(this);
+                transactionTitleText.setText(t.getTitle());
+
+                TextView transactionCategoryText = new TextView(this);
+                transactionCategoryText.setText(t.getCategory());
+
+                TextView transactionAmtText = new TextView(this);
+                transactionAmtText.setText("$" + String.format(getString(R.string.money_format), t.getAmount()));
+                transactionAmtText.setTypeface(null, Typeface.BOLD);
+                transactionAmtText.setGravity(Gravity.END);
+
+                linearLayoutTransaction.addView(transactionTitleText);
+                linearLayoutTransaction.addView(transactionCategoryText);
+                linearLayoutTransaction.addView(transactionAmtText);
+
+                linearLayoutTransaction.setOnClickListener(v -> {
                     Intent intent = new Intent(this, EditTransactionActivity.class);
                     intent.putExtra("transactionId", t.getId());
                     startActivity(intent);
                 });
 
-                linearLayout.addView(transactionText);
+                linearLayout.addView(linearLayoutTransaction);
 
                 View viewDivider = new View(this);
                 viewDivider.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1));

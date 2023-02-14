@@ -97,7 +97,7 @@ public class PieChartFragment extends Fragment {
     private void setPieChartData(PieChart pieChart) {
         List<PieEntry> entries = new ArrayList<>();
         Map<String, Double> categoryTotalSpendMap =
-                transactions.stream().filter( t -> t.getDate().getMonth().equals(LocalDate.now().getMonth()))
+                transactions.stream().filter( t -> t.getDate().withDayOfMonth(1).equals(LocalDate.now().withDayOfMonth(1)))
                         .collect(Collectors.groupingBy(Transaction::getCategory,
                         Collectors.summingDouble(Transaction::getAmount)));
 
@@ -128,7 +128,7 @@ public class PieChartFragment extends Fragment {
             sum = 0;
         } else {
             sum = transactions.stream()
-                    .filter(t -> t.getAmount() < 0)
+                    .filter(t -> !t.getCategory().equalsIgnoreCase("income"))
                     .filter(t -> t.getDate().getMonth().equals(LocalDate.now().getMonth()))
                     .mapToDouble(Transaction::getAmount)
                     .reduce(Double::sum).orElseGet(() -> 0);

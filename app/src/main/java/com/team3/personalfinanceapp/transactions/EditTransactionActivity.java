@@ -65,10 +65,10 @@ public class EditTransactionActivity extends AppCompatActivity {
     private void updateTransactionForm(Transaction transaction) {
 
 
-        if (transaction.getAmount() < 0) {
-            transactionType = TYPE_SPENDING;
-        } else {
+        if (transaction.getCategory().equalsIgnoreCase("income")) {
             transactionType = TYPE_INCOME;
+        } else {
+            transactionType = TYPE_SPENDING;
         }
         setTransactionTypeDropdown();
 

@@ -61,15 +61,15 @@ public class CategorySpendFragment extends Fragment {
 
     private void createSpendingByCategory(View view) {
 
-        Month currMonth = LocalDate.now().getMonth();
+        LocalDate currDate = LocalDate.now().withDayOfMonth(1);
 
         Map<String, Double> currMonthCategorySpending =
-                transactions.stream().filter(t -> t.getDate().getMonth().equals(currMonth))
+                transactions.stream().filter(t -> t.getDate().withDayOfMonth(1).equals(currDate))
                         .collect(Collectors.groupingBy(Transaction::getCategory,
                                 Collectors.summingDouble(Transaction::getAmount)));
 
         Map<String, Double> prevMonthCategorySpending =
-                transactions.stream().filter(t -> t.getDate().getMonth().equals(currMonth.minus(1)))
+                transactions.stream().filter(t -> t.getDate().withDayOfMonth(1).equals(currDate.minusMonths(1)))
                         .collect(Collectors.groupingBy(Transaction::getCategory,
                                 Collectors.summingDouble(Transaction::getAmount)));
 
@@ -132,11 +132,13 @@ public class CategorySpendFragment extends Fragment {
 
     private void setChangeText(TextView changeText, double[] spending) {
         double spendingChange = spending[0] - spending[1];
-        changeText.setText("$" + String.format(moneyFormat, spendingChange));
+
         if (spendingChange > 0) {
-            changeText.setTextColor(Color.GREEN);
-        } else if (spendingChange < 0) {
+            changeText.setText("$" + "+" + String.format(moneyFormat, spendingChange));
             changeText.setTextColor(Color.RED);
+        } else if (spendingChange < 0) {
+            changeText.setText("$" + String.format(moneyFormat, spendingChange));
+            changeText.setTextColor(Color.GREEN);
         }
     }
 
