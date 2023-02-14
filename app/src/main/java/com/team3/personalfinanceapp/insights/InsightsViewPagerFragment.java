@@ -193,6 +193,7 @@ public class InsightsViewPagerFragment extends Fragment {
         lineDataSets.add(lineDataSet);
         LineData lineData = new LineData(lineDataSets);
         lineChart.setData(lineData);
+        lineChart.setDescription(null);
         setXLabels(lineChart);
         lineChart.invalidate();
     }

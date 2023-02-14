@@ -3,6 +3,7 @@ package com.team3.personalfinanceapp.Fragment;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -40,6 +41,8 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
 
     private int totalSpendingThisMonth;
 
+    String moneyFormat;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -49,7 +52,8 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view =  inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        moneyFormat = getString(R.string.money_format);
         setBudgetButton(view);
         setSpendingForecastButton(view);
         return view;
@@ -63,14 +67,15 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
         userId = pref.getInt("userid", 0);
         Call<List<Transaction>> transactionsCall = apiInterface.getTransactionsByMonth(userId,
-                LocalDate.now().getMonth().getValue(), "Bearer "+ pref.getString("token", ""));
+                LocalDate.now().getMonth().getValue(), "Bearer " + pref.getString("token", ""));
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
                 transactions = response.body();
-                totalSpendingThisMonth = (int) transactions.stream().filter(t -> t.getAmount() < 0)
-                        .mapToDouble(Transaction::getAmount)
-                        .reduce(Double::sum).orElse(0);
+                totalSpendingThisMonth = transactions.stream()
+                        .filter(t -> !t.getCategory().equalsIgnoreCase("income"))
+                        .map(t -> t.getAmount()).reduce(Double::sum)
+                        .orElse(Double.valueOf(0)).intValue();
                 setBudgetBar(totalSpendingThisMonth);
             }
 
@@ -84,22 +89,23 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
     private void setBudgetBar(int totalSpendingThisMonth) {
         View view = getView();
         ProgressBar budgetBar = view.findViewById(R.id.budget_progress_bar);
+        TextView budgetAmtText = view.findViewById(R.id.budget_amt_progressbar);
+        TextView progressBarStartLabel = view.findViewById(R.id.progress_bar_startlabel);
         SharedPreferences budgetPref = getActivity().getSharedPreferences("user_budget", Context.MODE_PRIVATE);
         int max = (int) budgetPref.getFloat(String.valueOf(userId), 0);
 
         if (max > 0) {
-            TextView budgetAmtText = view.findViewById(R.id.budget_amt_progressbar);
             budgetAmtText.setText("$" + max);
+            progressBarStartLabel.setText("$0");
             budgetBar.setMax(max);
+            budgetBar.setVisibility(View.VISIBLE);
             ObjectAnimator.ofInt(budgetBar, "progress", Math.abs(totalSpendingThisMonth))
                     .setDuration(1000)
                     .start();
         } else {
             budgetBar.setVisibility(View.GONE);
-            TextView noBudgetText = new TextView(getContext());
-            LinearLayout linearLayout = view.findViewById(R.id.budget_card_layout);
-            noBudgetText.setText("No budget set, please set one.");
-            linearLayout.addView(noBudgetText);
+            budgetAmtText.setText("");
+            progressBarStartLabel.setText("No budget set, please set one.");
         }
     }
 
@@ -116,14 +122,13 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
 
     private void setSpendingForecastButton(View view) {
         Button forecastBtn = view.findViewById(R.id.get_forecast_btn);
-        forecastBtn.setOnClickListener( v -> {
+        forecastBtn.setOnClickListener(v -> {
             APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-            Call<Map<String,Float>> getForecastCall =  apiInterface.getSpendingForecastById(userId, "Bearer "+ pref.getString("token", ""));
+            Call<Map<String, Float>> getForecastCall = apiInterface.getSpendingForecastById(userId, "Bearer " + pref.getString("token", ""));
             getForecastCall.enqueue(new Callback<Map<String, Float>>() {
                 @Override
                 public void onResponse(Call<Map<String, Float>> call, Response<Map<String, Float>> response) {
                     Map<String, Float> forecastByMonth = response.body();
-                    setForecastLineChart(forecastByMonth, view);
                     System.out.println(forecastByMonth);
                 }
 
@@ -135,8 +140,78 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
         });
     }
 
-    private void setForecastLineChart(Map<String, Float> spendingForecastByMonth, View view) {
-        LineChart forecastChart = view.findViewById(R.id.forecast_chart);
+    private void setSpendingDataText(View view, Map<String, Double> currMonthSpendingMap, Map<String, Double> prevMonthSpendingMap) {
+
+        TextView foodAmtThisMonth = view.findViewById(R.id.food_insights_thismonthamt);
+        TextView foodAmtLastMonth = view.findViewById(R.id.food_insights_lastmonthamt);
+        TextView foodAmtChange = view.findViewById(R.id.food_insights_changeamt);
+
+        TextView transportAmtThisMonth = view.findViewById(R.id.transport_insights_thismonthamt);
+        TextView transportAmtLastMonth = view.findViewById(R.id.transport_insights_lastmonthamt);
+        TextView transportAmtChange = view.findViewById(R.id.transport_insights_changeamt);
+
+        TextView othersAmtThisMonth = view.findViewById(R.id.others_insights_thismonthamt);
+        TextView othersAmtLastMonth = view.findViewById(R.id.others_insights_lastmonthamt);
+        TextView othersAmtChange = view.findViewById(R.id.others_insights_changeamt);
+
+        double[] foodSpending = new double[2];
+        double[] transportSpending = new double[2];
+        double[] othersSpending = new double[2];
+
+        currMonthSpendingMap.forEach((cat, spend) -> {
+            if (cat.equalsIgnoreCase("food")) {
+                foodAmtThisMonth.setText("$" + String.format(moneyFormat, spend));
+                foodSpending[0] = spend;
+            }
+            if (cat.equalsIgnoreCase("transport")) {
+                transportAmtThisMonth.setText("$" + String.format(moneyFormat, spend));
+                transportSpending[0] = spend;
+            }
+            if (cat.equalsIgnoreCase("others")) {
+                othersAmtThisMonth.setText("$" + String.format(moneyFormat, spend));
+                othersSpending[0] = spend;
+            }
+        });
+
+        prevMonthSpendingMap.forEach((cat, spend) -> {
+            if (cat.equalsIgnoreCase("food")) {
+                foodAmtLastMonth.setText("$" + String.format(moneyFormat, spend));
+                foodSpending[1] = spend;
+            }
+            if (cat.equalsIgnoreCase("transport")) {
+                transportAmtLastMonth.setText("$" + String.format(moneyFormat, spend));
+                transportSpending[1] = spend;
+            }
+            if (cat.equalsIgnoreCase("others")) {
+                othersAmtLastMonth.setText("$" + String.format(moneyFormat, spend));
+                othersSpending[1] = spend;
+            }
+        });
+
+        setChangeText(foodAmtChange, foodSpending);
+        setChangeText(transportAmtChange, transportSpending);
+        setChangeText(othersAmtChange, othersSpending);
 
     }
+
+    private void setChangeText(TextView changeText, double[] spending) {
+        double spendingChange = spending[0] - spending[1];
+
+        if (spendingChange > 0) {
+            changeText.setText("$" + "+" + String.format(moneyFormat, spendingChange));
+            changeText.setTextColor(Color.RED);
+        } else if (spendingChange < 0) {
+            changeText.setText("$" + String.format(moneyFormat, spendingChange));
+            changeText.setTextColor(Color.GREEN);
+        }
+    }
+
+    private void setCurrentCategorySpend() {
+        Double currentFoodSpend = transactions.stream()
+                .filter(t -> t.getCategory().equalsIgnoreCase("food"))
+                .map(t -> t.getAmount())
+                .reduce(Double::sum).orElseGet(() -> (double) 0);
+    }
+
+
 }
