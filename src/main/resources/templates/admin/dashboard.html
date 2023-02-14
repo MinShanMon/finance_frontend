@@ -150,24 +150,31 @@
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
+
+         
           <li class="nav-item">
             <p class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" style="font-size: 20px;">
-              <span>Dashboard</span>
+              <a class="nav-link  active" th:href="@{/admin/dashboard/}">Dashboard</a>
             </p>
           </li>
+
           <li class="nav-item">
-            <a class="nav-link active" th:href="@{/admin/enquiries/}">
-             Inbox
-            </a>
-          </li>   
-          <li class="nav-item">
-            <a class="nav-link">
-             Dashboard
-            </a>
+            <p class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" style="font-size: 20px;">
+              <a class="nav-link" th:href="@{/admin/enquiries/}">Ticketing System</a>
+            </p>
           </li>
+
+          <li class="nav-item">
+            <p class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"
+              style="font-size: 20px;">
+              <a  class="nav-link " th:href="@{'/admin/managefixeddeposits'}">Bank Fixed Deposits</a>
+            </p>
+          </li>
+
         </ul>
       </div>
     </nav>
+
     <!-- main section -->
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">
         <style>
@@ -189,18 +196,7 @@
           <!-- Custom styles for this template -->
           <link href="dashboard.css" rel="stylesheet">
         </head>   
-              <h1 class="h2">Dashboard</h1>
-              <div class="btn-toolbar mb-2 mb-md-0">
-                <div class="btn-group mr-2">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-                </div>
-                <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                  <span data-feather="calendar"></span>
-                  This week
-                </button>
-              </div> 
-              <!--graphic demo from https://echarts.apache.org/examples/zh/editor.html?c=pie-simple-->
+              <h1 class="h2">Rating</h1>
             <div id="container" style="height: 400px"></div>
               <!DOCTYPE html>
               <html lang="en" style="height: 100%">
@@ -211,23 +207,6 @@
                 <div id="container" style="height:2px"></div>
 
                 <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
-                <!-- Uncomment this line if you want to dataTool extension
-                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.1/dist/extension/dataTool.min.js"></script>
-                -->
-                <!-- Uncomment this line if you want to use gl extension
-                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
-                -->
-                <!-- Uncomment this line if you want to echarts-stat extension
-                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
-                -->
-                <!-- Uncomment this line if you want to use map
-                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/china.js"></script>
-                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"></script>
-                -->
-                <!-- Uncomment these two lines if you want to use bmap extension
-                <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=YOUR_API_KEY"></script>
-                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.1/dist/extension/bmap.min.js"></script>
-                -->  
                 <script type="text/javascript" src="js/echarts.min.js"></script>
                 <script type="text/javascript" th:inline="javascript">
                   var val5 = [[${rate5}]];
@@ -245,8 +224,8 @@
                   var option;   
                   option = {
                 title: {
-                  text: 'Service Satisfication Report',
-                  subtext: 'Rating Summary',
+                  text: 'Service Satisfication ',
+                  subtext: 'Record',
                   left: 'center'
                 },  
                 tooltip: {

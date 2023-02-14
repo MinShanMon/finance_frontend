@@ -21,7 +21,7 @@
             background: rgb(246, 210, 134);
         }
         .container{
-            width: 500px;
+            width: 480px;
             background: white;
             padding: 20px 30px;
             border: 1.5px solid #444;
@@ -41,12 +41,11 @@
         }
         .star-widget label{
             margin: 10px 0;
-            font-size: 40px;
+            font-size: 45px;
             color: #444;
             padding: 10px;
-            padding: 10px;
             float: right;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
         input:not(:checked) ~ label:hover,
         input:not(:checked) ~ label:hover ~ label{
@@ -59,33 +58,7 @@
             color: #fe7;
             text-shadow: 0 0 20px #952;
         }
-        #rate-1:checked ~ form header:before{
-            content: "I don't like it 😑";
-        }
-        #rate-2:checked ~ form header:before{
-            content: "I feel it's ok 😐";
-        }
-        #rate-3:checked ~ form header:before{
-            content: "I like it 🤗";
-        }
-        #rate-4:checked ~ form header:before{
-            content: "I love it 😆";
-        }
-        #rate-5:checked ~ form header:before{
-            content: "I am super satisfied 🤩";
-        }
-        form header{
-            width:100%;
-            font-size:20px;
-            font-weight: 200;
-            margin: 8px 0 20px 0;
-            text-align: center;
-            transition: all 0.2s ease;
-          
-        }
         form .textarea{
-            height: 100px;
-            width: 100%;
             overflow: hidden;
         }
         form .textarea textarea{
@@ -93,27 +66,30 @@
             width: 100%;
             outline: none;
             color: black;
-            border: 2px solid rgb(114, 152, 223);
-            padding: 10px;
+            border: 2px solid rgb(66, 111, 195);
+            padding: 15px;
             resize: none;
+            font-size:20px;
+            font-weight: 500;
         }
         form .btn{
             height: 45px;
             width: 100%;
-            margin: 30px 0;
+            margin: 20px 0;
+            border-radius: 10px;
         }
         
         form .btn button{
             height: 40px;
             width: 30%;
-            border: 1.5px solid rgb(114, 152, 223);
+            border: 1.5px solid rgb(66, 111, 195);
             font-size: 15px;
             font-weight: 500;
             text-transform: uppercase;
             cursor: pointer;
         }
         form .btn button:hover{
-            background: #beeda3;
+            background: #bee7a6;
             transition: all 0.2s ease;
         }
     </style>
@@ -134,9 +110,10 @@
         <div class="submit">
             <div class="text"> We value your feedback !</div>
         </div>
-        <form th:object="${enquiry}" th:action="@{/customer/review}" method="post">
-            <input type="hidden" th:field="${enquiry.id}" />
 
+        <form action="#" th:object="${enquiry}" th:action="@{/customer/review}" method="post">
+            
+            <input type="hidden" th:field="${enquiry.id}" />
         <div class="star-widget">
             
             <input th:field="${enquiry.rating}" type="radio" value="5" name="rate" id="rate-5">
@@ -149,18 +126,19 @@
             <label for="rate-2" class="fa fa-star"></label>
             <input th:field="${enquiry.rating}" type="radio" value="1" name="rate" id="rate-1">
             <label for="rate-1" class="fa fa-star"></label>
-            <!-- <input type="hidden" th:name="id" th:value="${enquiry.id}" /> -->
-            <textarea type="text" th:name="comment" th:value="${enquiry.comment}" cols="60" rows="10"></textarea>
             
-        
-            </div>
-            
-            <!-- <button type="submit">Submit</button> -->
-            <input type="submit" value="Submit" />
+            <textarea type="text" th:name="comment" th:value="${enquiry.comment}" cols="60" rows="10" placeholder="Please leave a comment for our service..."></textarea>     
+        </div>
+        <div class="btn">
+            <button type="submit" class="btn">Submit</button> 
+        </div>
                 
         </form>
-        </div>
+
     </body>
     
 </body>
+</html>
+
+
 

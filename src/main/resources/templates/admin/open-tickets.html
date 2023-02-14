@@ -166,9 +166,21 @@
 
           <li class="nav-item">
             <p class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" style="font-size: 20px;">
-              <a class="nav-link active" th:href="@{/admin/enquiries/}">Ticketing System</a>
+              <a class="nav-link" th:href="@{/admin/enquiries/}">Ticketing System</a>
             </p>
           </li>
+        
+         <li class="nav-item">
+          <a class="nav-link active" >
+            Open Tickets
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link " th:href="@{/admin/enquiries/closed/}">
+            Closed Tickets
+          </a>
+        </li>
          
 
           <li class="nav-item">
