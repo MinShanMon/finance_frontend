@@ -118,9 +118,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         EditText amountField = findViewById(R.id.add_transaction_amount);
 
         double amount = Double.parseDouble(amountField.getText().toString());
-        if (transactionType == TYPE_SPENDING) {
-            amount *= -1;
-        }
+
         if (transactionType == TYPE_INCOME) {
             categoryChoice = "Income";
         }
