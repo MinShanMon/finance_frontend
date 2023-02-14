@@ -95,8 +95,6 @@ public class InsightsViewPagerFragment extends Fragment {
         tabLayoutMediator.attach();
         getAllTransactionsAndSetCharts();
         getForecastAndSetLine();
-
-
     }
 
     private void getAllTransactionsAndSetCharts() {
@@ -149,22 +147,18 @@ public class InsightsViewPagerFragment extends Fragment {
                 .sorted((e1, e2) -> Integer.parseInt(e1.getKey()) - Integer.parseInt(e2.getKey()))
                 .collect(Collectors.toList());
         forecastDataList.forEach( e -> {
-            LocalDate date = LocalDate.of(currentYear, Integer.parseInt(e.getKey()) + 1, 1);
+            LocalDate date = LocalDate.of(currentYear, Integer.parseInt(e.getKey()), 1);
             long epochDay = date.toEpochDay();
             entries.add(new Entry(epochDay, e.getValue()));
         });
 
-//        forecastByMonth.forEach( (monthStr, forecastSpending) -> {
-//            LocalDate date = LocalDate.of(currentYear, Integer.parseInt(monthStr) + 1, 1);
-//            long epochDay = date.toEpochDay();
-//            entries.add(new Entry(epochDay, forecastSpending));
-//        });
 
         LineDataSet lineDataSet = new LineDataSet(entries, "Spending Forecast");
         lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
         lineDataSet.setColor(Color.parseColor("magenta"));
         List<ILineDataSet> lineDataSets = lineChart.getLineData().getDataSets();
         lineDataSets.add(lineDataSet);
+        lineChart.setData(new LineData(lineDataSets));
         lineChart.invalidate();
     }
 
