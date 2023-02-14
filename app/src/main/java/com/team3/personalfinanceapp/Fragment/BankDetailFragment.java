@@ -122,7 +122,7 @@ public class BankDetailFragment extends Fragment {
                 if(!pref.contains("fixedId-"+Long.toString(item.getId() -1 ))){
                     addbtn.setText("Add to Compare");
                 }else {
-                   addbtn.setText("Remove form Compare");
+                    addbtn.setText("Remove form Compare");
                 }
 
 
@@ -136,8 +136,8 @@ public class BankDetailFragment extends Fragment {
                 });
 
                 addbtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                                              @Override
+                                              public void onClick(View v) {
 
                                                   Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
 
