@@ -80,7 +80,7 @@ public class ForecastPortfolioFragment extends Fragment{
         fixedDeposistsServics fs = api.getRetrofit().create(fixedDeposistsServics.class);
         for (Long id : IdList) {
             if (id != null) {
-                Call<FixedDeposits> call = fs.getById(id, "Bearer "+ prefs.getString("token", ""));
+                Call<FixedDeposits> call = fs.getById(id+1, "Bearer "+ prefs.getString("token", ""));
                 call.enqueue(new Callback<FixedDeposits>() {
                     @SuppressLint("SetTextI18n")
                     @Override
@@ -305,7 +305,7 @@ public class ForecastPortfolioFragment extends Fragment{
         }
 
 
-        LineDataSet setProd1 = new LineDataSet(valsProd1, "Product 1 ");
+        LineDataSet setProd1 = new LineDataSet(valsProd1, "Product A ");
         setProd1.setAxisDependency(YAxis.AxisDependency.LEFT);
 
         setProd1.setLineWidth(2f);
@@ -314,10 +314,10 @@ public class ForecastPortfolioFragment extends Fragment{
         setProd1.setColor(R.color.purple_200);
 //        setProd1.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
 
-        LineDataSet setProd2 = new LineDataSet(valsProd2, "Product 2 ");
+        LineDataSet setProd2 = new LineDataSet(valsProd2, "Product B ");
         setProd2.setAxisDependency(YAxis.AxisDependency.LEFT);
         setProd2.setDrawCircles(true);
-        setProd2.setColor(R.color.teal_200);
+        setProd2.setColor(R.color.gold);
         setProd2.setLineWidth(2f);
 //        setComp2.setColor(getResources().getColor(R.color.teal_200,));
         //smooth line

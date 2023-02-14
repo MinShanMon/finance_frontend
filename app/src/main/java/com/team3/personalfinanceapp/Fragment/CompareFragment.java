@@ -67,8 +67,7 @@ public class CompareFragment extends Fragment {
 
             if (id!=null){
                 prefs = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
-                Call<FixedDeposits> call = fs.getById(id, "Bearer "+ prefs.getString("token", ""));
-//                System.out.println(call.request());
+                Call<FixedDeposits> call = fs.getById(id+1, "Bearer "+ prefs.getString("token", ""));
 
                 call.enqueue(new Callback<FixedDeposits>() {
                     @SuppressLint("SetTextI18n")
@@ -96,7 +95,6 @@ public class CompareFragment extends Fragment {
                             min1.setText(Integer.toString(result.getMinAmount()));
                             max1.setText(Integer.toString(result.getMaxAmount()));
                             interest1.setText(Double.toString(result.getInterestRate()));
-//                            date1.setText(result.getUpdateDate());
                             String[] dateDate  = result.getUpdateDate().split("-");
                             date1.setText(dateDate[0] + " - " + dateDate[1]);
 
@@ -116,7 +114,6 @@ public class CompareFragment extends Fragment {
                             min2.setText(Integer.toString(result.getMinAmount()));
                             max2.setText(Integer.toString(result.getMaxAmount()));
                             interest2.setText(Double.toString(result.getInterestRate()));
-//                            date2.setText(result.getUpdateDate());
                             String[] dateDate  = result.getUpdateDate().split("-");
                             date2.setText(dateDate[0] + " - " + dateDate[1]);
                         }
@@ -129,11 +126,6 @@ public class CompareFragment extends Fragment {
                 });
             }
 
-//            else
-//                Toast.makeText(getContext(),"unsuccessful",Toast.LENGTH_SHORT).show();
-
-
-//                Response<FixedDeposits> fixedDepositsResponse = call.execute();
             forecastBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
