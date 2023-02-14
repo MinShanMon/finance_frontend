@@ -121,7 +121,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {
 
-
+                editor = pref.edit();
+                editor.putString("password", passwordAp);
+                editor.commit();
                 Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
                 error_msg.setText("");
                 startActivity(intent);
