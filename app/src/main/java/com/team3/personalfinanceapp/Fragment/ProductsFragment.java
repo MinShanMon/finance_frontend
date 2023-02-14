@@ -40,8 +40,8 @@ public class ProductsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                SharedPreferences pref = getActivity().getSharedPreferences("bankIdList", getContext().MODE_PRIVATE);
-                pref.edit().clear().commit();
+//                SharedPreferences pref = getActivity().getSharedPreferences("bankIdList", getContext().MODE_PRIVATE);
+//                pref.edit().clear().commit();
 
                 BankFragment bankFragment = new BankFragment();
                 commitTransaction(bankFragment);
