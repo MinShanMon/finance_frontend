@@ -142,8 +142,22 @@ public class BankDetailFragment extends Fragment {
                         Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
 
                         if(fixedIdMap.size() == 2){
-                            Toast.makeText(getContext(), "can not add anymore",Toast.LENGTH_SHORT).show();
-                            return;
+                            if(fixedIdMap.containsKey("fixedId-"+Long.toString(item.getId() -1 ))){
+                                editor.remove("fixedId-"+Long.toString(item.getId() -1));
+                                editor.commit();
+                                Map<String, Long> fixedIdMap2 = (Map<String, Long>) pref.getAll();
+                                if(!fixedIdMap2.containsKey("fixedId-"+Long.toString(item.getId() -1 ))){
+                                    addbtn.setText("Add to Compare");
+                                }else {
+                                    addbtn.setText("Remove form Compare");
+                                }
+                                compare.setText("comapre "+Integer.toString(fixedIdMap2.size()) + " items");
+
+                            }else {
+
+                                Toast.makeText(getContext(), "can not add anymore", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                         }
 
                         if(fixedIdMap.containsKey("fixedId-"+Long.toString(item.getId() -1 ))){
@@ -154,6 +168,9 @@ public class BankDetailFragment extends Fragment {
                             editor.putLong ("fixedId-"+Long.toString(item.getId() - 1),item.getId() -1);
                             editor.commit();
                         }
+
+
+
 
                         Map<String, Long> fixedIdMap2 = (Map<String, Long>) pref.getAll();
                         if(!fixedIdMap2.containsKey("fixedId-"+Long.toString(item.getId() -1 ))){
