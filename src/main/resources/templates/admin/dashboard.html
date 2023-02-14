@@ -227,10 +227,9 @@
         <div class="charts">
           <div class="charts-card">
           <h3 class="chart-title">Rating</h3>
-            <div id="container" style="height: 350px" >
-              <!-- <body style="height: 100%; margin: 0">  -->
+            <div id="container" style="height: 350px;margin:0">
                 <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
-                <script type="text/javascript" src="js/echarts.min.js"></script>
+                <!-- <script type="text/javascript" src="js/echarts.min.js"></script> -->
                 <script type="text/javascript" th:inline="javascript">
                   var val5 = [[${rate5}]];
                   var val4 = [[${rate4}]];
@@ -287,14 +286,14 @@
             </script>
       </div>
   
-      <!-- <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=2> -->
+    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=2> 
 
               <div class="charts">
                 <div class="charts-card">
                   <h3 class="chart-title">Tickets</h3>
                   <div id="cont1" style="height: 350px;margin:0">
         <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"></script> 
-        <script type="text/javascript" src="js/echarts.min.js"></script>
+        <!-- <script type="text/javascript" src="js/echarts1.min.js"></script> -->
         <script type="text/javascript">
           var dom = document.getElementById('cont1');
           var myChart = echarts.init(dom, null, {
@@ -302,7 +301,6 @@
             useDirtyRect: false
           });
           var app = {};
-          
           var option;
 
           var openTik = [[${openSum}]];
@@ -319,9 +317,16 @@
         yAxis: {},
         dataGroupId: '',
         animationDurationUpdate: 500,
+        tooltip: {
+                  trigger: 'item'
+                },
+                legend: {
+                  orient: 'vertical',
+                  left: 'left'
+                },
         series: {
           type: 'bar',
-          id: 'sales',
+          id: 'tickets',
           data: [
             {
               value: openTik,
@@ -358,7 +363,7 @@
             },
             series: {
               type: 'bar',
-              id: 'sales',
+              id: 'tickets',
               dataGroupId: subData.dataGroupId,
               data: subData.data.map(function (item) {
                 return item[1];
@@ -375,7 +380,7 @@
                 top: 20,
                 style: {
                   text: 'Back',
-                  fontSize: 18
+                  fontSize: 20
                 },
                 onclick: function () {
                   myChart.setOption(option);
