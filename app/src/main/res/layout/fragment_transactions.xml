@@ -21,7 +21,6 @@
         android:id="@+id/money_in_card"
         android:layout_width="@dimen/transactions_card_width"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="#6da951"
         app:cardCornerRadius="@dimen/card_radius"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -29,7 +28,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/income_gradient">
 
             <TextView
                 android:id="@+id/money_in_header"
@@ -61,7 +61,6 @@
         android:layout_width="@dimen/transactions_card_width"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top"
-        app:cardBackgroundColor="#ce3750"
         app:cardCornerRadius="@dimen/card_radius"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -69,7 +68,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/expenses_gradient">
+
 
             <TextView
                 android:id="@+id/money_out_header"
@@ -102,15 +103,16 @@
         android:layout_width="@dimen/transactions_card_width"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top"
-        app:cardBackgroundColor="#ffac32"
         app:cardCornerRadius="@dimen/card_radius"
+        app:cardElevation="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/money_out_card">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/bank_gradient">
 
             <TextView
                 android:id="@+id/avail_balance_title"
@@ -156,7 +158,6 @@
         android:layout_width="@dimen/transactions_card_width"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top"
-        app:cardBackgroundColor="#189AB4"
         app:cardCornerRadius="@dimen/card_radius"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -164,7 +165,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/largestexpense_gradient">
 
             <TextView
                 android:id="@+id/largest_transaction_header"
