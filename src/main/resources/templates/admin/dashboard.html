@@ -122,7 +122,6 @@
         background-color: rgba(255, 255, 255, .1);
         border-color: rgba(255, 255, 255, .1);
       }
-      
       .form-control-dark:focus {
         border-color: transparent;
         box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
@@ -133,13 +132,28 @@
       .ticket_sum{
         margin-top: 100px;
       }
-      /* .container{
-        display: flex;
-        height:300px; width:700px;
+      .charts1{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+        margin-top:2px;
       }
-      .ticket_sum{
-        margin-top: 100px;
-      } */
+      .charts-card{
+        background-color: #eff3e2;
+        margin-bottom:0px;
+        padding:25px;
+        box-sizing: border-box;
+        -webkit-column-break-inside:avoid;
+        border-radius: 15px;
+        box-shadow: 0 6px 7px -4px rgba(0, 0, 0, 0.2);
+      }
+      .chart-title{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        font-weight: 400;
+      }
     </style>
     
   </head>
@@ -210,11 +224,11 @@
           <link href="dashboard.css" rel="stylesheet">
         </head>
       
-        
-              <h1 class="h2">Rating</h1>
-            <div id="container" style="height: 400px" >
-              <!-- <body style="height: 100%; margin: 0"> -->
-                <!-- <div id="container" style="height:2px"></div> -->
+        <div class="charts">
+          <div class="charts-card">
+          <h3 class="chart-title">Rating</h3>
+            <div id="container" style="height: 350px" >
+              <!-- <body style="height: 100%; margin: 0">  -->
                 <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
                 <script type="text/javascript" src="js/echarts.min.js"></script>
                 <script type="text/javascript" th:inline="javascript">
@@ -234,7 +248,6 @@
                   option = {
                 title: {
                   text: 'Service Satisfication ',
-                  subtext: 'Record',
                   left: 'center'
                 },  
                 tooltip: {
@@ -248,7 +261,7 @@
                   {
                     name: 'Rating',
                     type: 'pie',
-                    radius: '50%',
+                    radius: '60%',
                     data: [
                       { value: val5, name: '5 Stars' },
                       { value: val4, name: '4 Stars' },
@@ -273,16 +286,17 @@
                   window.addEventListener('resize', myChart.resize);
             </script>
       </div>
-    </table>
+  
+      <!-- <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=2> -->
 
-      <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=2>
-     <table style="float:right">
-        <div id="container" class="ticket_sum"> 
-          <div  style="height:auto;width: auto;display: inline;"> -->
+              <div class="charts">
+                <div class="charts-card">
+                  <h3 class="chart-title">Tickets</h3>
+                  <div id="cont1" style="height: 350px;margin:0">
         <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"></script> 
         <script type="text/javascript" src="js/echarts.min.js"></script>
         <script type="text/javascript">
-          var dom = document.getElementById('container');
+          var dom = document.getElementById('cont1');
           var myChart = echarts.init(dom, null, {
             renderer: 'canvas',
             useDirtyRect: false
@@ -295,6 +309,10 @@
           var closeTik = [[${closeSum}]];
           var totalTik = [[${total}]];
           option = {
+            title: {
+                  text: 'Statistics Summary',
+                  left: 'center'
+                },  
         xAxis: {
           data: ['Open Tickets', 'Closed Tickets', 'Total Tickets']
         },
@@ -374,6 +392,6 @@
       
           window.addEventListener('resize', myChart.resize);
         </script>
-</table>
-    
-      </html>
+</div>
+
+</html>
