@@ -29,7 +29,7 @@
             android:layout_height="155dp"
             android:layout_margin="10dp"
             android:background="@drawable/bg1"
-            android:text="Bank Fixed depostie"
+            android:text="Bank Fixed deposit"
             android:textSize="25dp"
             android:textStyle="italic"/>
 

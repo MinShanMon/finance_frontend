@@ -35,11 +35,13 @@
         <TextView
             android:layout_columnSpan="3"
             android:layout_width="70dp"/>
+
         <TextView
             android:layout_width="120dp"
+            android:layout_height="34dp"
             android:layout_columnSpan="3"
-            android:text="Amount/SGD"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="Amount/SGD" />
         <TextView
             android:layout_columnSpan="3"
             android:text="Period/Month"
@@ -56,7 +58,7 @@
             android:layout_height="20dp"
             android:foreground="@drawable/ic_baseline_remove_24"
             android:layout_columnSpan="1"/>
-        <TextView
+        <EditText
             android:id="@+id/amount1"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
@@ -87,7 +89,7 @@
             android:layout_height="20dp"
             android:foreground="@drawable/ic_baseline_remove_24"
             android:layout_columnSpan="1"/>
-        <TextView
+        <EditText
             android:id="@+id/amount2"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
@@ -133,10 +135,11 @@
             android:layout_margin="10dp"
             android:padding="20dp" />
     </LinearLayout>
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg1"
         app:layout_constraintTop_toBottomOf="@+id/chart_view"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
