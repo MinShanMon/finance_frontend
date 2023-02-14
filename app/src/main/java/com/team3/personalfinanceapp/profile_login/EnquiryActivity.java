@@ -43,9 +43,6 @@ public class EnquiryActivity extends AppCompatActivity {
     String question;
     String enquiryType;
 
-    // how to generate local dateTime when submit the enquiry?
-    LocalDateTime enquiry_dateTime;
-
 
     ImageView img_backArrow;
     TextView enq_form;
@@ -64,13 +61,7 @@ public class EnquiryActivity extends AppCompatActivity {
 
         init();
 
-
-        img_backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        img_backArrow.setOnClickListener(v -> finish());
 
         sub.setOnClickListener(v -> fillEnquiry());
     }
