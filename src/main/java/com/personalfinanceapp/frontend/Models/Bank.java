@@ -20,8 +20,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "banks")
 public class Bank {
-    
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long b_id;
