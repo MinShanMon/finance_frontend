@@ -65,8 +65,7 @@ public class BankDetailFragment extends Fragment {
 
         getActivity().setTitle("fixed deposists detail");
 
-
-
+        
 
 
         APIclient api = new APIclient();
@@ -140,7 +139,7 @@ public class BankDetailFragment extends Fragment {
                     public void onClick(View v) {
 
                         Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
-
+                        System.out.println(fixedIdMap.size());
                         if(fixedIdMap.size() == 2){
                             Toast.makeText(getContext(), "can not add anymore",Toast.LENGTH_SHORT).show();
                             return;
