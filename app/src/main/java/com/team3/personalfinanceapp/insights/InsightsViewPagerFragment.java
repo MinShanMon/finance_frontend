@@ -94,8 +94,6 @@ public class InsightsViewPagerFragment extends Fragment {
         );
         tabLayoutMediator.attach();
         getAllTransactionsAndSetCharts();
-        getForecastAndSetLine();
-
 
     }
 
@@ -108,6 +106,7 @@ public class InsightsViewPagerFragment extends Fragment {
                     transactions = new ArrayList<>(response.body());
                     setPieChartAndCategorySpending();
                     setLineChart();
+                    getForecastAndSetLine();
                 }
             }
 
@@ -146,7 +145,7 @@ public class InsightsViewPagerFragment extends Fragment {
                 .sorted((e1, e2) -> Integer.parseInt(e1.getKey()) - Integer.parseInt(e2.getKey()))
                 .collect(Collectors.toList());
         forecastDataList.forEach( e -> {
-            LocalDate date = LocalDate.of(currentYear, Integer.parseInt(e.getKey()) + 1, 1);
+            LocalDate date = LocalDate.of(currentYear, Integer.parseInt(e.getKey()), 1);
             long epochDay = date.toEpochDay();
             entries.add(new Entry(epochDay, e.getValue()));
         });
