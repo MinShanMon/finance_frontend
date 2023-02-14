@@ -83,6 +83,10 @@ public class RegisterActivity extends AppCompatActivity {
             error_msg.setText("Username cannot be empty");
             return;
         }
+        if(email.isEmpty() ){
+            error_msg.setText("Email cannot be empty");
+            return;
+        }
 
         if(password.isEmpty()){
             error_msg.setText("password cannot be empty");
@@ -92,10 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
             error_msg.setText("confirm password cannot be empty");
             return;
         }
-        if(email.isEmpty() ){
-            error_msg.setText("Fileds cannot be empty");
-            return;
-        }
+
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
 
             error_msg.setText("please enter valid email");
