@@ -45,6 +45,8 @@ public class AdminTicketController {
         String token = user.getToken().getAccess_token();
         List<Enquiry> enquiries = enqService.viewDashboard(token);
         List<Enquiry> openEnquiries = enqService.getOpenEnquiry(token);
+        List<Enquiry> closedEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
+        equals(TicketStatusEnum.CLOSED)).collect(Collectors.toList());
 
         List<Enquiry> rate5 = enquiries.stream().filter(u -> u.getRating()==5).collect(Collectors.toList());
         List<Enquiry> rate4 = enquiries.stream().filter(u -> u.getRating()==4).collect(Collectors.toList());
@@ -57,9 +59,9 @@ public class AdminTicketController {
         model.addAttribute("rate2", rate2.size());
         model.addAttribute("rate1", rate1.size());
 
-        model.addAttribute("open", openEnquiries);
+        model.addAttribute("total", enquiries.size());
         model.addAttribute("openSum", openEnquiries.size());
-        model.addAttribute("enquiries", enquiries);
+        model.addAttribute("closeSum", closedEnquiries.size());
         return "admin/dashboard";
     }
 

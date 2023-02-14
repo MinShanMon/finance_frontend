@@ -202,16 +202,16 @@
       
       <form action="#" th:action="@{/admin/close_ticket/}" method="post">
         <fieldset th:each="enq : ${enquiry}">
-          <H6>📩 RECEIVE FROM:&nbsp; &nbsp; &nbsp; 
-            <td th:text="${enq.name}"></td>
+          <H6><span style="background-color: rgb(154, 188, 246);"> RECEIVE FROM:</span>&nbsp; &nbsp; &nbsp; 
+            👤<td th:text="${enq.name}"></td>
              &nbsp;&nbsp;&nbsp;&nbsp;
-            <td th:text="${enquiry.email}"></td>
+            📩<td th:text="${enquiry.email}"></td>
               &nbsp;&nbsp;&nbsp;&nbsp;
-            <td th:text="${#temporals.format(enquiry.enquiry_dateTime, 'dd-MMM-yyyy  hh:mm')}"></td>
+            📅<td th:text="${#temporals.format(enquiry.enquiry_dateTime, 'dd-MMM-yyyy  hh:mm')}"></td>
            
             <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>
 
-          <H6>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;CONTENT:&nbsp; &nbsp; &nbsp;
+          <H6><span style="background-color: rgb(225, 222, 250);">CONTENT:</span>&nbsp; &nbsp; &nbsp;
             <td th:text="${enq.question}"></td>
           </H6>
             <input type="hidden" th:name="id" th:value="${enquiry.id}" />
@@ -222,12 +222,12 @@
           </H6>
       </form>
 
-       <HR style="FILTER: progid:DXImageTransform.Microsoft.Glow(color=#987cb9,strength=10)" width="100%" color=#987cb9 SIZE=15>
+       <HR style="FILTER: progid:DXImageTransform.Microsoft.Glow(color=#987cb9,strength=10)" width="100%" color=#987cb9 SIZE=13>
         
         <form action="#" th:action="@{/admin/update/}" method="post">
         <input type="hidden" th:name="id" th:value="${enquiry.id}" />
         <div align="center">
-        <textarea type="text" th:name="reply" th:value="${ticket.reply}" cols="115" rows="10"></textarea>
+        <textarea type="text" th:name="reply" th:value="${ticket.reply}" cols="115" rows="10" required></textarea>
         </div>
       <div class="btn">
         <button type="radio" style="display: block;margin: 0 auto;"> REPLY </button>
