@@ -3,6 +3,7 @@ package com.team3.personalfinanceapp.Fragment;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ import com.team3.personalfinanceapp.Services.fixedDeposistsServics;
 import com.team3.personalfinanceapp.config.APIclient;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,9 +73,11 @@ public class BankFragment extends Fragment {
             public void onResponse(Call<List<FixedDeposits>> call, Response<List<FixedDeposits>> response) {
                 if(!response.isSuccessful()){
                     System.out.println("unsuccessful");
-                    Toast.makeText(getContext(),"unsuccressful",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"unsuccessful",Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+
 
         progressBar.setVisibility(View.INVISIBLE);
                 fixedList= response.body();
@@ -85,7 +90,7 @@ public class BankFragment extends Fragment {
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                             Bundle bundle = new Bundle();
-                            bundle.putInt("deposists", position);
+                            bundle.putInt("deposits", position);
 
                             BankDetailFragment bankDetailFragment = new BankDetailFragment();
                             bankDetailFragment.setArguments(bundle);

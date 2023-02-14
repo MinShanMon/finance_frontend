@@ -3,10 +3,13 @@ package com.team3.personalfinanceapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -16,6 +19,7 @@ import com.team3.personalfinanceapp.Models.FixedDeposits;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class ListAdapter extends ArrayAdapter<Object> {
 
@@ -27,6 +31,9 @@ public class ListAdapter extends ArrayAdapter<Object> {
         super(context, R.layout.row);
         this.context=context;
         this.fixedList = fixedList;
+
+
+
 
         addAll(new Object[fixedList.size()]);
     }
@@ -47,7 +54,17 @@ public class ListAdapter extends ArrayAdapter<Object> {
         TextView minterest = view.findViewById(R.id.whatinterest);
         bank.setText(bankName);
         period.setText(months+"months");
-        minterest.setText(interest+"%");
+        minterest.setText(interest);
+
+        SharedPreferences pref = getContext().getSharedPreferences("bankIdList", getContext().MODE_PRIVATE);
+        Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
+
+
+        if(fixedIdMap.containsKey("fixedId-"+Long.toString(pos))){
+
+            Drawable d = getContext().getDrawable(R.drawable.bg1);
+            view.findViewById(R.id.chooseview).setBackground(d);
+        }
 
         return view;
     }
