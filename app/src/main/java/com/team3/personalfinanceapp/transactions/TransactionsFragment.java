@@ -193,7 +193,7 @@ public class TransactionsFragment extends Fragment {
                 .max((t1, t2) -> (int) (t1.getAmount() - t2.getAmount())).orElse(null);
         TextView title = view.findViewById(R.id.largest_transaction_title);
         if (largestTransaction == null) {
-            title.setText("No transactions found");
+            title.setText("No transactions found for this month");
             amount.setText("");
             return;
         }
