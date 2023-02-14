@@ -123,7 +123,6 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
                 @Override
                 public void onResponse(Call<Map<String, Float>> call, Response<Map<String, Float>> response) {
                     Map<String, Float> forecastByMonth = response.body();
-                    setForecastLineChart(forecastByMonth, view);
                     System.out.println(forecastByMonth);
                 }
 
@@ -135,8 +134,4 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
         });
     }
 
-    private void setForecastLineChart(Map<String, Float> spendingForecastByMonth, View view) {
-        LineChart forecastChart = view.findViewById(R.id.forecast_chart);
-
-    }
 }

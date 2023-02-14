@@ -76,6 +76,10 @@ public class CategorySpendFragment extends Fragment {
         setSpendingDataText(view, currMonthCategorySpending, prevMonthCategorySpending);
     }
 
+    private void setBarChart(View view, Map<String, Double> currMonthSpendingMap, Map<String, Double> prevMonthSpendingMap) {
+
+    }
+
     private void setSpendingDataText(View view, Map<String, Double> currMonthSpendingMap, Map<String, Double> prevMonthSpendingMap) {
 
         TextView foodAmtThisMonth = view.findViewById(R.id.food_insights_thismonthamt);
