@@ -131,9 +131,9 @@ public class PieChartFragment extends Fragment {
         } else {
             sum = transactions.stream()
                     .filter(t -> !t.getCategory().equalsIgnoreCase("income"))
-                    .filter(t -> t.getDate().getMonth().equals(LocalDate.now().getMonth()))
+                    .filter(t -> t.getDate().withDayOfMonth(1).equals(LocalDate.now().withDayOfMonth(1)))
                     .mapToDouble(Transaction::getAmount)
-                    .reduce(Double::sum).orElseGet(() -> 0);
+                    .reduce(Double::sum).orElse((double) 0);
         }
 
 
