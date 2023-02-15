@@ -195,20 +195,22 @@
         <button class="btn btn-outline-primary"> <a  th:href="@{/admin/enquiries/}" style="text-decoration: none;color:black" >All: <span th:text="${total}"></span></a></button> &nbsp&nbsp&nbsp&nbsp
         <button class="btn btn-outline-warning"> <a  th:href="@{/admin/enquiries/open/}" style="text-decoration: none;color:black" >Open Tickets: <span th:text="${openSum}"></span></a></button> &nbsp&nbsp&nbsp&nbsp
         <button class="btn btn-outline-success"> <a  th:href="@{/admin/enquiries/closed/}"  style="text-decoration: none;color:black">Close Tickets: <span th:text="${closeSum}"></span></a></button> 
-
-        <form action="/enquiries/search/" method="post"><div class="input-group">
+        
+        
+      <div class="input-group">
+        <form action="/enquiries/search/">
           <div class="form-outline">
-            <input type="search" th:name="username" id="form1" class="form-control" required />
+            <input type="search" th:name="username" id="form1" class="form-control" placeholder="search by name" />
           </div>
-          <button type="submit" class="btn btn-primary">
+          <button type="button" class="btn btn-primary">
             <i class="bi bi-search"></i>
           </button>
-        </div></form>
+        </form>
+      </div>
         
       </div>     
       
-              
-
+     
       <table class="table">
         <thead>
           <tr>
@@ -222,7 +224,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr th:each="enquiry : ${enquiries}">
+         
+          <tr th:each="enquiry : ${senquiries}">
             <td th:text="${enquiry.id}"></td>
             <td th:text="${enquiry.enquiryType}"></td>
             <td th:text="${enquiry.name}"></td>
@@ -241,6 +244,12 @@
           </tr>         
         </tbody>
       </table>
+      <div th:if="${senquiries.empty}">
+        <div class="alert alert-danger mx-auto col-10 col-md-8 col-lg-6" style="text-align: center;" role="alert">
+          <span th:text="${username}"></span> does not exit in our queries system
+        </div>
+    </div>
+
      
     </main>
   </div>

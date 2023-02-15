@@ -83,6 +83,29 @@ public class AdminTicketController {
         model.addAttribute("total", enquiries.size());
         return "admin/inbox";
     }
+
+    @PostMapping("/enquiries/search/")
+    public String searchEnquiries(Model model, HttpSession session,String username) {
+        UserSession user =(UserSession) session.getAttribute("usersession");
+        String token = user.getToken().getAccess_token();
+        List<Enquiry> enquiries = enqService.getAllEnquiry(token);
+        List<Enquiry> openEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
+        equals(TicketStatusEnum.OPEN)).collect(Collectors.toList());
+
+        List<Enquiry> closeEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
+        equals(TicketStatusEnum.CLOSED)).collect(Collectors.toList());
+
+        List<Enquiry> searchResult = enquiries.stream().filter(u -> u.getName().toLowerCase().equals(username.toLowerCase())).collect(Collectors.toList());
+
+      
+        model.addAttribute("enquiries", enquiries);
+        model.addAttribute("username", username);
+        model.addAttribute("senquiries", searchResult);
+        model.addAttribute("openSum", openEnquiries.size());
+        model.addAttribute("closeSum", closeEnquiries.size());
+        model.addAttribute("total", enquiries.size());
+        return "admin/sinbox";
+    }
     
     @GetMapping("/enquiries/open")
     public String viewOpenEnquiries(Model model, HttpSession session) {
@@ -111,6 +134,7 @@ public class AdminTicketController {
         List<Enquiry> closedEnquiries = enqService.getClosedEnquiry(token);
 
         List<Enquiry> enquiries = enqService.getAllEnquiry(token);
+
         List<Enquiry> openEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
         equals(TicketStatusEnum.OPEN)).collect(Collectors.toList());
 
