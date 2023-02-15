@@ -2,10 +2,13 @@ package com.team3.personalfinanceapp.transactions;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.team3.personalfinanceapp.Fragment.ProductsFragment;
+import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.BankResponse;
 import com.team3.personalfinanceapp.model.Transaction;
@@ -40,6 +45,7 @@ public class TransactionsFragment extends Fragment {
 
     private String moneyFormat;
     private SharedPreferences pref;
+    private ITransactionsFragment iTransactionsFragment;
 
     public TransactionsFragment() {
         // Required empty public constructor
@@ -49,12 +55,27 @@ public class TransactionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+//        setupOnBackPressed();
         return inflater.inflate(R.layout.fragment_transactions, container, false);
+    }
+
+    private void setupOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if(isEnabled()){
+
+                    setEnabled(false);
+                    requireActivity().onBackPressed();
+                }
+            }
+        });
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        viewDetailProduct(R.id.transactions_item);
         View view = getView();
         pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
         moneyFormat = getString(R.string.money_format);
@@ -225,6 +246,20 @@ public class TransactionsFragment extends Fragment {
     private void setLinkBankButton(View view) {
         Button linkBankBtn = view.findViewById(R.id.link_bank_btn);
         linkBankBtn.setOnClickListener(v -> startActivity(new Intent(getContext(), LinkBankActivity.class)));
+    }
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        iTransactionsFragment = (ITransactionsFragment) context;
+    }
+
+    void viewDetailProduct(int itemId) {
+        iTransactionsFragment.viewDetailTransaction(itemId);
+    }
+    public interface ITransactionsFragment {
+        void viewDetailTransaction(int itemId);
     }
 
 }

@@ -1,14 +1,19 @@
 package com.team3.personalfinanceapp.Fragment;
 
 import android.animation.ObjectAnimator;
+import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,6 +22,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.google.android.material.navigation.NavigationBarView;
+import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.Transaction;
 import com.team3.personalfinanceapp.utils.APIClient;
@@ -30,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment implements SetBudgetDialogFragment.setBudgetListener {
+public class HomeFragment extends Fragment implements SetBudgetDialogFragment.setBudgetListener, NavigationBarView.OnItemSelectedListener {
 
 
     private List<Transaction> transactions;
@@ -39,6 +46,8 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
     private int userId;
 
     private int totalSpendingThisMonth;
+
+    private IHomeFragment iHomeFragment;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -52,13 +61,26 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
         setBudgetButton(view);
         setSpendingForecastButton(view);
+//        setupOnBackPressed();
         return view;
     }
+//    private void setupOnBackPressed(){
+//        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+//            @Override
+//            public void handleOnBackPressed() {
+//                if(isEnabled()){
+////                    startActivity(new Intent(getActivity(), MainActivity.class));
+//                    setEnabled(false);
+//                    requireActivity().onBackPressed();
+//                }
+//            }
+//        });
+//    }
 
     @Override
     public void onStart() {
         super.onStart();
-
+        viewDetailHome(R.id.home_item);
         pref = getActivity().getSharedPreferences("user_credentials", Context.MODE_PRIVATE);
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
         userId = pref.getInt("userid", 0);
@@ -79,6 +101,20 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
                 call.cancel();
             }
         });
+    }
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        iHomeFragment = (IHomeFragment) context;
+    }
+
+    void viewDetailHome(int itemId) {
+        iHomeFragment.viewDetailHome(itemId);
+    }
+    public interface IHomeFragment {
+        void viewDetailHome(int itemId);
     }
 
     private void setBudgetBar(int totalSpendingThisMonth) {
@@ -137,6 +173,10 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
 
     private void setForecastLineChart(Map<String, Float> spendingForecastByMonth, View view) {
         LineChart forecastChart = view.findViewById(R.id.forecast_chart);
+    }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return true;
     }
 }

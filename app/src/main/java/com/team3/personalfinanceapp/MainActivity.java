@@ -35,7 +35,9 @@ import retrofit2.Response;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener, HomeFragment.IHomeFragment
+, InsightsViewPagerFragment.IinsightFragment, ProductsFragment.IProductFragment, TransactionsFragment.ITransactionsFragment
+, ProfileFragment.IProfileFragment{
 
     private TransactionsFragment transactionsFragment = new TransactionsFragment();
     private HomeFragment homeFragment = new HomeFragment();
@@ -43,23 +45,25 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     private ProfileFragment profileFragment = new ProfileFragment();
 
 
+
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     UserApi apiInterface;
     AccessToken accessToken;
 
+    int active;
+    BottomNavigationView btmNavBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BottomNavigationView btmNavBar = findViewById(R.id.btm_navbar);
+        btmNavBar = findViewById(R.id.btm_navbar);
         btmNavBar.setOnItemSelectedListener(this);
         btmNavBar.setSelectedItemId(R.id.home_item);
 
         pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
 
         apiInterface = APIClient.getClient().create(UserApi.class);
-
 
         if(pref.contains("token") && pref.contains("userid")){
             checkToken(pref.getInt("userid",0),pref.getString("token",""));
@@ -75,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     @Override
     public void onStart(){
         super.onStart();
+        btmNavBar.setSelectedItemId(active);
         pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
         if(pref.contains("token") && pref.contains("userid")){
             checkToken(pref.getInt("userid",0),pref.getString("token",""));
@@ -118,12 +123,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     private boolean replaceFragment(int itemId) {
 
         switch (itemId) {
-            case R.id.home_item:
 
-                commitTransaction(homeFragment);
-                return true;
             case R.id.insights_item:
-
                 commitTransaction(insightsFragment);
                 return true;
 
@@ -133,19 +134,17 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 return true;
 
             case R.id.transactions_item:
-                
                 commitTransaction(transactionsFragment);
                 return true;
+
             case R.id.manage_profile:
-
                 commitTransaction(profileFragment);
-
                 return true;
+
             default:
                 commitTransaction(homeFragment);
                 return true;
         }
-
     }
 
     private void commitTransaction(Fragment fragment) {
@@ -159,5 +158,31 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     public HomeFragment getHomeFragment() {
         return homeFragment;
+    }
+
+    @Override
+    public void viewDetailHome(int itemId) {
+        btmNavBar.setSelectedItemId(itemId);
+    }
+
+    @Override
+    public void viewDetailInsight(int itemId) {
+        btmNavBar.setSelectedItemId(itemId);
+    }
+
+
+    @Override
+    public void viewDetailProduct(int itemId) {
+        btmNavBar.setSelectedItemId(itemId);
+    }
+
+    @Override
+    public void viewDetailTransaction(int itemId) {
+        btmNavBar.setSelectedItemId(itemId);
+    }
+
+    @Override
+    public void viewDetailProfile(int itemId) {
+        btmNavBar.setSelectedItemId(itemId);
     }
 }

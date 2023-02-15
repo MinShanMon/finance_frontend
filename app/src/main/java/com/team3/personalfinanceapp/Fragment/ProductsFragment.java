@@ -6,6 +6,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -17,9 +18,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.team3.personalfinanceapp.R;
+import com.team3.personalfinanceapp.insights.InsightsViewPagerFragment;
 
 
 public class ProductsFragment extends Fragment {
+
+    private IProductFragment iProductFragment;
 
     public ProductsFragment() {
         // Required empty public constructor
@@ -78,5 +82,24 @@ public class ProductsFragment extends Fragment {
         trans.replace(R.id.fragment_container, fragment);
         trans.addToBackStack(null);
         trans.commit();
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        viewDetailProduct(R.id.products_item);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        iProductFragment = (IProductFragment) context;
+    }
+
+    void viewDetailProduct(int itemId) {
+        iProductFragment.viewDetailProduct(itemId);
+    }
+    public interface IProductFragment {
+        void viewDetailProduct(int itemId);
     }
 }

@@ -2,6 +2,7 @@ package com.team3.personalfinanceapp.insights;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.team3.personalfinanceapp.Fragment.HomeFragment;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.adapter.InsightsViewPagerAdapter;
 import com.team3.personalfinanceapp.model.Transaction;
@@ -58,6 +60,7 @@ public class InsightsViewPagerFragment extends Fragment {
 
     APIInterface apiInterface;
     SharedPreferences pref;
+    private IinsightFragment insightsViewPagerFragment;
 
 
     public InsightsViewPagerFragment() {
@@ -219,6 +222,26 @@ public class InsightsViewPagerFragment extends Fragment {
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(formatter);
 
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        viewDetailHome(R.id.insights_item);
+    }
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        insightsViewPagerFragment = (InsightsViewPagerFragment.IinsightFragment) context;
+    }
+
+    void viewDetailHome(int itemId) {
+        insightsViewPagerFragment.viewDetailInsight(itemId);
+    }
+    public interface IinsightFragment {
+        void viewDetailInsight(int itemId);
     }
 
 }

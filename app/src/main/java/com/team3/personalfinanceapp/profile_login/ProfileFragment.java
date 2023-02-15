@@ -2,10 +2,13 @@ package com.team3.personalfinanceapp.profile_login;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -20,7 +23,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.team3.personalfinanceapp.Fragment.HomeFragment;
+import com.team3.personalfinanceapp.Fragment.SetBudgetDialogFragment;
+import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.R;
+import com.team3.personalfinanceapp.transactions.TransactionsFragment;
 
 public class ProfileFragment extends Fragment {
     TextView logout;
@@ -50,7 +58,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+//        HomeFragment hf = MainActivity.get
         View view =  inflater.inflate(R.layout.fragment_profile, container, false);
         pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
         init(view);
@@ -79,6 +87,12 @@ public class ProfileFragment extends Fragment {
             getActivity().finish();
         });
         return view;
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        viewDetailProduct(R.id.manage_profile);
     }
 
     private void init(View view){
@@ -117,6 +131,20 @@ public class ProfileFragment extends Fragment {
         trans.replace(R.id.fragment_container, fragment);
         trans.addToBackStack(null);
         trans.commit();
+    }
+
+    private IProfileFragment iProfileFragment;
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        iProfileFragment = (IProfileFragment) context;
+    }
+
+    void viewDetailProduct(int itemId) {
+        iProfileFragment.viewDetailProfile(itemId);
+    }
+    public interface IProfileFragment {
+        void viewDetailProfile(int itemId);
     }
 
 
