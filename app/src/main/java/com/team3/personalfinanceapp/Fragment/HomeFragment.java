@@ -23,6 +23,8 @@ import com.team3.personalfinanceapp.model.Transaction;
 import com.team3.personalfinanceapp.utils.APIClient;
 import com.team3.personalfinanceapp.utils.APIInterface;
 
+import org.w3c.dom.Text;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -108,24 +110,25 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
     }
 
     private void setBudgetBar(int totalSpendingThisMonth) {
+        LinearLayout budgetBarLayout = view.findViewById(R.id.budget_bar_layout);
         ProgressBar budgetBar = view.findViewById(R.id.budget_progress_bar);
         TextView budgetAmtText = view.findViewById(R.id.budget_amt_progressbar);
-        TextView progressBarStartLabel = view.findViewById(R.id.progress_bar_startlabel);
+        TextView budgetErrorMsg = view.findViewById(R.id.budget_error);
         SharedPreferences budgetPref = getActivity().getSharedPreferences("user_budget", Context.MODE_PRIVATE);
         int max = (int) budgetPref.getFloat(String.valueOf(userId), 0);
 
         if (max > 0) {
             budgetAmtText.setText("$" + max);
-            progressBarStartLabel.setText("$0");
             budgetBar.setMax(max);
-            budgetBar.setVisibility(View.VISIBLE);
+            budgetBarLayout.setVisibility(View.VISIBLE);
+            budgetErrorMsg.setVisibility(View.GONE);
             ObjectAnimator.ofInt(budgetBar, "progress", Math.abs(totalSpendingThisMonth))
                     .setDuration(1000)
                     .start();
         } else {
-            budgetBar.setVisibility(View.GONE);
+            budgetBarLayout.setVisibility(View.GONE);
             budgetAmtText.setText("");
-            progressBarStartLabel.setText("No budget set, please set one.");
+            budgetErrorMsg.setVisibility(View.VISIBLE);
         }
     }
 

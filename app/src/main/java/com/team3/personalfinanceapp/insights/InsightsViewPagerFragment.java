@@ -54,10 +54,11 @@ public class InsightsViewPagerFragment extends Fragment {
 
     private ArrayList<Transaction> transactions;
 
-    LineChart lineChart;
+    private LineChart lineChart;
 
-    APIInterface apiInterface;
-    SharedPreferences pref;
+    private APIInterface apiInterface;
+    private SharedPreferences pref;
+    private TabLayoutMediator tabLayoutMediator;
 
 
     public InsightsViewPagerFragment() {
@@ -82,8 +83,7 @@ public class InsightsViewPagerFragment extends Fragment {
 
         TabLayout tabLayout = view.findViewById(R.id.insights_tablayout);
         viewPager = view.findViewById(R.id.insights_viewpager);
-        viewPager.setAdapter(new InsightsViewPagerAdapter(this, new ArrayList<>()));
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager,
+        tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> {
                     if (position == 0)
                         tab.setText("Pie Chart");
@@ -91,7 +91,6 @@ public class InsightsViewPagerFragment extends Fragment {
                         tab.setText("Spending By Category");
                 }
         );
-        tabLayoutMediator.attach();
         getAllTransactionsAndSetCharts();
     }
 
@@ -164,6 +163,7 @@ public class InsightsViewPagerFragment extends Fragment {
     private void setPieChartAndCategorySpending() {
         InsightsViewPagerAdapter insightsPagerAdapter = new InsightsViewPagerAdapter(InsightsViewPagerFragment.this, transactions);
         viewPager.setAdapter(insightsPagerAdapter);
+        tabLayoutMediator.attach();
     }
 
     private void setLineChart() {
