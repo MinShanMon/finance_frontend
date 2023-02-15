@@ -70,7 +70,13 @@ public class SetBudgetDialogFragment extends DialogFragment {
 
     private void saveBudget() {
         EditText budgetAmtField = getDialog().findViewById(R.id.budget_amt);
-        float budget = Float.parseFloat(budgetAmtField.getText().toString());
+        String budgetAmtText = budgetAmtField.getText().toString();
+        float budget;
+        if (budgetAmtText != null && !budgetAmtText.isEmpty()) {
+            budget = Float.valueOf(budgetAmtText);
+        } else {
+            budget = Float.valueOf(0);
+        }
         SharedPreferences.Editor budgetPrefEditor = budgetPref.edit();
         budgetPrefEditor.putFloat(userId, budget);
         budgetPrefEditor.commit();
