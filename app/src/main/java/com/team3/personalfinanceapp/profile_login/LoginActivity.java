@@ -102,6 +102,15 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        init();
+        txtUsername.setEnabled(true);
+        txtPassword.setEnabled(true);
+        btnLogin.setEnabled(true);
+        checkBox.setEnabled(true);
+        error.setEnabled(true);
+        signUp.setEnabled(true);
+        LoginWithFacebook.setEnabled(true);
+        txtForgetPassword.setEnabled(true);
     }
 
 
@@ -197,8 +206,14 @@ public class LoginActivity extends AppCompatActivity {
                     error.setText("Check Your Password Or Email");
                     return;
                 }
-                txtUsername.setFocusable(false);
-                txtPassword.setFocusable(false);
+                txtUsername.setEnabled(false);
+                txtPassword.setEnabled(false);
+                btnLogin.setEnabled(false);
+                checkBox.setEnabled(false);
+                error.setEnabled(false);
+                signUp.setEnabled(false);
+                LoginWithFacebook.setEnabled(false);
+                txtForgetPassword.setEnabled(false);
                 pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
                 editor = pref.edit();
                 editor.putString("token", response.body().refresh_token);
@@ -235,6 +250,23 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<RegisteredUsers> call, Response<RegisteredUsers> response) {
 
                 if (response.body().getStatus().equals("PENDING")) {
+//                    txtUsername = findViewById(R.id.txtLoginUsername);
+//                    txtPassword = findViewById(R.id.txtLoginPassword);
+//                    btnLogin = findViewById(R.id.btnLogin);
+//                    checkBox = findViewById(R.id.remember_checkbox);
+//                    error = findViewById(R.id.error_msg);
+//                    signUp = findViewById(R.id.txtSignUp);
+//                    LoginWithFacebook = findViewById(R.id.LoginWithFacebook);
+//                    txtForgetPassword = findViewById(R.id.txtForgetPassword);
+//                    txtUsername.setSaveEnabled(false);
+//                    txtPassword.setSaveEnabled(false);
+//                    btnLogin.setEnabled(false);
+//                    checkBox.setEnabled(false);
+//                    error.setEnabled(false);
+//                    signUp.setEnabled(false);
+//                    LoginWithFacebook.setEnabled(false);
+//                    txtForgetPassword.setEnabled(false);
+
                     sendEmail(email);
                 } else {
                     pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
@@ -268,7 +300,7 @@ public class LoginActivity extends AppCompatActivity {
                 intent.putExtra("token", response.body().access_token);
                 intent.putExtra("register", true);
                 startActivity(intent);
-                finish();
+
             }
 
             @Override

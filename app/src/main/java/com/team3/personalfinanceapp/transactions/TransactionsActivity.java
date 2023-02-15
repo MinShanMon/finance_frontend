@@ -118,6 +118,7 @@ public class TransactionsActivity extends AppCompatActivity {
                 TextView transactionAmtText = new TextView(this);
                 transactionAmtText.setText("$" + String.format(getString(R.string.money_format), t.getAmount()));
                 transactionAmtText.setTypeface(null, Typeface.BOLD);
+                transactionAmtText.setTextSize(20);
                 transactionAmtText.setGravity(Gravity.END);
 
                 linearLayoutTransaction.addView(transactionTitleText);

@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         setContentView(R.layout.activity_main);
         BottomNavigationView btmNavBar = findViewById(R.id.btm_navbar);
         btmNavBar.setOnItemSelectedListener(this);
-        btmNavBar.setSelectedItemId(R.id.manage_profile);
+        btmNavBar.setSelectedItemId(R.id.home_item);
 
         pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
 
@@ -127,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 commitTransaction(insightsFragment);
                 return true;
 
-
             case R.id.products_item:
                 ProductsFragment productsFragment = new ProductsFragment();
                 commitTransaction(productsFragment);
@@ -138,12 +137,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 commitTransaction(transactionsFragment);
                 return true;
             case R.id.manage_profile:
-
                 commitTransaction(profileFragment);
-
+                return true;
+            default:
+                commitTransaction(homeFragment);
                 return true;
         }
-        return false;
     }
 
     private void commitTransaction(Fragment fragment) {
