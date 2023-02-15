@@ -120,10 +120,8 @@ public class CategorySpendFragment extends Fragment {
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        String currMonthStr = LocalDate.now().getMonth().toString().substring(0, 3)
-                + " '" + String.valueOf(LocalDate.now().getYear()).substring(2, 4);
-        String prevMonthStr = LocalDate.now().getMonth().minus(1).toString().substring(0, 3)
-                + " '" + String.valueOf(LocalDate.now().getYear()).substring(2, 4);
+        String currMonthStr = LocalDate.now().getMonth().toString().substring(0, 3);
+        String prevMonthStr = LocalDate.now().getMonth().minus(1).toString().substring(0, 3);
         String[] labels = new String[] {prevMonthStr, currMonthStr};
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
