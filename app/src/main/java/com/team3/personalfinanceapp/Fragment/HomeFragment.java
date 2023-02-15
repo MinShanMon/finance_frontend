@@ -26,6 +26,7 @@ import com.team3.personalfinanceapp.utils.APIInterface;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,6 +44,8 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
 
     String moneyFormat;
 
+    private View view;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -55,14 +58,13 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         moneyFormat = getString(R.string.money_format);
         setBudgetButton(view);
-        setSpendingForecastButton(view);
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
+        view = getView();
         pref = getActivity().getSharedPreferences("user_credentials", Context.MODE_PRIVATE);
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
         userId = pref.getInt("userid", 0);
@@ -77,6 +79,7 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
                         .map(t -> t.getAmount()).reduce(Double::sum)
                         .orElse(Double.valueOf(0)).intValue();
                 setBudgetBar(totalSpendingThisMonth);
+                setCategorySpend(getView());
             }
 
             @Override
@@ -84,10 +87,27 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
                 call.cancel();
             }
         });
+
+        Call<Map<String, Float>> getForecastCall =
+                apiInterface.getSpendingForecastById(pref.getInt("userid", 0), "Bearer " + pref.getString("token", ""));
+        getForecastCall.enqueue(new Callback<Map<String, Float>>() {
+            @Override
+            public void onResponse(Call<Map<String, Float>> call, Response<Map<String, Float>> response) {
+                Map<String, Float> forecastByMonth = response.body();
+                if (forecastByMonth != null) {
+                    Float forecastAmt = forecastByMonth.getOrDefault(String.valueOf(LocalDate.now().getMonth().getValue()), Float.valueOf(0));
+                    TextView forecast = view.findViewById(R.id.this_month_forecast);
+                    forecast.setText("$" + String.format(view.getResources().getString(R.string.money_format), forecastAmt));
+                }
+            }
+            @Override
+            public void onFailure(Call<Map<String, Float>> call, Throwable t) {
+                call.cancel();
+            }
+        });
     }
 
     private void setBudgetBar(int totalSpendingThisMonth) {
-        View view = getView();
         ProgressBar budgetBar = view.findViewById(R.id.budget_progress_bar);
         TextView budgetAmtText = view.findViewById(R.id.budget_amt_progressbar);
         TextView progressBarStartLabel = view.findViewById(R.id.progress_bar_startlabel);
@@ -120,98 +140,21 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
         setBudgetBar(totalSpendingThisMonth);
     }
 
-    private void setSpendingForecastButton(View view) {
-        Button forecastBtn = view.findViewById(R.id.get_forecast_btn);
-        forecastBtn.setOnClickListener(v -> {
-            APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-            Call<Map<String, Float>> getForecastCall = apiInterface.getSpendingForecastById(userId, "Bearer " + pref.getString("token", ""));
-            getForecastCall.enqueue(new Callback<Map<String, Float>>() {
-                @Override
-                public void onResponse(Call<Map<String, Float>> call, Response<Map<String, Float>> response) {
-                    Map<String, Float> forecastByMonth = response.body();
-                    System.out.println(forecastByMonth);
-                }
+    private void setCategorySpend(View view) {
+        TextView foodSpendingText = view.findViewById(R.id.food_spending);
+        foodSpendingText.setText("$" + String.format(moneyFormat, getCategorySpend("food")));
 
-                @Override
-                public void onFailure(Call<Map<String, Float>> call, Throwable t) {
-                    call.cancel();
-                }
-            });
-        });
+        TextView transportSpendingText = view.findViewById(R.id.transport_spending);
+        transportSpendingText.setText("$" + String.format(moneyFormat, getCategorySpend("transport")));
+
+        TextView othersSpendingText = view.findViewById(R.id.others_spending);
+        othersSpendingText.setText("$" + String.format(moneyFormat, getCategorySpend("others")));
     }
 
-    private void setSpendingDataText(View view, Map<String, Double> currMonthSpendingMap, Map<String, Double> prevMonthSpendingMap) {
-
-        TextView foodAmtThisMonth = view.findViewById(R.id.food_insights_thismonthamt);
-        TextView foodAmtLastMonth = view.findViewById(R.id.food_insights_lastmonthamt);
-        TextView foodAmtChange = view.findViewById(R.id.food_insights_changeamt);
-
-        TextView transportAmtThisMonth = view.findViewById(R.id.transport_insights_thismonthamt);
-        TextView transportAmtLastMonth = view.findViewById(R.id.transport_insights_lastmonthamt);
-        TextView transportAmtChange = view.findViewById(R.id.transport_insights_changeamt);
-
-        TextView othersAmtThisMonth = view.findViewById(R.id.others_insights_thismonthamt);
-        TextView othersAmtLastMonth = view.findViewById(R.id.others_insights_lastmonthamt);
-        TextView othersAmtChange = view.findViewById(R.id.others_insights_changeamt);
-
-        double[] foodSpending = new double[2];
-        double[] transportSpending = new double[2];
-        double[] othersSpending = new double[2];
-
-        currMonthSpendingMap.forEach((cat, spend) -> {
-            if (cat.equalsIgnoreCase("food")) {
-                foodAmtThisMonth.setText("$" + String.format(moneyFormat, spend));
-                foodSpending[0] = spend;
-            }
-            if (cat.equalsIgnoreCase("transport")) {
-                transportAmtThisMonth.setText("$" + String.format(moneyFormat, spend));
-                transportSpending[0] = spend;
-            }
-            if (cat.equalsIgnoreCase("others")) {
-                othersAmtThisMonth.setText("$" + String.format(moneyFormat, spend));
-                othersSpending[0] = spend;
-            }
-        });
-
-        prevMonthSpendingMap.forEach((cat, spend) -> {
-            if (cat.equalsIgnoreCase("food")) {
-                foodAmtLastMonth.setText("$" + String.format(moneyFormat, spend));
-                foodSpending[1] = spend;
-            }
-            if (cat.equalsIgnoreCase("transport")) {
-                transportAmtLastMonth.setText("$" + String.format(moneyFormat, spend));
-                transportSpending[1] = spend;
-            }
-            if (cat.equalsIgnoreCase("others")) {
-                othersAmtLastMonth.setText("$" + String.format(moneyFormat, spend));
-                othersSpending[1] = spend;
-            }
-        });
-
-        setChangeText(foodAmtChange, foodSpending);
-        setChangeText(transportAmtChange, transportSpending);
-        setChangeText(othersAmtChange, othersSpending);
-
-    }
-
-    private void setChangeText(TextView changeText, double[] spending) {
-        double spendingChange = spending[0] - spending[1];
-
-        if (spendingChange > 0) {
-            changeText.setText("$" + "+" + String.format(moneyFormat, spendingChange));
-            changeText.setTextColor(Color.RED);
-        } else if (spendingChange < 0) {
-            changeText.setText("$" + String.format(moneyFormat, spendingChange));
-            changeText.setTextColor(Color.GREEN);
-        }
-    }
-
-    private void setCurrentCategorySpend() {
-        Double currentFoodSpend = transactions.stream()
-                .filter(t -> t.getCategory().equalsIgnoreCase("food"))
+    private Double getCategorySpend(String category) {
+        return transactions.stream()
+                .filter(t -> t.getCategory().equalsIgnoreCase(category))
                 .map(t -> t.getAmount())
-                .reduce(Double::sum).orElseGet(() -> (double) 0);
+                .reduce(Double::sum).orElse((double) 0);
     }
-
-
 }
