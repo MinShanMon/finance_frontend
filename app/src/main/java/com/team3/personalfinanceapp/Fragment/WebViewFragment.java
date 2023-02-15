@@ -42,20 +42,13 @@ public class WebViewFragment extends Fragment {
 
         TransitionInflater tInflater = TransitionInflater.from(requireContext());
         setEnterTransition(tInflater.inflateTransition(R.transition.slide_right));
-
-
-            String url = getArguments().getString("link");
-
-
+        String url = getArguments().getString("link");
 
         webView = v.findViewById(R.id.web_view);
         webView.setWebViewClient(new WebViewClient());
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(url);
 
-
         return  v;
-
-
-//
     }
 }

@@ -306,27 +306,30 @@ public class ForecastPortfolioFragment extends Fragment{
 
 
         LineDataSet setProd1 = new LineDataSet(valsProd1, "Product A ");
+        setProd1.setColor(R.color.purple_200);
+        setProd1.setCircleColor(R.color.purple_200);
         setProd1.setAxisDependency(YAxis.AxisDependency.LEFT);
-
         setProd1.setLineWidth(2f);
 //        setProd1.setColor(getResources().getColor(R.color.purple_200));
         setProd1.setDrawCircles(true);
-        setProd1.setColor(R.color.purple_200);
+
 //        setProd1.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
 
         LineDataSet setProd2 = new LineDataSet(valsProd2, "Product B ");
         setProd2.setAxisDependency(YAxis.AxisDependency.LEFT);
         setProd2.setDrawCircles(true);
         setProd2.setColor(R.color.gold);
+        setProd2.setCircleColor(R.color.gold);
         setProd2.setLineWidth(2f);
 //        setComp2.setColor(getResources().getColor(R.color.teal_200,));
         //smooth line
 //        setProd2.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
 
         LineDataSet setTotal = new LineDataSet(total, "Total ");
-        setTotal.setColor(R.color.black);
-        setTotal.setCircleColor(R.color.black);
+        setTotal.setColor(R.color.colorLightSkyBlue);
+        setTotal.setCircleColor(R.color.colorLightSkyBlue);
         setTotal.setLineWidth(2f);
+
         List<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(setProd1);
         dataSets.add(setProd2);
