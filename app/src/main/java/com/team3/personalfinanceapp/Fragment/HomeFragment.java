@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -110,7 +111,7 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
     }
 
     private void setBudgetBar(int totalSpendingThisMonth) {
-        LinearLayout budgetBarLayout = view.findViewById(R.id.budget_bar_layout);
+        RelativeLayout budgetBarLayout = view.findViewById(R.id.budget_bar_layout);
         ProgressBar budgetBar = view.findViewById(R.id.budget_progress_bar);
         TextView budgetAmtText = view.findViewById(R.id.budget_amt_progressbar);
         TextView budgetErrorMsg = view.findViewById(R.id.budget_error);
