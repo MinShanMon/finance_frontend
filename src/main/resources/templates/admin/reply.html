@@ -131,10 +131,10 @@
       }
       form .btn{
             height: 45px;
-            width: 90%;
-            margin: 10px 0;
+            width: 80%;
+            margin: 8px 0;
             border-radius: 10px;
-            text-align: left;
+            text-align: center;
       }
       form .btn button{
             height: 40px;
@@ -147,7 +147,7 @@
             cursor: pointer;
         }
         form .btn button:hover{
-            background: #bee7a6;
+            background: #3f80e9;
             transition: all 0.2s ease;
         }
     </style>
@@ -202,32 +202,27 @@
       
       <form action="#" th:action="@{/admin/close_ticket/}" method="post">
         <fieldset th:each="enq : ${enquiry}">
-          <H6><span style="background-color: rgb(154, 188, 246);">FROM </span>&nbsp; &nbsp; &nbsp; 
+       <H6><span style="background-color: rgb(154, 188, 246);">FROM: </span>&nbsp; &nbsp; &nbsp; 
             👤 <td th:text="${enq.name}"></td>
              &nbsp;&nbsp;&nbsp;&nbsp;
             📩 <td th:text="${enquiry.email}"></td>
               &nbsp;&nbsp;&nbsp;&nbsp;
-            📅 <td th:text="${#temporals.format(enquiry.enquiry_dateTime, 'dd-MMM-yyyy  hh:mm')}"></td>
+            📅 <td th:text="${#temporals.format(enquiry.enquiry_dateTime, 'dd-MMM-yyyy  hh:mm a')}"></td>
 
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <span style="background-color: rgb(201, 201, 237);">Enquiry Type:</span> <td th:text="${enq.enquiryType}"></td>
+            <span >Enquiry Type:</span> <td th:text="${enq.enquiryType}"></td>
             &nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;
-            <td>  <button type="radio" class="btn btn-primary" style="width: 150px;text-align:center" th:value="${ticket.tikStatus}">CLOSE TICKET</button> </td>
 
-          
-             
-           
-           
             <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>
 
-          <H6><span style="background-color: rgb(225, 222, 250);">CONTENT  </span>&nbsp; &nbsp; &nbsp;
+            <H6><span style="background-color: rgb(225, 222, 250);">CONTENT:</span>&nbsp; &nbsp; &nbsp;
             <td th:text="${enq.question}"></td>
           </H6>
-          <!-- <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=3>
-          <H6><span style="background-color: rgb(197, 197, 203);">CONTENT TYPE </span>&nbsp; &nbsp; &nbsp;
-            <td th:text="${enq.enquiryType}"></td>
-          </H6>
-           -->
+         
+          <div style="text-align: left;">    <button type="submit" class="btn btn-outline-primary" style="text-align: center;width: 125px;" th:value="${ticket.tikStatus}">CLOSE TICKET</button> </div>
+        
+          
+
             <input type="hidden" th:name="id" th:value="${enquiry.id}" />
             <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=2>
             
@@ -238,12 +233,12 @@
         
         <form action="#" th:action="@{/admin/update/}" method="post">
           <input type="hidden" th:name="id" th:value="${enquiry.id}" />
-          <textarea type="text" th:name="reply" th:value="${ticket.reply}" cols="130" rows="10" id="editor"></textarea>
+          <textarea type="text" th:name="reply" th:value="${ticket.reply}" cols="80" rows="6" id="editor"></textarea>
       
    <br/>
    <div style="text-align: center;">
 
-    <button type="submit" class="btn btn-primary" style="width: 200px;text-align: center;">Send</button>  	
+    <button type="submit" class="btn btn-primary" style="width: 130px;text-align: center;margin-bottom: 40PX;">REPLY</button>  	
      
    </div>
        

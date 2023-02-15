@@ -198,7 +198,8 @@
       
               
 
-        <table class="table">
+        <table class="table table-striped table-sm">
+          &nbsp;
           <thead>
             <tr>
               <th scope="col">ID</th>
@@ -217,7 +218,7 @@
               <td th:text="${open.name}"></td>
               <td th:text="${open.email}"></td>
               <td th:text="${#temporals.format(open.enquiry_dateTime, 'dd-MMM-yyyy')}"></td>
-              <td th:text="${#temporals.format(open.enquiry_dateTime, ' hh:mm')}"></td>
+              <td th:text="${#temporals.format(open.enquiry_dateTime, ' hh:mm a')}"></td>
               <td>
                 <div
                 th:if="${#strings.equals(open.ticket.tikStatus, 'OPEN')}">
