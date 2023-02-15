@@ -11,8 +11,8 @@ import com.team3.personalfinanceapp.utils.BankAPIInterface;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.HashSet;
@@ -25,19 +25,15 @@ import retrofit2.Response;
 
 public class StatementsActivity extends AppCompatActivity {
 
-    LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transactionslist);
-        linearLayout = findViewById(R.id.transactions_list_linearlayout);
+        setContentView(R.layout.activity_statements);
         getAllStatementsAndDisplay();
     }
 
     private void getAllStatementsAndDisplay() {
-        TextView title = findViewById(R.id.transaction_list_title);
-        title.setText(getString(R.string.bank_statement_title));
 
         SharedPreferences pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
         SharedPreferences bankPref = getSharedPreferences("user_banklist", MODE_PRIVATE);
@@ -76,18 +72,8 @@ public class StatementsActivity extends AppCompatActivity {
     }
 
     private void displayStatements(List<BankStatementResponse.ActivityDetails> activityDetailsList) {
-        activityDetailsList.forEach(statement -> {
-            CardView statementCard = new MaterialCardView(this);
-            RelativeLayout cardLayout = new RelativeLayout(this);
-            TextView date = new TextView(this);
-            TextView balance = new TextView(this);
-            date.setText(statement.getDate().getMonth().toString() + " " + statement.getDate().getYear());
-            balance.setText("$" + statement.getAverageBalance());
 
-            cardLayout.addView(date);
-
-            linearLayout.addView(date);
-            linearLayout.addView(balance);
-        });
+        ListView listView = findViewById(R.id.bank_statement_listview);
+        listView.setAdapter(new StatementListAdapter(this, activityDetailsList));
     }
 }
