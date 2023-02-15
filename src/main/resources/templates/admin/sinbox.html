@@ -197,16 +197,14 @@
         <button class="btn btn-outline-success"> <a  th:href="@{/admin/enquiries/closed/}"  style="text-decoration: none;color:black">Close Tickets: <span th:text="${closeSum}"></span></a></button> 
         
         
-      <div class="input-group">
-        <form action="/enquiries/search/">
+        <form action="/enquiries/search/" method="post"><div class="input-group">
           <div class="form-outline">
-            <input type="search" th:name="username" id="form1" class="form-control" placeholder="search by name" />
+            <input type="search" th:name="username" id="form1" class="form-control" required />
           </div>
-          <button type="button" class="btn btn-primary">
+          <button type="submit" class="btn btn-primary">
             <i class="bi bi-search"></i>
           </button>
-        </form>
-      </div>
+        </div></form>
         
       </div>     
       
