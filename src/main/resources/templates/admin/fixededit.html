@@ -239,31 +239,55 @@
       <!-- main section -->
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">
 
+        <div th:if="${param.success}">
+          <div class="alert alert-primary mx-auto col-10 col-md-8 col-lg-6" role="alert">
+           Fixed Edit Successfully
+          </div>
+      </div>
 
-        <div th:id="'form_eb'+${fixed.f_id}" class="model_eb">
-          <!-- Modal content -->
-          <div class="modal-content" style="margin: auto;width:50%;text-align:center">
-            <span class="close">&times;</span>
-
-
-
-            <form th:action="@{/admin/managefixeddeposits/editfixed/}" method="post" style="padding: 5px; text-align: center;"
-            align="center">
-            <input type="hidden" th:name="id" th:value="${fixed.f_id}"/>
-            <input type="text" th:name="tenure" th:value="${fixed.tenure}" required />
-            <input type="text" th:name="minAmount" th:value="${fixed.minAmount}" required />
-            <input type="text" th:name="maxAmount" th:value="${fixed.maxAmount}" required />
-            <input type="text" th:name="interestRate" th:value="${fixed.interestRate}" required />
-            <select name="languages" id="lang" th:name="b_id">
+        <div class="row align-items-center" style="height: 50vh;">
+          <div class="mx-auto col-10 col-md-8 col-lg-6">
+      
+        <form th:action="@{/admin/managefixeddeposits/editfixed/}" method="post">
+          <input type="hidden" th:name="id" th:value="${fixed.f_id}"/>
+          <div class="mb-3">
+            <label for="tenure" class="form-label">Tenure</label>
+            <input type="number" th:name="tenure" th:value="${fixed.tenure}" required class="form-control" id="tenure" aria-describedby="tenure" min="1">
+            <div id="tenure" class="form-text">edit tenure here</div>
+          </div>
+          <div class="mb-3">
+            <label for="minAmount" class="form-label">Minium Amount</label>
+            <input type="number" th:name="minAmount" th:value="${fixed.minAmount}" required class="form-control" id="minAmount" min="1">
+            <div id="minAmount" class="form-text">edit minAmount here</div>
+          </div>
+          <div class="mb-3">
+            <label for="maxAmount" class="form-label">Maxium Amount</label>
+            <input type="text" th:name="maxAmount" th:value="${fixed.maxAmount}" required class="form-control" id="maxAmount">
+            <div id="maxAmount" class="form-text">edit bank link here</div>
+          </div>
+          <div class="mb-3">
+            <label for="interestRate" class="form-label">Interest Rate</label>
+            <input type="text" th:name="interestRate" th:value="${fixed.interestRate}" required class="form-control" id="interestRate">
+            <div id="banklink" class="form-text">edit interest rate here</div>
+          </div>
+      
+          <div class="mb-3">
+            <label for="banklink" class="form-label">Bank</label>
+            <select name="languages" id="lang" th:name="b_id" class="form-select">
+             
               <option th:each="bank : ${bankList}" th:value="${bank.b_id}" th:text="${bank.bankName}" th:selected="${bank.bankName eq fixed.fd_bank.bankName}"></option>
             </select>
-            <input type="submit" value="save" />
-          </form>
-
-
-
+            <div id="banklink" class="form-text">Choose Bank</div>
           </div>
+          
+          <button type="submit" class="btn btn-primary">Edit Fixed Deposists</button>
+        </form>
+          </div>
+        </div>
+      
 
+
+       
       </main>
 
 </body>

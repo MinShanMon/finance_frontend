@@ -24,7 +24,7 @@
         -moz-user-select: none;
         user-select: none;
       }
-
+      
       @media (min-width: 768px) {
         .bd-placeholder-img-lg {
           font-size: 3.5rem;
@@ -156,69 +156,57 @@
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
-          
+
+         
           <li class="nav-item">
             <p class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" style="font-size: 20px;">
               <a class="nav-link" th:href="@{/admin/dashboard/}">Dashboard</a>
             </p>
+           
           </li>
 
           <li class="nav-item">
-              <p class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" style="font-size: 20px;">
-                <a class="nav-link " th:href="@{/admin/enquiries/}">Ticketing System</a>
-              </p>
+            <p class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" style="font-size: 20px;">
+              <a class="nav-link active" th:href="@{/admin/enquiries/}">Ticketing System</a>
+             
+            </p>
           </li>
-          
-           <li class="nav-item">
-            <a class="nav-link " th:href="@{/admin/enquiries/open/}">
-              Open Tickets
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link active" >
-              Closed Tickets
-            </a>
-          </li>
+         
 
           <li class="nav-item">
             <p class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"
               style="font-size: 20px;">
               <a  class="nav-link " th:href="@{'/admin/managefixeddeposits'}">Bank Fixed Deposits</a>
+            
             </p>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link " th:href="@{'/admin/managefixeddeposits'}">
-              Manage Bank Fixed Deposits
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link " th:href="@{'/admin/fixedanalysis'}">
-              Analysis Bank Fixed Deposits
-            </a>
-          </li>
         </ul>
       </div>
     </nav>
+
     <!-- main section -->
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">
 
-      <h3>Closed Tickets Overview</h3>
-      <h4>Total Amount:&nbsp;&nbsp;<th th:text="${closeSum}"></th></h4>
-    <table class="table table-striped table-sm">
-      &nbsp;
+     
+          <div style="padding-bottom: 35px;">
+          <button class="btn btn-outline-primary"> <a  th:href="@{/admin/enquiries/}" style="text-decoration: none;color:black" >All: <span th:text="${total}"></span></a></button> &nbsp&nbsp&nbsp&nbsp
+          <button class="btn btn-outline-warning"> <a  th:href="@{/admin/enquiries/open/}" style="text-decoration: none;color:black" >Open Tickets: <span th:text="${openSum}"></span></a></button> &nbsp&nbsp&nbsp&nbsp
+          <button class="btn btn-outline-success"> <a  th:href="@{/admin/enquiries/closed/}"  style="text-decoration: none;color:black">Close Tickets: <span th:text="${closeSum}"></span></a></button> 
+        </div>    
+      
+              
+
+      <table class="table">
         <thead>
           <tr>
             <th scope="col">ID</th>
-            <th scope="col">Enquiry Type</th>
+            <th scope="col">Enquiry</th>
             <th scope="col">Sender</th>
-            <th scope="col">Email</th>
+            <th scope="col">Email Address</th>
             <th scope="col">Date Received</th>
+            <th scope="col">Time Received</th>
             <th scope="col">Status</th>
-            <th scope="col">Date Closed</th>
-            <th scope="col">Review</th>
-            <th scope="col">Rating</th>
           </tr>
         </thead>
         <tbody>
@@ -227,24 +215,20 @@
             <td th:text="${closed.enquiryType}"></td>
             <td th:text="${closed.name}"></td>
             <td th:text="${closed.email}"></td>
-            <td th:text="${#temporals.format(closed.enquiry_dateTime, 'dd-MMM-yyyy  hh:mm')}"></td>
+            <td th:text="${#temporals.format(closed.enquiry_dateTime, 'dd-MMM-yyyy')}"></td>
+            <td th:text="${#temporals.format(closed.enquiry_dateTime, 'hh:mm')}"></td>
             <td>
                 <div
                 th:if="${#strings.equals(closed.ticket.tikStatus, 'CLOSED')}" th:text="${closed.ticket.tikStatus}">
               </div>
             </td>
-            <td th:text="${#temporals.format(closed.ticket.reply_dateTime, 'dd-MMM-yyyy  hh:mm')}"></td>
-            <td th:text="${closed.comment}"></td>
-            <td th:text="${closed.rating}"></td>
           </tr>  
         </tbody>
-      </table> 
+      </table>
      
     </main>
-
   </div>
 </div>
 
   </body>
-</html> 
-
+</html>

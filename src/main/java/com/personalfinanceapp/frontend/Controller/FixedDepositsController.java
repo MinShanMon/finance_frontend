@@ -54,7 +54,7 @@ public class FixedDepositsController{
         FixedDeposits fDeposits = new FixedDeposits(Integer.parseInt(tenure), Integer.parseInt(minAmount), Integer.parseInt(maxAmount),
                                         Double.parseDouble(interestRate),now,bankService.findBankById(Long.parseUnsignedLong(b_id),token));
         fixedDepostisService.addFixedDeposits(fDeposits, token);
-        return "redirect:/admin/managefixeddeposits";
+        return "redirect:/admin/managefixeddeposits/addfixed?success";
     }
 
 
@@ -94,7 +94,7 @@ public class FixedDepositsController{
         fixedDeposits.setInterestRate(Double.parseDouble(interestRate));
         fixedDeposits.setFd_bank(bankService.findBankById(Long.parseUnsignedLong(b_id), token));
         fixedDepostisService.editfixed(fixedDeposits, token);
-        return "redirect:/admin/managefixeddeposits";
+        return "redirect:/admin/managefixeddeposits?fixededitsucc";
 
     }
 

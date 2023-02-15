@@ -1,11 +1,13 @@
 package com.personalfinanceapp.frontend.controller;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
-
+import org.hibernate.mapping.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,8 +47,6 @@ public class AdminTicketController {
         String token = user.getToken().getAccess_token();
         List<Enquiry> enquiries = enqService.viewDashboard(token);
         List<Enquiry> openEnquiries = enqService.getOpenEnquiry(token);
-        List<Enquiry> closedEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
-        equals(TicketStatusEnum.CLOSED)).collect(Collectors.toList());
 
         List<Enquiry> rate5 = enquiries.stream().filter(u -> u.getRating()==5).collect(Collectors.toList());
         List<Enquiry> rate4 = enquiries.stream().filter(u -> u.getRating()==4).collect(Collectors.toList());
@@ -59,9 +59,9 @@ public class AdminTicketController {
         model.addAttribute("rate2", rate2.size());
         model.addAttribute("rate1", rate1.size());
 
-        model.addAttribute("total", enquiries.size());
+        model.addAttribute("open", openEnquiries);
         model.addAttribute("openSum", openEnquiries.size());
-        model.addAttribute("closeSum", closedEnquiries.size());
+        model.addAttribute("enquiries", enquiries);
         return "admin/dashboard";
     }
 
@@ -73,12 +73,14 @@ public class AdminTicketController {
         List<Enquiry> openEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
         equals(TicketStatusEnum.OPEN)).collect(Collectors.toList());
 
-        List<Enquiry> closedEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
+        List<Enquiry> closeEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
         equals(TicketStatusEnum.CLOSED)).collect(Collectors.toList());
 
+      
         model.addAttribute("enquiries", enquiries);
         model.addAttribute("openSum", openEnquiries.size());
-        model.addAttribute("closeSum", closedEnquiries.size());
+        model.addAttribute("closeSum", closeEnquiries.size());
+        model.addAttribute("total", enquiries.size());
         return "admin/inbox";
     }
     
@@ -86,10 +88,19 @@ public class AdminTicketController {
     public String viewOpenEnquiries(Model model, HttpSession session) {
         UserSession user =(UserSession) session.getAttribute("usersession");
         String token = user.getToken().getAccess_token();
+
+        List<Enquiry> enquiries = enqService.getAllEnquiry(token);
+       
+
+        List<Enquiry> closeEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
+        equals(TicketStatusEnum.CLOSED)).collect(Collectors.toList());
+
+
         List<Enquiry> openEnquiries = enqService.getOpenEnquiry(token);
         model.addAttribute("open", openEnquiries);
         model.addAttribute("openSum", openEnquiries.size());
-
+        model.addAttribute("closeSum", closeEnquiries.size());
+        model.addAttribute("total", enquiries.size());
         return "admin/open-tickets";
     }
 
@@ -98,8 +109,19 @@ public class AdminTicketController {
         UserSession user =(UserSession) session.getAttribute("usersession");
         String token = user.getToken().getAccess_token();
         List<Enquiry> closedEnquiries = enqService.getClosedEnquiry(token);
+
+        List<Enquiry> enquiries = enqService.getAllEnquiry(token);
+        List<Enquiry> openEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
+        equals(TicketStatusEnum.OPEN)).collect(Collectors.toList());
+
+        List<Enquiry> closeEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
+        equals(TicketStatusEnum.CLOSED)).collect(Collectors.toList());
+
+
         model.addAttribute("closed", closedEnquiries);
-        model.addAttribute("closeSum", closedEnquiries.size());
+        model.addAttribute("openSum", openEnquiries.size());
+        model.addAttribute("closeSum", closeEnquiries.size());
+        model.addAttribute("total", enquiries.size());
         return "admin/closed-tickets";
     }
 

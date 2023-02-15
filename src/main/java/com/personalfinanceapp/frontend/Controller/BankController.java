@@ -84,11 +84,19 @@ public class BankController {
 
     
 
-    // @GetMapping("/managefixeddeposits/addfixed")
-    // public String addfixed(Model model){
-      
-    //     return "admin/addfixed";
-    // }
+
+
+    @GetMapping("/managefixeddeposits/addbank")
+    public String addbank(Model model) {
+
+
+        return "/admin/addbank";
+
+    }
+
+
+
+
 
    
 
@@ -101,14 +109,14 @@ public class BankController {
        
         for(Bank bank: banklist){
             if(bank.getBankName().compareTo(name) == 0){
-                return "redirect:/admin/managefixeddeposits?errorn";
+                return "redirect:/admin/managefixeddeposits/addbank?errorn";
             }else if(bank.getBankLink().compareTo(link) == 0){
-                return "redirect:/admin/managefixeddeposits?errorl";
+                return "redirect:/admin/managefixeddeposits/addbank?errorl";
             }
         }
-        Bank bank = new Bank(name, link);
+        Bank bank = new Bank(name.toUpperCase(), link);
             bankService.addBank(bank, token);
-            return "redirect:/admin/managefixeddeposits";
+            return "redirect:/admin/managefixeddeposits/addbank?success";
        
     }
 
@@ -157,7 +165,7 @@ public class BankController {
         bank.setBankLink(link);
 
         bankService.editbank(bank, token);
-        return "redirect:/admin/managefixeddeposits";
+        return "redirect:/admin/managefixeddeposits?successfb";
 
     }
 

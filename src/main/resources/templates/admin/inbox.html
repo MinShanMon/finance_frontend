@@ -189,24 +189,16 @@
     <!-- main section -->
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">
 
-      <table class="tools">
-        <tr>
-              <td><input type="text" name="searchKeyWord" class="form-control" placeholder="search for email address" required></td>
-              <td><input type="submit" value="search" class="btn btn-primary" style="float:right" ></td>
-            </tr>           
-            <tr>
-              <th scope="col"><a class="btn btn-primary" th:href="@{/admin/enquiries/open/}" style="float:left" >Open Tickets:</a>
-                  <th th:text="${openSum}"></th>
-                </tr>
-            <tr>
-              <th scope="col"><a class="btn btn-primary" th:href="@{/admin/enquiries/closed/}" style="float:left">Closed Tickets:</a>
-                <th th:text="${closeSum}" ></th>
-              </tr>
+     
+      <div style="padding-bottom: 35px;">
+        <button class="btn btn-outline-primary"> <a  th:href="@{/admin/enquiries/}" style="text-decoration: none;color:black" >All: <span th:text="${total}"></span></a></button> &nbsp&nbsp&nbsp&nbsp
+        <button class="btn btn-outline-warning"> <a  th:href="@{/admin/enquiries/open/}" style="text-decoration: none;color:black" >Open Tickets: <span th:text="${openSum}"></span></a></button> &nbsp&nbsp&nbsp&nbsp
+        <button class="btn btn-outline-success"> <a  th:href="@{/admin/enquiries/closed/}"  style="text-decoration: none;color:black">Close Tickets: <span th:text="${closeSum}"></span></a></button> 
+      </div>     
+      
               
-            </tr>
-        </tr>    
-      </table>&nbsp;&nbsp;
-      <table class="table table-striped table-sm">
+
+      <table class="table">
         <thead>
           <tr>
             <th scope="col">ID</th>
@@ -214,6 +206,7 @@
             <th scope="col">Sender</th>
             <th scope="col">Email Address</th>
             <th scope="col">Date Received</th>
+            <th scope="col">Time Received</th>
             <th scope="col">Status</th>
           </tr>
         </thead>
@@ -223,11 +216,12 @@
             <td th:text="${enquiry.enquiryType}"></td>
             <td th:text="${enquiry.name}"></td>
             <td th:text="${enquiry.email}"></td>
-            <td th:text="${#temporals.format(enquiry.enquiry_dateTime, 'dd-MMM-yyyy  hh:mm')}"></td>
+            <td th:text="${#temporals.format(enquiry.enquiry_dateTime, 'dd-MMM-yyyy')}"></td>
+            <td th:text="${#temporals.format(enquiry.enquiry_dateTime, ' hh:mm')}"></td>
             <td>
               <div
               th:if="${#strings.equals(enquiry.ticket.tikStatus, 'OPEN')}">
-                  <a th:href="@{/admin/view/}+${enquiry.id}">OPEN</a>
+                  <a th:href="@{/admin/view/}+${enquiry.id}" style="text-decoration: none;">OPEN</a>
               </div>
               <div
                 th:if="${#strings.equals(enquiry.ticket.tikStatus, 'CLOSED')}" th:text="${enquiry.ticket.tikStatus}">
