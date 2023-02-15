@@ -1,7 +1,9 @@
 package com.team3.personalfinanceapp.statements;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.BankStatementResponse;
 import com.team3.personalfinanceapp.utils.APIClient;
@@ -10,6 +12,7 @@ import com.team3.personalfinanceapp.utils.BankAPIInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.HashSet;
@@ -41,15 +44,17 @@ public class StatementsActivity extends AppCompatActivity {
         Set<String> bankAccountSet =
                 bankPref.getStringSet(String.valueOf(pref.getInt("userid", 0)), new HashSet<>());
 
-//        if (bankAccountSet.isEmpty()) {
-//            balanceTextView.setText("No bank account linked");
-//            return;
-//        }
+        if (bankAccountSet.isEmpty()) {
+            return;
+        }
 
         String[] bankAccts = bankAccountSet.toArray(new String[0]);
+
         String[] bankDetail = bankAccts[0].split(":");
 
-
+        if (bankDetail.length == 0) {
+            return;
+        }
 
         BankAPIInterface bankAPIInterface = APIClient.getBankClient().create(BankAPIInterface.class);
         Call<BankStatementResponse> bankStatementResponseCall =
@@ -72,11 +77,16 @@ public class StatementsActivity extends AppCompatActivity {
 
     private void displayStatements(List<BankStatementResponse.ActivityDetails> activityDetailsList) {
         activityDetailsList.forEach(statement -> {
-            TextView month = new TextView(this);
+            CardView statementCard = new MaterialCardView(this);
+            RelativeLayout cardLayout = new RelativeLayout(this);
+            TextView date = new TextView(this);
             TextView balance = new TextView(this);
-            month.setText(statement.getDate().getMonth().toString() + " " + statement.getDate().getYear());
+            date.setText(statement.getDate().getMonth().toString() + " " + statement.getDate().getYear());
             balance.setText("$" + statement.getAverageBalance());
-            linearLayout.addView(month);
+
+            cardLayout.addView(date);
+
+            linearLayout.addView(date);
             linearLayout.addView(balance);
         });
     }

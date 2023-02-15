@@ -17,19 +17,18 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/money_in_card"
         android:layout_width="@dimen/transactions_card_width"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="#6da951"
-        app:cardCornerRadius="@dimen/card_radius"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/transaction_fragment_month">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/income_gradient">
 
             <TextView
                 android:id="@+id/money_in_header"
@@ -54,22 +53,22 @@
                 app:layout_constraintTop_toBottomOf="@id/money_in_header" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/money_out_card"
         android:layout_width="@dimen/transactions_card_width"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top"
-        app:cardBackgroundColor="#ce3750"
-        app:cardCornerRadius="@dimen/card_radius"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/money_in_card">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/expenses_gradient">
+
 
             <TextView
                 android:id="@+id/money_out_header"
@@ -95,22 +94,21 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/balance_amt_card"
         android:layout_width="@dimen/transactions_card_width"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top"
-        app:cardBackgroundColor="#ffac32"
-        app:cardCornerRadius="@dimen/card_radius"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/money_out_card">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/bank_gradient">
 
             <TextView
                 android:id="@+id/avail_balance_title"
@@ -149,22 +147,21 @@
                 app:layout_constraintTop_toBottomOf="@id/available_balance_amt" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/largest_transaction_card"
         android:layout_width="@dimen/transactions_card_width"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top"
-        app:cardBackgroundColor="#189AB4"
-        app:cardCornerRadius="@dimen/card_radius"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/balance_amt_card">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/largestexpense_gradient">
 
             <TextView
                 android:id="@+id/largest_transaction_header"
@@ -213,9 +210,9 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/add_transaction_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -223,21 +220,18 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:text="@string/add_transaction"
-        android:textSize="20sp"
         android:textAllCaps="false"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/largest_transaction_card" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/link_bank_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:text="@string/link_bank_account"
-        android:textSize="20sp"
         android:textAllCaps="false"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

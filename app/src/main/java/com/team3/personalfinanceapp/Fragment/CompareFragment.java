@@ -43,13 +43,11 @@ public class CompareFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_compare, container, false);
 
         TransitionInflater tInflater = TransitionInflater.from(requireContext());
         setEnterTransition(tInflater.inflateTransition(R.transition.slide_right));
         Button forecastBtn = v.findViewById(R.id.compare_next);
-//        int id = getArguments().getInt("deposists");
         getActivity().setTitle("compare products");
 
         pref = getActivity().getSharedPreferences("bankIdList", getContext().MODE_PRIVATE);

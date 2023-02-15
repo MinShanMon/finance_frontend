@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -86,9 +87,22 @@ public class ProfileFragment extends Fragment {
             startActivity(intent);
             getActivity().finish();
         });
+        setupOnBackPressed();
         return view;
     }
 
+        private void setupOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if(isEnabled()){
+                    Toast.makeText(getActivity(), "Login error", Toast.LENGTH_SHORT).show();
+                    setEnabled(false);
+                    requireActivity().onBackPressed();
+                }
+            }
+        });
+    }
     @Override
     public void onStart(){
         super.onStart();

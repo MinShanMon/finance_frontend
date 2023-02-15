@@ -97,6 +97,7 @@
     <string name="bank_account_number">Bank Account Number</string>
     <string name="please_enter_your_account_number">Please enter your account number</string>
     <string name="select_your_bank">Select your bank</string>
+    <string name="this_month_spending_forecast">This Month\'s Spending Forecast</string>
     <string-array name="bank_list">
         <item>OCBC</item>
     </string-array>
