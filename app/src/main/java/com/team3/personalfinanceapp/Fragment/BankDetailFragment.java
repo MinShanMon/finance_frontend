@@ -98,7 +98,7 @@ public class BankDetailFragment extends Fragment {
                 bank.setText(item.getBank().getBankName().toUpperCase(Locale.ROOT));
                 min.setText(Integer.toString(item.getMinAmount()) +" SGD");
                 max.setText(Integer.toString(item.getMaxAmount()) +" SGD");
-                interest.setText(Double.toString(item.getInterestRate()) + " %");
+                interest.setText(Double.toString(item.getInterestRate()) );
                 String[] dateDate  = item.getUpdateDate().split("-");
                 date.setText(dateDate[0] + " - " + dateDate[1]);
 

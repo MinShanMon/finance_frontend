@@ -66,11 +66,11 @@ public class EtfDetailFragment extends Fragment {
                 TextView volume = v.findViewById(R.id.volume);
 
                 update.setText(priceList.getDatetime());
-                open.setText(priceList.getOpen() + "%");
-                high.setText(priceList.getHigh() + "%");
-                low.setText(priceList.getLow() + "%");
-                close.setText(priceList.getClose() + "%");
-                volume.setText(priceList.getVolume() + "%");
+                open.setText(priceList.getOpen() );
+                high.setText(priceList.getHigh() );
+                low.setText(priceList.getLow() );
+                close.setText(priceList.getClose() );
+                volume.setText(priceList.getVolume() );
 
 
 

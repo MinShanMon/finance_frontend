@@ -75,21 +75,12 @@ public class StockDetailFragment extends Fragment {
               TextView close = v.findViewById(R.id.close);
               TextView volume = v.findViewById(R.id.volume);
 
-//              update.setText(priceList.getDatetime());
-//              open.setText(priceList.getOpen());
-//              high.setText(priceList.getHigh());
-//              low.setText(priceList.getLow());
-//              close.setText(priceList.getClose());
-//              volume.setText(priceList.getVolume());
-
               update.setText(priceList.getDatetime());
-              open.setText(priceList.getOpen() + "%");
-              high.setText(priceList.getHigh() + "%");
-              low.setText(priceList.getLow() + "%");
-              close.setText(priceList.getClose() + "%");
-              volume.setText(priceList.getVolume() + "%");
-
-
+              open.setText(priceList.getOpen());
+              high.setText(priceList.getHigh());
+              low.setText(priceList.getLow());
+              close.setText(priceList.getClose());
+              volume.setText(priceList.getVolume());
 
 
               v.findViewById(R.id.link).setOnClickListener(new View.OnClickListener() {
