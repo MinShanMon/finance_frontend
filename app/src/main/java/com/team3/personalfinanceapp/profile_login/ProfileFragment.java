@@ -27,6 +27,7 @@ import com.facebook.login.LoginManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.team3.personalfinanceapp.Fragment.HomeFragment;
 import com.team3.personalfinanceapp.Fragment.SetBudgetDialogFragment;
+import com.team3.personalfinanceapp.HomeNav;
 import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.transactions.TransactionsFragment;
@@ -42,6 +43,8 @@ public class ProfileFragment extends Fragment {
     LinearLayout email_display;
     ImageView img_icon;
     LinearLayout fill_enquiry;
+    HomeNav homeNav;
+    private HomeFragment listener;
 
     ProfileEditFragment profileEditFragment = new ProfileEditFragment();
 
@@ -91,22 +94,29 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-        private void setupOnBackPressed(){
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MainActivity mainActivity = (MainActivity) context;
+        listener = mainActivity.getHomeFragment();
+        homeNav = (HomeNav) context;
+    }
+
+    private void homeNav(){homeNav.homeClicked();}
+
+    private void setupOnBackPressed(){
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if(isEnabled()){
-                    Toast.makeText(getActivity(), "Login error", Toast.LENGTH_SHORT).show();
-                    setEnabled(false);
-                    requireActivity().onBackPressed();
-                }
+                commitTransaction(listener);
+                homeNav();
             }
         });
     }
     @Override
     public void onStart(){
         super.onStart();
-        viewDetailProduct(R.id.manage_profile);
     }
 
     private void init(View view){
@@ -147,19 +157,6 @@ public class ProfileFragment extends Fragment {
         trans.commit();
     }
 
-    private IProfileFragment iProfileFragment;
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        iProfileFragment = (IProfileFragment) context;
-    }
-
-    void viewDetailProduct(int itemId) {
-        iProfileFragment.viewDetailProfile(itemId);
-    }
-    public interface IProfileFragment {
-        void viewDetailProfile(int itemId);
-    }
 
 
 

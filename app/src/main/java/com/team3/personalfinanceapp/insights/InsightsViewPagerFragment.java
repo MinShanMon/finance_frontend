@@ -7,9 +7,12 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
@@ -30,6 +33,8 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.team3.personalfinanceapp.Fragment.HomeFragment;
+import com.team3.personalfinanceapp.HomeNav;
+import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.adapter.InsightsViewPagerAdapter;
 import com.team3.personalfinanceapp.model.Transaction;
@@ -60,7 +65,8 @@ public class InsightsViewPagerFragment extends Fragment {
 
     APIInterface apiInterface;
     SharedPreferences pref;
-    private IinsightFragment insightsViewPagerFragment;
+    HomeNav homeNav;
+    private HomeFragment listener;
 
 
     public InsightsViewPagerFragment() {
@@ -74,6 +80,7 @@ public class InsightsViewPagerFragment extends Fragment {
         // Inflate the layout for this fragment
         apiInterface = APIClient.getClient().create(APIInterface.class);
         pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
+        setupOnBackPressed();
         return inflater.inflate(R.layout.fragment_insights_view_pager, container, false);
     }
 
@@ -229,21 +236,35 @@ public class InsightsViewPagerFragment extends Fragment {
     @Override
     public void onStart(){
         super.onStart();
-        viewDetailHome(R.id.insights_item);
+
     }
 
+    private void setupOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                commitTransaction(listener);
+                homeNav();
+            }
+        });
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        insightsViewPagerFragment = (InsightsViewPagerFragment.IinsightFragment) context;
+        MainActivity mainActivity = (MainActivity) context;
+        listener = mainActivity.getHomeFragment();
+        homeNav = (HomeNav) context;
     }
 
-    void viewDetailHome(int itemId) {
-        insightsViewPagerFragment.viewDetailInsight(itemId);
-    }
-    public interface IinsightFragment {
-        void viewDetailInsight(int itemId);
+    private void homeNav(){homeNav.homeClicked();}
+
+    private void commitTransaction(Fragment fragment) {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction trans = fm.beginTransaction();
+        trans.replace(R.id.fragment_container, fragment);
+        trans.addToBackStack(null);
+        trans.commit();
     }
 
 }

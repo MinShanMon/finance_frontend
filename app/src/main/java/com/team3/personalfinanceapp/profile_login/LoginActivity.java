@@ -97,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
         login();
         LoginWithFacebook.setOnClickListener(v -> LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile")));
 
+
     }
 
     @Override
@@ -130,16 +131,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkToken(Integer uid, String token) {
+
         Call<Token> userLoginCall = apiInterface.checkToken(uid, "Bearer " + token);
         userLoginCall.enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
-
                 if (response.body() == null) {
+                    Log.i("login", "error");
                     Toast.makeText(getApplicationContext(), "Login error", Toast.LENGTH_SHORT).show();
                     editor = pref.edit();
                     editor.clear();
                     editor.commit();
+                    LoginManager.getInstance().logOut();
                     return;
                 }
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -159,18 +162,24 @@ public class LoginActivity extends AppCompatActivity {
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        Log.i("here", "fb");
+
+//                        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+//                        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+
                         startActivity(new Intent(LoginActivity.this, LoadingActivity.class));
+                        finish();
                     }
 
                     @Override
                     public void onCancel() {
                         // App code
+                        Log.i("login", "cancel");
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
                         // App code
+                        Log.i("login", "onError");
                     }
                 });
     }

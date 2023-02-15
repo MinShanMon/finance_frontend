@@ -50,7 +50,6 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
     private int totalSpendingThisMonth;
 
 
-    private IHomeFragment iHomeFragment;
 
     String moneyFormat;
 
@@ -66,32 +65,33 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         moneyFormat = getString(R.string.money_format);
         setBudgetButton(view);
 
 //        setSpendingForecastButton(view);
-//        setupOnBackPressed();
+        setupOnBackPressed();
 
         return view;
     }
-//    private void setupOnBackPressed(){
-//        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-//            @Override
-//            public void handleOnBackPressed() {
-//                if(isEnabled()){
-////                    startActivity(new Intent(getActivity(), MainActivity.class));
-//                    setEnabled(false);
-//                    requireActivity().onBackPressed();
-//                }
-//            }
-//        });
-//    }
+    private void setupOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if(isEnabled()){
+                    
+                    setEnabled(false);
+                    requireActivity().onBackPressed();
+                }
+            }
+        });
+    }
 
     @Override
     public void onStart() {
         super.onStart();
-        viewDetailHome(R.id.home_item);
+
         view = getView();
         pref = getActivity().getSharedPreferences("user_credentials", Context.MODE_PRIVATE);
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
@@ -136,18 +136,6 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
     }
 
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        iHomeFragment = (IHomeFragment) context;
-    }
-
-    void viewDetailHome(int itemId) {
-        iHomeFragment.viewDetailHome(itemId);
-    }
-    public interface IHomeFragment {
-        void viewDetailHome(int itemId);
-    }
 
     private void setBudgetBar(int totalSpendingThisMonth) {
         ProgressBar budgetBar = view.findViewById(R.id.budget_progress_bar);

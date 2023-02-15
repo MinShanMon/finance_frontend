@@ -6,6 +6,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -17,13 +18,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.team3.personalfinanceapp.HomeNav;
+import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.insights.InsightsViewPagerFragment;
 
 
 public class ProductsFragment extends Fragment {
 
-    private IProductFragment iProductFragment;
+    HomeNav homeNav;
+
+    private HomeFragment listener;
 
     public ProductsFragment() {
         // Required empty public constructor
@@ -72,9 +77,28 @@ public class ProductsFragment extends Fragment {
 
             }
         });
-
+        setupOnBackPressed();
         return  v;
     }
+
+    private void setupOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                commitTransaction(listener);
+                homeNav();
+            }
+        });
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MainActivity mainActivity = (MainActivity) context;
+        listener = mainActivity.getHomeFragment();
+        homeNav = (HomeNav) context;
+    }
+    private void homeNav(){homeNav.homeClicked();}
 
     private void commitTransaction(Fragment fragment) {
         FragmentManager fm = getParentFragmentManager();
@@ -84,22 +108,8 @@ public class ProductsFragment extends Fragment {
         trans.commit();
     }
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        viewDetailProduct(R.id.products_item);
-    }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        iProductFragment = (IProductFragment) context;
-    }
 
-    void viewDetailProduct(int itemId) {
-        iProductFragment.viewDetailProduct(itemId);
-    }
-    public interface IProductFragment {
-        void viewDetailProduct(int itemId);
-    }
+
+
 }

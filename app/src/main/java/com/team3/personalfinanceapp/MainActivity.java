@@ -35,9 +35,8 @@ import retrofit2.Response;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener, HomeFragment.IHomeFragment
-, InsightsViewPagerFragment.IinsightFragment, ProductsFragment.IProductFragment, TransactionsFragment.ITransactionsFragment
-, ProfileFragment.IProfileFragment{
+public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener, HomeNav
+{
 
     private TransactionsFragment transactionsFragment = new TransactionsFragment();
     private HomeFragment homeFragment = new HomeFragment();
@@ -52,10 +51,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     AccessToken accessToken;
 
     int active;
+    boolean activeT;
     BottomNavigationView btmNavBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         btmNavBar = findViewById(R.id.btm_navbar);
         btmNavBar.setOnItemSelectedListener(this);
@@ -79,7 +80,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     @Override
     public void onStart(){
         super.onStart();
-        btmNavBar.setSelectedItemId(active);
+        activeT=false;
+//        btmNavBar.setSelectedItemId(active);
+
         pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
         if(pref.contains("token") && pref.contains("userid")){
             checkToken(pref.getInt("userid",0),pref.getString("token",""));
@@ -114,14 +117,13 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         });
     }
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return replaceFragment(item.getItemId());
     }
 
     private boolean replaceFragment(int itemId) {
-
+        activeT=false;
         switch (itemId) {
 
             case R.id.insights_item:
@@ -152,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction trans = fm.beginTransaction();
         trans.replace(R.id.fragment_container, fragment);
-        trans.addToBackStack(null);
         trans.commit();
     }
 
@@ -160,29 +161,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         return homeFragment;
     }
 
-    @Override
-    public void viewDetailHome(int itemId) {
-        btmNavBar.setSelectedItemId(itemId);
-    }
 
     @Override
-    public void viewDetailInsight(int itemId) {
-        btmNavBar.setSelectedItemId(itemId);
-    }
-
-
-    @Override
-    public void viewDetailProduct(int itemId) {
-        btmNavBar.setSelectedItemId(itemId);
-    }
-
-    @Override
-    public void viewDetailTransaction(int itemId) {
-        btmNavBar.setSelectedItemId(itemId);
-    }
-
-    @Override
-    public void viewDetailProfile(int itemId) {
-        btmNavBar.setSelectedItemId(itemId);
+    public void homeClicked() {
+        btmNavBar.setSelectedItemId(R.id.home_item);
     }
 }
