@@ -79,8 +79,8 @@ public class LoginActivity extends AppCompatActivity {
             checkToken(pref.getInt("userid", 0), pref.getString("token", ""));
         }
         accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-        if (isLoggedIn) {
+
+        if (accessToken != null && !accessToken.isExpired()) {
             checkToken(pref.getInt("userid", 0), pref.getString("token", ""));
         }
 
@@ -127,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
         pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
 
         apiInterface = APIClient.getClient().create(UserApi.class);
-        callbackManager = CallbackManager.Factory.create();
+
     }
 
     private void checkToken(Integer uid, String token) {
@@ -157,7 +157,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login() {
-
+        callbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
@@ -165,7 +165,7 @@ public class LoginActivity extends AppCompatActivity {
 
 //                        AccessToken accessToken = AccessToken.getCurrentAccessToken();
 //                        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-
+                        Log.i("login", "success");
                         startActivity(new Intent(LoginActivity.this, LoadingActivity.class));
                         finish();
                     }
@@ -259,22 +259,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<RegisteredUsers> call, Response<RegisteredUsers> response) {
 
                 if (response.body().getStatus().equals("PENDING")) {
-//                    txtUsername = findViewById(R.id.txtLoginUsername);
-//                    txtPassword = findViewById(R.id.txtLoginPassword);
-//                    btnLogin = findViewById(R.id.btnLogin);
-//                    checkBox = findViewById(R.id.remember_checkbox);
-//                    error = findViewById(R.id.error_msg);
-//                    signUp = findViewById(R.id.txtSignUp);
-//                    LoginWithFacebook = findViewById(R.id.LoginWithFacebook);
-//                    txtForgetPassword = findViewById(R.id.txtForgetPassword);
-//                    txtUsername.setSaveEnabled(false);
-//                    txtPassword.setSaveEnabled(false);
-//                    btnLogin.setEnabled(false);
-//                    checkBox.setEnabled(false);
-//                    error.setEnabled(false);
-//                    signUp.setEnabled(false);
-//                    LoginWithFacebook.setEnabled(false);
-//                    txtForgetPassword.setEnabled(false);
 
                     sendEmail(email);
                 } else {
@@ -309,7 +293,6 @@ public class LoginActivity extends AppCompatActivity {
                 intent.putExtra("token", response.body().access_token);
                 intent.putExtra("register", true);
                 startActivity(intent);
-
             }
 
             @Override
