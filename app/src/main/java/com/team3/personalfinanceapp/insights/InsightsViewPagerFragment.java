@@ -201,6 +201,7 @@ public class InsightsViewPagerFragment extends Fragment {
     private void configureLineChart(LineChart lineChart) {
         lineChart.getAxisLeft().setDrawGridLines(false);
         lineChart.getAxisRight().setDrawGridLines(false);
+        lineChart.getAxisRight().setDrawLabels(false);
         lineChart.getXAxis().setDrawGridLines(false);
 
     }

@@ -100,13 +100,12 @@
             </LinearLayout>
 
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/set_budget_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_top"
                 android:text="@string/set_budget_btn"
-                android:textSize="20dp"
                 android:textAllCaps="false"
                 android:layout_gravity="center"/>
 
@@ -149,7 +148,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
                 android:paddingStart="10dp">
 
                 <TextView
@@ -204,7 +202,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
                 android:paddingStart="10dp">
 
                 <TextView
@@ -259,7 +256,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"                android:paddingStart="10dp">
+                android:paddingStart="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
