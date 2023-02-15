@@ -146,19 +146,16 @@ public class EditTransactionActivity extends AppCompatActivity {
 
         double amount = Double.parseDouble(amountField.getText().toString());
         EditText category = findViewById(R.id.edit_transaction_category);
-        if (transactionType == TYPE_SPENDING) {
-            amount *= -1;
-        }
+
         if (transactionType == TYPE_INCOME) {
             category.setText("Income");
         }
         transactionToEdit.setAmount(amount);
         transactionToEdit.setCategory(category.getText().toString());
         pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
-        Call<Transaction> addTransactionCall = apiInterface.editTransaction(1, transactionToEdit, "Bearer "+ pref.getString("token" , ""));
+        Call<Transaction> editTransactionCall = apiInterface.editTransaction(pref.getInt("userid", 0), transactionToEdit, "Bearer "+ pref.getString("token" , ""));
 
-        System.out.println(addTransactionCall.request());
-        addTransactionCall.enqueue(new Callback<Transaction>() {
+        editTransactionCall.enqueue(new Callback<Transaction>() {
             @Override
             public void onResponse(Call<Transaction> call, Response<Transaction> response) {
                 if (response.isSuccessful()) {
