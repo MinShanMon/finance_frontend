@@ -15,7 +15,7 @@ public class APIclient {
 
     private void initializeRetrofit(){
         retrofit= new Retrofit.Builder()
-                .baseUrl("http://adteam3restapi-env.eba-p5rw8sy5.ap-northeast-1.elasticbeanstalk.com/api/")
+                .baseUrl("http://10.0.2.2:8081/api/")
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .build();
     }
