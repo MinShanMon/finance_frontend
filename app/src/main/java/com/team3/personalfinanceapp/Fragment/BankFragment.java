@@ -2,10 +2,13 @@ package com.team3.personalfinanceapp.Fragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -25,10 +28,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.team3.personalfinanceapp.ListAdapter;
+import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.Models.FixedDeposits;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.Services.fixedDeposistsServics;
 import com.team3.personalfinanceapp.config.APIclient;
+import com.team3.personalfinanceapp.profile_login.ProfileFragment;
 
 import java.util.List;
 import java.util.Map;
@@ -46,6 +51,7 @@ public class BankFragment extends Fragment {
     private List<FixedDeposits> fixedList;
 
     ProgressBar progressBar;
+    ProductsFragment listener;
 
 
     @Override
@@ -109,14 +115,32 @@ public class BankFragment extends Fragment {
             }
         });
 
+        setupOnBackPressed();
         return v;
     }
+
+    private void setupOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                commitTransaction(listener);
+            }
+        });
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MainActivity mainActivity = (MainActivity) context;
+        listener = mainActivity.getProductsFragment();
+    }
+
 
     private void commitTransaction(Fragment fragment) {
         FragmentManager fm = getParentFragmentManager();
         FragmentTransaction trans = fm.beginTransaction();
         trans.replace(R.id.fragment_container, fragment);
-        trans.addToBackStack(null);
+//        trans.addToBackStack(null);
         trans.commit();
     }
 

@@ -45,6 +45,7 @@ public class BankDetailFragment extends Fragment {
     }
     private List<FixedDeposits> fixedList;
 
+    BankFragment bankFragment = new BankFragment();
 
 
 
@@ -126,11 +127,10 @@ public class BankDetailFragment extends Fragment {
                 }
 
 
+
                 v.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-                        BankFragment bankFragment = new BankFragment();
                         commitTransaction(bankFragment);
                     }
                 });
@@ -210,7 +210,17 @@ public class BankDetailFragment extends Fragment {
         });
 
         getActivity().setTitle("fixed deposists detail");
+        setupOnBackPressed();
         return v;
+    }
+
+    private void setupOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                commitTransaction(bankFragment);
+            }
+        });
     }
 
     private void commitTransaction(Fragment fragment) {

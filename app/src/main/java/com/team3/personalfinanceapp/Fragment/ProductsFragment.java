@@ -40,7 +40,6 @@ public class ProductsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_products, container, false);
 
-
         TransitionInflater tInflater = TransitionInflater.from(requireContext());
         setEnterTransition(tInflater.inflateTransition(R.transition.slide_right));
 
@@ -104,7 +103,6 @@ public class ProductsFragment extends Fragment {
         FragmentManager fm = getParentFragmentManager();
         FragmentTransaction trans = fm.beginTransaction();
         trans.replace(R.id.fragment_container, fragment);
-        trans.addToBackStack(null);
         trans.commit();
     }
 

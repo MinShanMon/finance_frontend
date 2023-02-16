@@ -94,7 +94,6 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -153,7 +152,6 @@ public class ProfileFragment extends Fragment {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         FragmentTransaction trans = fm.beginTransaction();
         trans.replace(R.id.fragment_container, fragment);
-        trans.addToBackStack(null);
         trans.commit();
     }
 
