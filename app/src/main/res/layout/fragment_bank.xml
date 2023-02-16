@@ -6,23 +6,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <!--on below line we are creating edit text
          for adding a new item to list-->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/idEdtItemName"
+        android:id="@+id/banktitle"
         android:layout_width="match_parent"
         android:layout_height="155dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_margin="10dp"
         android:background="@drawable/bg1"
         android:text="Bank Fixed deposit"
         android:textSize="25dp"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        android:shadowRadius="@integer/material_motion_duration_long_1"/>
 
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/compareitem"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_below="@+id/banktitle"
+        android:background="@drawable/bg3"
+        android:text="Compare"
+        android:layout_margin="10dp"
+        />
 
     <ProgressBar
         android:id="@+id/bar"
@@ -33,11 +43,11 @@
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/idEdtItemName"
-        >
-    </ListView>
+        android:layout_height="519dp"
+        android:layout_below="@+id/compareitem"
+        android:layout_marginTop="15dp">
 
+    </ListView>
 
 
 </RelativeLayout>

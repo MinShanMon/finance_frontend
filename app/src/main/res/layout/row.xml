@@ -5,24 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="10dp"
-
-
+android:layout_margin="20px"
+    android:paddingBottom="20px"
+    android:paddingRight="10px"
+    android:paddingLeft="10px"
+    android:descendantFocusability="blocksDescendants"
 
     >
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         >
 
         <LinearLayout
             android:id="@+id/chooseview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:background="@drawable/bg2">
+            android:layout_height="70dp"
+
+            android:gravity="center"
+            android:background="@drawable/bg2"
+            android:weightSum="4"
+           >
 
 
             <TextView
@@ -31,9 +35,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:layout_weight="1"
+                android:text="   bank"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                />
 
             <TextView
                 android:id="@+id/period"
@@ -43,8 +49,9 @@
                 android:layout_marginBottom="10dp"
                 android:text="bank"
                 android:textAlignment="center"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/whatinterest"
@@ -54,8 +61,30 @@
                 android:layout_marginBottom="10dp"
                 android:text="bank"
                 android:textAlignment="center"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                />
+
+            <ImageButton
+                android:id="@+id/cbtn"
+                android:layout_width="83dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+android:background="@drawable/roundcorner"
+                android:src="@drawable/comparedark"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:textStyle="bold"
+
+                />
+
+<!--            <ImageView-->
+<!--                android:layout_width="50dp"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:src="@mipmap/ic_food_round" />-->
 
 
         </LinearLayout>

@@ -3,6 +3,7 @@ package com.team3.personalfinanceapp.Fragment;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,12 +13,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.transition.TransitionInflater;
 
 import com.facebook.share.Share;
+import com.team3.personalfinanceapp.MainActivity;
+import com.team3.personalfinanceapp.Models.Bank;
 import com.team3.personalfinanceapp.Models.FixedDeposits;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.Services.fixedDeposistsServics;
@@ -124,6 +129,15 @@ public class CompareFragment extends Fragment {
                 });
             }
 
+
+            v.findViewById(R.id.backfromcompare).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    BankFragment bankFragment = new BankFragment();
+                    commitTransaction(bankFragment);
+                }
+            });
+
             forecastBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -132,8 +146,21 @@ public class CompareFragment extends Fragment {
                 }
             });
         }
+
+        setupOnBackPressed();
         return v;
     }
+
+    private void setupOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                BankFragment bankFragment = new BankFragment();
+                commitTransaction(bankFragment);
+            }
+        });
+    }
+
 
     private void commitTransaction(Fragment fragment) {
         FragmentManager fm = getParentFragmentManager();

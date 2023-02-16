@@ -2,6 +2,7 @@ package com.team3.personalfinanceapp.Fragment;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -39,6 +40,7 @@ public class StockFragment extends Fragment {
         // Required empty public constructor
     }
     ProgressBar progressBar;
+    ProductsFragment listener;
 
     List<String> validSotck = Arrays.asList("D05","SVI","511880","BOTHE","INFY","005930","GMEXICOB","TKMIT","EBS");
     @Override
@@ -95,10 +97,22 @@ public class StockFragment extends Fragment {
                 Toast.makeText(getContext(),"failur",Toast.LENGTH_SHORT).show();
             }
         });
-
+        setupOnBackPressed();
         return  v;
 //
     }
+
+
+    private void setupOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                ProductsFragment productsFragment = new ProductsFragment();
+                commitTransaction(productsFragment);
+            }
+        });
+    }
+
     private void commitTransaction(Fragment fragment) {
         FragmentManager fm = getParentFragmentManager();
         FragmentTransaction trans = fm.beginTransaction();

@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -69,6 +70,8 @@ public class BankFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
 
+
+
         APIclient api = new APIclient();
 
         fixedDeposistsServics fs = api.getRetrofit().create(fixedDeposistsServics.class);
@@ -85,7 +88,38 @@ public class BankFragment extends Fragment {
 
 
 
+                Button comparebutton = v.findViewById(R.id.compareitem);
+
+                SharedPreferences pref = getContext().getSharedPreferences("bankIdList", getContext().MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+
+                comparebutton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
+
+                        if(fixedIdMap.size() != 2){
+                            Toast.makeText(getContext(),"You need to choose two items to compare",Toast.LENGTH_SHORT).show();
+                        }else{
+                            CompareFragment compareFragment = new CompareFragment();
+                            commitTransaction(compareFragment);
+                        }
+                    }
+                });
+
+
+
+
+
+
+
+
+
+
+
         progressBar.setVisibility(View.INVISIBLE);
+
+                pref.edit().clear().commit();
                 fixedList= response.body();
                 ListView listView = v.findViewById(R.id.listView);
                 if (listView != null) {

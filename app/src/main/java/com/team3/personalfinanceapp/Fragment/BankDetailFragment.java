@@ -3,11 +3,13 @@ package com.team3.personalfinanceapp.Fragment;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.app.ActionBar;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import androidx.fragment.app.Fragment;
@@ -52,7 +54,7 @@ public class BankDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View v = inflater.inflate(R.layout.fragment_bank_detail, container, false);
 
         pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
@@ -105,26 +107,15 @@ public class BankDetailFragment extends Fragment {
 
                 List<Long> fixedIdList = new ArrayList<Long>();
 
-                Button addbtn =v.findViewById(R.id.add);
-                Button compare = v.findViewById(R.id.compare);
 
                 SharedPreferences pref = getActivity().getSharedPreferences("bankIdList", getContext().MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
 
-//                Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
+//
                 Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
 
-                if(fixedIdMap.size() == 0){
-                    compare.setText("0");
-                }else{
-                    compare.setText("comapre "+Integer.toString(fixedIdMap.size()) + " items");
-                }
-
-                if(!pref.contains("fixedId-"+Long.toString(item.getId() -1 ))){
-                    addbtn.setText("Add to Compare");
-                }else {
-                    addbtn.setText("Remove form Compare");
-                }
+                editor.putLong("fixedId-"+Long.toString(item.getId() - 1),item.getId() -1);
+                editor.commit();
 
 
 
@@ -135,58 +126,6 @@ public class BankDetailFragment extends Fragment {
                     }
                 });
 
-                addbtn.setOnClickListener(new View.OnClickListener() {
-                                              @Override
-                                              public void onClick(View v) {
-
-                                                  Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
-
-                                                  if(fixedIdMap.size() == 2){
-                                                      if(fixedIdMap.containsKey("fixedId-"+Long.toString(item.getId() -1 ))){
-                                                          editor.remove("fixedId-"+Long.toString(item.getId() -1));
-                                                          editor.commit();
-
-                                                      }else{
-                                                          Toast.makeText(getContext(), "can not add anymore", Toast.LENGTH_SHORT).show();
-                                                          return;
-                                                      }
-                                                  }
-
-                                                  if(fixedIdMap.containsKey("fixedId-"+Long.toString(item.getId() -1 ))){
-                                                      editor.remove("fixedId-"+Long.toString(item.getId() -1));
-                                                      editor.commit();
-
-                                                  }else{
-                                                      editor.putLong ("fixedId-"+Long.toString(item.getId() - 1),item.getId() -1);
-                                                      editor.commit();
-                                                  }
-
-                                                  Map<String, Long> fixedIdMap2 = (Map<String, Long>) pref.getAll();
-                                                  if(!fixedIdMap2.containsKey("fixedId-"+Long.toString(item.getId() -1 ))){
-                                                      addbtn.setText("Add to Compare");
-                                                  }else {
-                                                      addbtn.setText("Remove form Compare");
-                                                  }
-                                                  compare.setText("compare "+Integer.toString(fixedIdMap2.size()) + " items");
-
-                                              }
-                                          }
-                );
-                compare.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
-
-                        if(fixedIdMap.size() == 1 || fixedIdMap.size() == 0){
-                            Toast.makeText(getContext(), "You Need to choose two or more items to compare", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-
-                        CompareFragment compareFragment = new CompareFragment();
-                        commitTransaction(compareFragment);
-
-                    }
-                });
 
                 v.findViewById(R.id.link).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -242,15 +181,6 @@ public class BankDetailFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
-//    private void commitTransaction(Fragment fragment) {
-//        FragmentManager fm = getParentFragmentManager();
-//        FragmentTransaction trans = fm.beginTransaction();
-//        trans.replace(R.id.fragment_container, fragment);
-//        trans.addToBackStack(null);
-//        trans.commit();
-//    }
-
-
 
 
 
