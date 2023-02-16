@@ -30,12 +30,8 @@ public class InsightsViewPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         if (position == 0) {
-            PieChartFragment pieChart = new PieChartFragment(transactions);
-            fragment.setPieChartFragment(pieChart);
-            return pieChart;
+            return new PieChartFragment(transactions);
         } else if (position == 1) {
-            CategorySpendFragment categorySpend = new CategorySpendFragment(transactions);
-            fragment.setCategorySpendFragment(categorySpend);
             return new CategorySpendFragment(transactions);
         }
         return new ErrorFragment();
