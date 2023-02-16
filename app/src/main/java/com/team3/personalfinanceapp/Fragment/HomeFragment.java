@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -29,6 +30,8 @@ import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.Transaction;
 import com.team3.personalfinanceapp.utils.APIClient;
 import com.team3.personalfinanceapp.utils.APIInterface;
+
+import org.w3c.dom.Text;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -49,9 +52,12 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
 
     private int totalSpendingThisMonth;
 
+    private TextView foodSpendingText;
+    private TextView transportSpendingText;
 
+    private TextView othersSpendingText;
 
-    String moneyFormat;
+    private String moneyFormat;
 
     private View view;
 
@@ -68,6 +74,9 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         moneyFormat = getString(R.string.money_format);
+        foodSpendingText = view.findViewById(R.id.food_spending);
+        transportSpendingText = view.findViewById(R.id.transport_spending);
+        othersSpendingText = view.findViewById(R.id.others_spending);
         setBudgetButton(view);
 
 //        setSpendingForecastButton(view);
@@ -80,7 +89,7 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
             @Override
             public void handleOnBackPressed() {
                 if(isEnabled()){
-                    
+
                     setEnabled(false);
                     requireActivity().onBackPressed();
                 }
@@ -106,7 +115,9 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
                         .filter(t -> !t.getCategory().equalsIgnoreCase("income"))
                         .map(t -> t.getAmount()).reduce(Double::sum)
                         .orElse(Double.valueOf(0)).intValue();
-                setBudgetBar(totalSpendingThisMonth);
+                if (getActivity() != null) {
+                    setBudgetBar(totalSpendingThisMonth);
+                }
                 setCategorySpend(getView());
             }
 
@@ -138,24 +149,25 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
 
 
     private void setBudgetBar(int totalSpendingThisMonth) {
+        RelativeLayout budgetBarLayout = view.findViewById(R.id.budget_bar_layout);
         ProgressBar budgetBar = view.findViewById(R.id.budget_progress_bar);
         TextView budgetAmtText = view.findViewById(R.id.budget_amt_progressbar);
-        TextView progressBarStartLabel = view.findViewById(R.id.progress_bar_startlabel);
+        TextView budgetErrorMsg = view.findViewById(R.id.budget_error);
         SharedPreferences budgetPref = getActivity().getSharedPreferences("user_budget", Context.MODE_PRIVATE);
         int max = (int) budgetPref.getFloat(String.valueOf(userId), 0);
 
         if (max > 0) {
             budgetAmtText.setText("$" + max);
-            progressBarStartLabel.setText("$0");
             budgetBar.setMax(max);
-            budgetBar.setVisibility(View.VISIBLE);
+            budgetBarLayout.setVisibility(View.VISIBLE);
+            budgetErrorMsg.setVisibility(View.GONE);
             ObjectAnimator.ofInt(budgetBar, "progress", Math.abs(totalSpendingThisMonth))
                     .setDuration(1000)
                     .start();
         } else {
-            budgetBar.setVisibility(View.GONE);
+            budgetBarLayout.setVisibility(View.GONE);
             budgetAmtText.setText("");
-            progressBarStartLabel.setText("No budget set, please set one.");
+            budgetErrorMsg.setVisibility(View.VISIBLE);
         }
     }
 
@@ -171,25 +183,15 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
     }
 
     private void setCategorySpend(View view) {
-        TextView foodSpendingText = view.findViewById(R.id.food_spending);
+
         foodSpendingText.setText("$" + String.format(moneyFormat, getCategorySpend("food")));
 
-        TextView transportSpendingText = view.findViewById(R.id.transport_spending);
+
         transportSpendingText.setText("$" + String.format(moneyFormat, getCategorySpend("transport")));
 
-        TextView othersSpendingText = view.findViewById(R.id.others_spending);
         othersSpendingText.setText("$" + String.format(moneyFormat, getCategorySpend("others")));
     }
 
-//<<<<<<< HEAD
-//    private void setForecastLineChart(Map<String, Float> spendingForecastByMonth, View view) {
-//        LineChart forecastChart = view.findViewById(R.id.forecast_chart);
-//    }
-//
-//    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//        return true;
-//=======
     private Double getCategorySpend(String category) {
         return transactions.stream()
                 .filter(t -> t.getCategory().equalsIgnoreCase(category))

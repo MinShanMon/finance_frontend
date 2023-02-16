@@ -65,49 +65,50 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/budget_bar_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_gravity="center">
-
-                <TextView
-                    android:id="@+id/progress_bar_startlabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="$0"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="3dp"/>
+                android:layout_gravity="start"
+                android:layout_marginTop="10dp">
 
                 <ProgressBar
                     android:id="@+id/budget_progress_bar"
                     style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:indeterminate="false"
-                    android:minWidth="250dp"
                     android:scaleY="5" />
 
                 <TextView
                     android:id="@+id/budget_amt_progressbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginBottom="3dp"/>
+                    android:layout_alignRight="@id/budget_progress_bar"
+                    android:layout_marginEnd="10dp"
+                    android:textColor="@color/white"/>
 
-            </LinearLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/budget_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No budget set"
+                android:textColor="@color/red"
+                android:visibility="gone"
+                android:layout_gravity="start"/>
 
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/set_budget_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_top"
+                android:layout_marginTop="5dp"
                 android:text="@string/set_budget_btn"
                 android:textAllCaps="false"
-                android:layout_gravity="center"/>
+                android:layout_gravity="start"/>
 
         </LinearLayout>
 

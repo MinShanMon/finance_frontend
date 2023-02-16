@@ -19,6 +19,8 @@ import com.team3.personalfinanceapp.transactions.EditTransactionActivity;
 import com.team3.personalfinanceapp.utils.APIClient;
 import com.team3.personalfinanceapp.utils.APIInterface;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -115,6 +117,8 @@ public class TransactionsActivity extends AppCompatActivity {
                 TextView transactionCategoryText = new TextView(this);
                 transactionCategoryText.setText(t.getCategory());
 
+
+
                 TextView transactionAmtText = new TextView(this);
                 transactionAmtText.setText("$" + String.format(getString(R.string.money_format), t.getAmount()));
                 transactionAmtText.setTypeface(null, Typeface.BOLD);
@@ -123,6 +127,11 @@ public class TransactionsActivity extends AppCompatActivity {
 
                 linearLayoutTransaction.addView(transactionTitleText);
                 linearLayoutTransaction.addView(transactionCategoryText);
+                if (t.getDescription() != null) {
+                    TextView transactionDescriptionText = new TextView(this);
+                    transactionDescriptionText.setText(t.getDescription());
+                    linearLayoutTransaction.addView(transactionDescriptionText);
+                }
                 linearLayoutTransaction.addView(transactionAmtText);
 
                 linearLayoutTransaction.setOnClickListener(v -> {

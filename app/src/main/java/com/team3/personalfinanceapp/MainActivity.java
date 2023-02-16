@@ -35,6 +35,8 @@ import retrofit2.Response;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener, HomeNav
 {
 
@@ -43,8 +45,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     private InsightsViewPagerFragment insightsFragment = new InsightsViewPagerFragment();
     private ProfileFragment profileFragment = new ProfileFragment();
     ProductsFragment productsFragment = new ProductsFragment();
-
-
 
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
 
         apiInterface = APIClient.getClient().create(UserApi.class);
+
 
         if(pref.contains("token") && pref.contains("userid")){
             checkToken(pref.getInt("userid",0),pref.getString("token",""));
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             }
         });
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

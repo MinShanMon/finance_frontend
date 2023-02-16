@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -92,24 +94,36 @@ public class CategorySpendFragment extends Fragment {
         setBarData(transportBarChart, "Transport", currMonthSpendingMap, prevMonthSpendingMap);
         setBarData(othersBarChart, "Others", currMonthSpendingMap, prevMonthSpendingMap);
 
+        TextView foodLabel = view.findViewById(R.id.food_barchart_label);
+        foodLabel.setText("Food Spending");
+
+        TextView transportLabel = view.findViewById(R.id.transport_barchart_label);
+        transportLabel.setText("Transport Spending");
+
+        TextView othersLabel = view.findViewById(R.id.others_barchart_label);
+        othersLabel.setText("Others Spending");
+
+
     }
 
     private void setBarData(BarChart barChart, String category, Map<String, Double> currMonthSpendingMap, Map<String, Double> prevMonthSpendingMap) {
         List<BarEntry> entries = new ArrayList<>();
         entries.add(new BarEntry(0f, prevMonthSpendingMap.getOrDefault(category, Double.valueOf(0)).floatValue()));
         entries.add(new BarEntry(1f, currMonthSpendingMap.getOrDefault(category, Double.valueOf(0)).floatValue()));
-
-        BarData data = new BarData(new BarDataSet(entries, category + " Spending"));
-
+        BarDataSet dataSet = new BarDataSet(entries, category + " Spending");
+        dataSet.setColors(new int[] {Color.LTGRAY, Color.parseColor("#FFA500")});
+        BarData data = new BarData(dataSet);
 
         barChart.setData(data);
         barChart.setFitBars(true);
         barChart.setDescription(null);
+        barChart.getLegend().setEnabled(false);
 
         YAxis leftAxis = barChart.getAxisLeft();
         leftAxis.setDrawGridLines(false);
         leftAxis.setDrawLabels(false);
         leftAxis.setDrawAxisLine(false);
+        leftAxis.setAxisMinimum(0f);
 
         YAxis rightAxis = barChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
@@ -120,10 +134,8 @@ public class CategorySpendFragment extends Fragment {
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        String currMonthStr = LocalDate.now().getMonth().toString().substring(0, 3)
-                + " '" + String.valueOf(LocalDate.now().getYear()).substring(2, 4);
-        String prevMonthStr = LocalDate.now().getMonth().minus(1).toString().substring(0, 3)
-                + " '" + String.valueOf(LocalDate.now().getYear()).substring(2, 4);
+        String currMonthStr = LocalDate.now().getMonth().toString().substring(0, 3);
+        String prevMonthStr = LocalDate.now().getMonth().minus(1).toString().substring(0, 3);
         String[] labels = new String[] {prevMonthStr, currMonthStr};
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
@@ -133,4 +145,5 @@ public class CategorySpendFragment extends Fragment {
         });
         barChart.invalidate();
     }
+
 }

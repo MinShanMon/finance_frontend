@@ -59,14 +59,17 @@ public class InsightsViewPagerFragment extends Fragment {
 
     private ViewPager2 viewPager;
 
-    private ArrayList<Transaction> transactions;
+    private List<Transaction> transactions;
 
-    LineChart lineChart;
+    private LineChart lineChart;
 
-    APIInterface apiInterface;
-    SharedPreferences pref;
-    HomeNav homeNav;
+    private APIInterface apiInterface;
+    private SharedPreferences pref;
+    private TabLayoutMediator tabLayoutMediator;
+    private HomeNav homeNav;
     private HomeFragment listener;
+    private PieChartFragment pieChartFragment;
+    private CategorySpendFragment categorySpendFragment;
 
 
     public InsightsViewPagerFragment() {
@@ -87,13 +90,14 @@ public class InsightsViewPagerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         lineChart = view.findViewById(R.id.insights_linechart);
         lineChart.setNoDataText("Loading...");
 
+
         TabLayout tabLayout = view.findViewById(R.id.insights_tablayout);
         viewPager = view.findViewById(R.id.insights_viewpager);
-        viewPager.setAdapter(new InsightsViewPagerAdapter(this, new ArrayList<>()));
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager,
+        tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> {
                     if (position == 0)
                         tab.setText("Pie Chart");
@@ -101,7 +105,6 @@ public class InsightsViewPagerFragment extends Fragment {
                         tab.setText("Spending By Category");
                 }
         );
-        tabLayoutMediator.attach();
         getAllTransactionsAndSetCharts();
     }
 
@@ -145,7 +148,7 @@ public class InsightsViewPagerFragment extends Fragment {
     }
 
     private void setForecastLine(Map<String, Float> forecastByMonth) {
-        if (forecastByMonth == null || transactions == null) {
+        if (forecastByMonth == null || transactions == null || transactions.isEmpty()) {
             return;
         }
         List<Entry> entries = new ArrayList<>();
@@ -156,7 +159,7 @@ public class InsightsViewPagerFragment extends Fragment {
                         .sorted((e1, e2) -> Integer.parseInt(e1.getKey()) - Integer.parseInt(e2.getKey()))
                         .collect(Collectors.toList());
         forecastDataList.forEach(e -> {
-            LocalDate date = LocalDate.of(currentYear, Integer.parseInt(e.getKey()), 1);
+            LocalDate date = LocalDate.of(currentYear + 1, Integer.parseInt(e.getKey()), 1);
             long epochDay = date.toEpochDay();
             entries.add(new Entry(epochDay, e.getValue()));
         });
@@ -174,6 +177,8 @@ public class InsightsViewPagerFragment extends Fragment {
     private void setPieChartAndCategorySpending() {
         InsightsViewPagerAdapter insightsPagerAdapter = new InsightsViewPagerAdapter(InsightsViewPagerFragment.this, transactions);
         viewPager.setAdapter(insightsPagerAdapter);
+        viewPager.setSaveEnabled(false);
+        tabLayoutMediator.attach();
     }
 
     private void setLineChart() {

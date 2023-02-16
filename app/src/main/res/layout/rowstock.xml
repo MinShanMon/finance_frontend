@@ -48,9 +48,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="AAPL"
-                    android:textStyle="italic"
                     android:textAlignment="center"
-                    />
+                    android:textStyle="italic" />
                 <TextView
                     android:id="@+id/currency"
                     android:layout_width="match_parent"

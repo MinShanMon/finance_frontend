@@ -19,11 +19,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.Fragment.HomeFragment;
 import com.team3.personalfinanceapp.Fragment.ProductsFragment;
 import com.team3.personalfinanceapp.HomeNav;
 import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.R;
+import com.team3.personalfinanceapp.insights.CategorySpendFragment;
+import com.team3.personalfinanceapp.insights.InsightsViewPagerFragment;
+import com.team3.personalfinanceapp.insights.PieChartFragment;
 import com.team3.personalfinanceapp.model.BankResponse;
 import com.team3.personalfinanceapp.model.Transaction;
 import com.team3.personalfinanceapp.statements.LinkBankActivity;
