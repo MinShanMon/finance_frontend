@@ -43,18 +43,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Category" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <RadioGroup
+        android:id="@+id/edit_transaction_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Category">
+        android:orientation="horizontal">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_transaction_category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <RadioButton
+            android:id="@+id/radio_food"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Food" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+
+        <RadioButton
+            android:id="@+id/radio_transport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Transport" />
+
+        <RadioButton
+            android:id="@+id/radio_others"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Others" />
+
+    </RadioGroup>
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -67,8 +90,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/title_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please enter title"
+        android:textColor="@color/red"
+        android:visibility="gone" />
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -109,6 +139,13 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/amount_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please enter an amount"
+        android:textColor="@color/red"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/save_btn"
