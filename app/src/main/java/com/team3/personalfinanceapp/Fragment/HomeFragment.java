@@ -115,7 +115,9 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
                         .filter(t -> !t.getCategory().equalsIgnoreCase("income"))
                         .map(t -> t.getAmount()).reduce(Double::sum)
                         .orElse(Double.valueOf(0)).intValue();
-                setBudgetBar(totalSpendingThisMonth);
+                if (getActivity() != null) {
+                    setBudgetBar(totalSpendingThisMonth);
+                }
                 setCategorySpend(getView());
             }
 
