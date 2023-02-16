@@ -37,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CategorySpendFragment extends Fragment implements IChartFragment {
+public class CategorySpendFragment extends Fragment {
 
     private List<Transaction> transactions;
 
@@ -132,8 +132,4 @@ public class CategorySpendFragment extends Fragment implements IChartFragment {
         barChart.invalidate();
     }
 
-    @Override
-    public void updateTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
-    }
 }

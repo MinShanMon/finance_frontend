@@ -34,7 +34,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class PieChartFragment extends Fragment implements IChartFragment {
+public class PieChartFragment extends Fragment {
 
     private List<Transaction> transactions;
 
@@ -138,8 +138,4 @@ public class PieChartFragment extends Fragment implements IChartFragment {
         pieChart.setCenterText("This Month\n$" +  String.format(getString(R.string.money_format), Math.abs(sum)));
     }
 
-    @Override
-    public void updateTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
-    }
 }
