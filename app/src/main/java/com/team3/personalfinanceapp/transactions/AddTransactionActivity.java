@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -50,6 +51,9 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
         addBtn.setOnClickListener(v -> saveTransaction());
         RadioButton defaultChoice = findViewById(R.id.radio_food);
         setDatePicker = findViewById(R.id.set_date_picker);
+
+        ImageView backBtn = findViewById(R.id.img_backArrow);
+        backBtn.setOnClickListener( e -> finish());
 
         setDatePicker.setOnClickListener( e -> {
             DatePickerFragment datePickerFragment = new DatePickerFragment();

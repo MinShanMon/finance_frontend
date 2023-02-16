@@ -56,7 +56,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingStart="20dp"
-            android:paddingEnd="20dp">
+            android:paddingEnd="20dp"
+            android:layout_gravity="center">
 
             <TextView
                 android:layout_width="match_parent"
@@ -65,11 +66,11 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/budget_bar_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_gravity="start"
                 android:layout_marginTop="10dp">
 
@@ -85,11 +86,10 @@
                     android:id="@+id/budget_amt_progressbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignRight="@id/budget_progress_bar"
-                    android:layout_marginEnd="10dp"
-                    android:textColor="@color/white"/>
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/budget_error"
