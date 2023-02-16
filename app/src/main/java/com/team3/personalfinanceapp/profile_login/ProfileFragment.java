@@ -2,10 +2,13 @@ package com.team3.personalfinanceapp.profile_login;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,9 +21,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.team3.personalfinanceapp.Fragment.HomeFragment;
+import com.team3.personalfinanceapp.Fragment.SetBudgetDialogFragment;
+import com.team3.personalfinanceapp.HomeNav;
+import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.R;
+import com.team3.personalfinanceapp.transactions.TransactionsFragment;
 
 public class ProfileFragment extends Fragment {
     TextView logout;
@@ -33,6 +43,8 @@ public class ProfileFragment extends Fragment {
     LinearLayout email_display;
     ImageView img_icon;
     LinearLayout fill_enquiry;
+    HomeNav homeNav;
+    private HomeFragment listener;
 
     ProfileEditFragment profileEditFragment = new ProfileEditFragment();
 
@@ -50,7 +62,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+//        HomeFragment hf = MainActivity.get
         View view =  inflater.inflate(R.layout.fragment_profile, container, false);
         pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
         init(view);
@@ -78,7 +90,32 @@ public class ProfileFragment extends Fragment {
             startActivity(intent);
             getActivity().finish();
         });
+        setupOnBackPressed();
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MainActivity mainActivity = (MainActivity) context;
+        listener = mainActivity.getHomeFragment();
+        homeNav = (HomeNav) context;
+    }
+
+    private void homeNav(){homeNav.homeClicked();}
+
+    private void setupOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                commitTransaction(listener);
+                homeNav();
+            }
+        });
+    }
+    @Override
+    public void onStart(){
+        super.onStart();
     }
 
     private void init(View view){
@@ -115,9 +152,9 @@ public class ProfileFragment extends Fragment {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         FragmentTransaction trans = fm.beginTransaction();
         trans.replace(R.id.fragment_container, fragment);
-        trans.addToBackStack(null);
         trans.commit();
     }
+
 
 
 

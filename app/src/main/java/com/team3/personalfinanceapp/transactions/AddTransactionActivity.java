@@ -2,13 +2,16 @@ package com.team3.personalfinanceapp.transactions;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -26,7 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddTransactionActivity extends AppCompatActivity {
+public class AddTransactionActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private static final int TYPE_SPENDING = 0;
     private static final int TYPE_INCOME = 1;
@@ -34,6 +37,8 @@ public class AddTransactionActivity extends AppCompatActivity {
     private int transactionType;
 
     private String categoryChoice;
+
+    private Button setDatePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,16 @@ public class AddTransactionActivity extends AppCompatActivity {
         Button addBtn = findViewById(R.id.add_btn);
         addBtn.setOnClickListener(v -> saveTransaction());
         RadioButton defaultChoice = findViewById(R.id.radio_food);
+        setDatePicker = findViewById(R.id.set_date_picker);
+
+        ImageView backBtn = findViewById(R.id.img_backArrow);
+        backBtn.setOnClickListener( e -> finish());
+
+        setDatePicker.setOnClickListener( e -> {
+            DatePickerFragment datePickerFragment = new DatePickerFragment();
+            datePickerFragment.show(getSupportFragmentManager(), "datePicker");
+        });
+
         defaultChoice.setChecked(true);
         categoryChoice = "Food";
     }
@@ -111,9 +126,8 @@ public class AddTransactionActivity extends AppCompatActivity {
         EditText description = findViewById(R.id.add_transaction_description);
         newTransaction.setDescription(description.getText().toString());
 
-        EditText date = findViewById(R.id.add_transaction_date);
-        newTransaction.setDate(LocalDate.parse(date.getText().toString(),
-                DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        newTransaction.setDate(LocalDate.parse(setDatePicker.getText().toString(),
+                DateTimeFormatter.ofPattern("dd MMM yy")));
 
         EditText amountField = findViewById(R.id.add_transaction_amount);
 
@@ -144,6 +158,10 @@ public class AddTransactionActivity extends AppCompatActivity {
     }
 
 
-
-
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        LocalDate date = LocalDate.of(year, month + 1, dayOfMonth);
+        String dateString = DateTimeFormatter.ofPattern("dd MMM yy").format(date);
+        setDatePicker.setText(dateString);
+    }
 }

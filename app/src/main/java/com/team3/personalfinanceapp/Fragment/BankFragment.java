@@ -2,10 +2,13 @@ package com.team3.personalfinanceapp.Fragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -25,10 +29,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.team3.personalfinanceapp.ListAdapter;
+import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.Models.FixedDeposits;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.Services.fixedDeposistsServics;
 import com.team3.personalfinanceapp.config.APIclient;
+import com.team3.personalfinanceapp.profile_login.ProfileFragment;
 
 import java.util.List;
 import java.util.Map;
@@ -46,6 +52,7 @@ public class BankFragment extends Fragment {
     private List<FixedDeposits> fixedList;
 
     ProgressBar progressBar;
+    ProductsFragment listener;
 
 
     @Override
@@ -61,6 +68,8 @@ public class BankFragment extends Fragment {
         progressBar = v.findViewById(R.id.bar);
 
         progressBar.setVisibility(View.VISIBLE);
+
+
 
 
         APIclient api = new APIclient();
@@ -79,7 +88,38 @@ public class BankFragment extends Fragment {
 
 
 
+                Button comparebutton = v.findViewById(R.id.compareitem);
+
+                SharedPreferences pref = getContext().getSharedPreferences("bankIdList", getContext().MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+
+                comparebutton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Map<String, Long> fixedIdMap = (Map<String, Long>) pref.getAll();
+
+                        if(fixedIdMap.size() != 2){
+                            Toast.makeText(getContext(),"You need to choose two items to compare",Toast.LENGTH_SHORT).show();
+                        }else{
+                            CompareFragment compareFragment = new CompareFragment();
+                            commitTransaction(compareFragment);
+                        }
+                    }
+                });
+
+
+
+
+
+
+
+
+
+
+
         progressBar.setVisibility(View.INVISIBLE);
+
+                pref.edit().clear().commit();
                 fixedList= response.body();
                 ListView listView = v.findViewById(R.id.listView);
                 if (listView != null) {
@@ -109,14 +149,32 @@ public class BankFragment extends Fragment {
             }
         });
 
+        setupOnBackPressed();
         return v;
     }
+
+    private void setupOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                commitTransaction(listener);
+            }
+        });
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MainActivity mainActivity = (MainActivity) context;
+        listener = mainActivity.getProductsFragment();
+    }
+
 
     private void commitTransaction(Fragment fragment) {
         FragmentManager fm = getParentFragmentManager();
         FragmentTransaction trans = fm.beginTransaction();
         trans.replace(R.id.fragment_container, fragment);
-        trans.addToBackStack(null);
+//        trans.addToBackStack(null);
         trans.commit();
     }
 

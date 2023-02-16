@@ -2,6 +2,7 @@ package com.team3.personalfinanceapp.transactions;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,7 +10,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -25,7 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EditTransactionActivity extends AppCompatActivity {
+public class EditTransactionActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private static final int TYPE_SPENDING = 0;
     private static final int TYPE_INCOME = 1;
@@ -35,13 +38,19 @@ public class EditTransactionActivity extends AppCompatActivity {
 
     private SharedPreferences pref;
 
-    APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+    private Button setDatePicker;
+
+    private APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_transaction);
+        setDatePicker = findViewById(R.id.set_date_picker);
+
+        ImageView backBtn = findViewById(R.id.img_backArrow);
+        backBtn.setOnClickListener( e -> finish());
 
         Intent intent = getIntent();
         transactionId = intent.getLongExtra("transactionId", 0);
@@ -53,6 +62,10 @@ public class EditTransactionActivity extends AppCompatActivity {
             public void onResponse(Call<Transaction> call, Response<Transaction> response) {
                 transactionToEdit = response.body();
                 updateTransactionForm(transactionToEdit);
+                setDatePicker.setOnClickListener( e -> {
+                    DatePickerFragment datePickerFragment = new DatePickerFragment();
+                    datePickerFragment.show(getSupportFragmentManager(), "datePicker");
+                });
             }
 
             @Override
@@ -81,8 +94,7 @@ public class EditTransactionActivity extends AppCompatActivity {
         EditText description = findViewById(R.id.edit_transaction_description);
         description.setText(transaction.getDescription());
 
-        EditText date = findViewById(R.id.edit_transaction_date);
-        date.setText(transaction.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        setDatePicker.setText(transaction.getDate().format(DateTimeFormatter.ofPattern("dd MMM yyy")));
 
         EditText amount = findViewById(R.id.edit_transaction_amount);
         amount.setText(Double.toString(Math.abs(transaction.getAmount())));
@@ -138,9 +150,8 @@ public class EditTransactionActivity extends AppCompatActivity {
         EditText description = findViewById(R.id.edit_transaction_description);
         transactionToEdit.setDescription(description.getText().toString());
 
-        EditText date = findViewById(R.id.edit_transaction_date);
-        transactionToEdit.setDate(LocalDate.parse(date.getText().toString(),
-                DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        transactionToEdit.setDate(LocalDate.parse(setDatePicker.getText().toString(),
+                DateTimeFormatter.ofPattern("dd MMM yy")));
 
         EditText amountField = findViewById(R.id.edit_transaction_amount);
 
@@ -194,4 +205,10 @@ public class EditTransactionActivity extends AppCompatActivity {
         Toast.makeText(EditTransactionActivity.this, "Network error. Please try again", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        LocalDate date = LocalDate.of(year, month + 1, dayOfMonth);
+        String dateString = DateTimeFormatter.ofPattern("dd MMM yy").format(date);
+        setDatePicker.setText(dateString);
+    }
 }

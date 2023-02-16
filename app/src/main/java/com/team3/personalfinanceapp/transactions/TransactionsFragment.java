@@ -2,11 +2,16 @@ package com.team3.personalfinanceapp.transactions;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +19,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.team3.personalfinanceapp.MainActivity;
+import com.team3.personalfinanceapp.Fragment.HomeFragment;
+import com.team3.personalfinanceapp.Fragment.ProductsFragment;
+import com.team3.personalfinanceapp.HomeNav;
+import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.R;
+import com.team3.personalfinanceapp.insights.CategorySpendFragment;
+import com.team3.personalfinanceapp.insights.InsightsViewPagerFragment;
+import com.team3.personalfinanceapp.insights.PieChartFragment;
 import com.team3.personalfinanceapp.model.BankResponse;
 import com.team3.personalfinanceapp.model.Transaction;
 import com.team3.personalfinanceapp.statements.LinkBankActivity;
@@ -25,6 +38,7 @@ import com.team3.personalfinanceapp.utils.BankAPIInterface;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -41,6 +55,10 @@ public class TransactionsFragment extends Fragment {
     private String moneyFormat;
     private SharedPreferences pref;
 
+    private HomeFragment listener;
+    private HomeNav homeNav;
+
+
     public TransactionsFragment() {
         // Required empty public constructor
     }
@@ -49,12 +67,15 @@ public class TransactionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setupOnBackPressed();
         return inflater.inflate(R.layout.fragment_transactions, container, false);
     }
+
 
     @Override
     public void onStart() {
         super.onStart();
+
         View view = getView();
         pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
         moneyFormat = getString(R.string.money_format);
@@ -197,7 +218,8 @@ public class TransactionsFragment extends Fragment {
             amount.setText("");
             return;
         }
-        title.setText(largestTransaction.getTitle());
+        title.setText(largestTransaction.getTitle() + " "
+                + DateTimeFormatter.ofPattern("E, dd MMM").format(largestTransaction.getDate()));
         String amountStr = "$" + String.format(moneyFormat, largestTransaction.getAmount());
         amount.setText(amountStr);
     }
@@ -226,5 +248,34 @@ public class TransactionsFragment extends Fragment {
         Button linkBankBtn = view.findViewById(R.id.link_bank_btn);
         linkBankBtn.setOnClickListener(v -> startActivity(new Intent(getContext(), LinkBankActivity.class)));
     }
+
+    private void setupOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                commitTransaction(listener);
+                homeNav();
+            }
+        });
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MainActivity mainActivity = (MainActivity) context;
+        listener = mainActivity.getHomeFragment();
+        homeNav = (HomeNav) context;
+    }
+
+    private void homeNav(){homeNav.homeClicked();}
+
+    private void commitTransaction(Fragment fragment) {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction trans = fm.beginTransaction();
+        trans.replace(R.id.fragment_container, fragment);
+        trans.addToBackStack(null);
+        trans.commit();
+    }
+
 
 }
