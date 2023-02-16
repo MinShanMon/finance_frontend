@@ -2,6 +2,7 @@ package com.team3.personalfinanceapp.transactions;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,7 +15,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.R;
+import com.team3.personalfinanceapp.insights.CategorySpendFragment;
+import com.team3.personalfinanceapp.insights.InsightsViewPagerFragment;
+import com.team3.personalfinanceapp.insights.PieChartFragment;
 import com.team3.personalfinanceapp.model.BankResponse;
 import com.team3.personalfinanceapp.model.Transaction;
 import com.team3.personalfinanceapp.statements.LinkBankActivity;
@@ -81,7 +86,7 @@ public class TransactionsFragment extends Fragment {
     private void getTransactionsAndDisplayData(View view) {
 
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-        Call<List<Transaction>> transactionsCall = apiInterface.getTransactionsByMonth(pref.getInt("userid", 0), LocalDate.now().getMonth().getValue(), "Bearer " + pref.getString("token", ""));
+        Call<List<Transaction>> transactionsCall = apiInterface.getAllTransactions(pref.getInt("userid", 0), "Bearer " + pref.getString("token", ""));
         transactionsCall.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
@@ -93,9 +98,13 @@ public class TransactionsFragment extends Fragment {
                     return;
                 }
                 transactions = new ArrayList<>(response.body());
-                displayLargestTransaction(view, transactions);
-                displayIncome(view, transactions);
-                displayExpenses(view, transactions);
+                ArrayList<Transaction> currentMonthTransactions = new ArrayList<>();
+                transactions.stream().filter(t -> t.getDate().withDayOfMonth(1).equals(LocalDate.now().withDayOfMonth(1)))
+                                .forEach( t -> currentMonthTransactions.add(t));
+                displayLargestTransaction(view, currentMonthTransactions);
+                displayIncome(view, currentMonthTransactions);
+                displayExpenses(view, currentMonthTransactions);
+                updateCharts();
             }
 
             @Override
@@ -103,6 +112,22 @@ public class TransactionsFragment extends Fragment {
                 call.cancel();
             }
         });
+    }
+
+    private void updateCharts() {
+        Context context = getActivity();
+        MainActivity activity = (MainActivity) context;
+        if (activity != null) {
+            InsightsViewPagerFragment insightsFragment = activity.getInsightsFragment();
+            PieChartFragment pieChart = insightsFragment.getPieChartFragment();
+            if (pieChart != null) {
+                pieChart.updateTransactions(transactions);
+            }
+            CategorySpendFragment catSpend = insightsFragment.getCategorySpendFragment();
+            if (catSpend != null) {
+                catSpend.updateTransactions(transactions);
+            }
+        }
     }
 
     /**

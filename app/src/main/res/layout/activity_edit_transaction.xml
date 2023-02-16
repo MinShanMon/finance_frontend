@@ -62,17 +62,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <com.google.android.material.textfield.TextInputLayout
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/set_date_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Date (DD/MM/YYYY)">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_transaction_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:background="@color/colorLightGrey"
+        android:textColor="@color/black"
+        android:text="Date"
+        android:textAllCaps="false"
+        android:textAlignment="viewStart"
+        android:paddingStart="18dp"/>
 
 
     <com.google.android.material.textfield.TextInputLayout

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
@@ -52,13 +53,16 @@ public class InsightsViewPagerFragment extends Fragment {
 
     private ViewPager2 viewPager;
 
-    private ArrayList<Transaction> transactions;
+    private List<Transaction> transactions;
 
     private LineChart lineChart;
 
     private APIInterface apiInterface;
     private SharedPreferences pref;
     private TabLayoutMediator tabLayoutMediator;
+
+    private PieChartFragment pieChartFragment;
+    private CategorySpendFragment categorySpendFragment;
 
 
     public InsightsViewPagerFragment() {
@@ -78,8 +82,10 @@ public class InsightsViewPagerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         lineChart = view.findViewById(R.id.insights_linechart);
         lineChart.setNoDataText("Loading...");
+
 
         TabLayout tabLayout = view.findViewById(R.id.insights_tablayout);
         viewPager = view.findViewById(R.id.insights_viewpager);
@@ -223,4 +229,23 @@ public class InsightsViewPagerFragment extends Fragment {
 
     }
 
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setPieChartFragment(PieChartFragment pieChartFragment) {
+        this.pieChartFragment = pieChartFragment;
+    }
+
+    public void setCategorySpendFragment(CategorySpendFragment categorySpendFragment) {
+        this.categorySpendFragment = categorySpendFragment;
+    }
+
+    public PieChartFragment getPieChartFragment() {
+        return pieChartFragment;
+    }
+
+    public CategorySpendFragment getCategorySpendFragment() {
+        return categorySpendFragment;
+    }
 }

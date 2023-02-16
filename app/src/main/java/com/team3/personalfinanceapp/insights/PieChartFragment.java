@@ -1,5 +1,6 @@
 package com.team3.personalfinanceapp.insights;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -33,7 +34,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class PieChartFragment extends Fragment {
+public class PieChartFragment extends Fragment implements IChartFragment {
 
     private List<Transaction> transactions;
 
@@ -55,7 +56,6 @@ public class PieChartFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
         View view = getView();
         createPieChart(view);
     }
@@ -135,9 +135,11 @@ public class PieChartFragment extends Fragment {
                     .mapToDouble(Transaction::getAmount)
                     .reduce(Double::sum).orElse((double) 0);
         }
-
-
         pieChart.setCenterText("This Month\n$" +  String.format(getString(R.string.money_format), Math.abs(sum)));
     }
 
+    @Override
+    public void updateTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
 }

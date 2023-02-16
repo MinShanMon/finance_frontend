@@ -35,6 +35,8 @@ import retrofit2.Response;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
 
     private TransactionsFragment transactionsFragment = new TransactionsFragment();
@@ -133,9 +135,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 return true;
 
             case R.id.transactions_item:
-                
                 commitTransaction(transactionsFragment);
                 return true;
+
             case R.id.manage_profile:
                 commitTransaction(profileFragment);
                 return true;
@@ -144,6 +146,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 return true;
         }
     }
+
+
 
     private void commitTransaction(Fragment fragment) {
 
@@ -156,5 +160,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     public HomeFragment getHomeFragment() {
         return homeFragment;
+    }
+
+    public InsightsViewPagerFragment getInsightsFragment() {
+        return insightsFragment;
     }
 }
