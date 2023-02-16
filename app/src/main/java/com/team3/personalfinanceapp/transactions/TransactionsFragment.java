@@ -104,7 +104,6 @@ public class TransactionsFragment extends Fragment {
                 displayLargestTransaction(view, currentMonthTransactions);
                 displayIncome(view, currentMonthTransactions);
                 displayExpenses(view, currentMonthTransactions);
-                updateCharts();
             }
 
             @Override
@@ -114,21 +113,6 @@ public class TransactionsFragment extends Fragment {
         });
     }
 
-    private void updateCharts() {
-        Context context = getActivity();
-        MainActivity activity = (MainActivity) context;
-        if (activity != null) {
-            InsightsViewPagerFragment insightsFragment = activity.getInsightsFragment();
-            PieChartFragment pieChart = insightsFragment.getPieChartFragment();
-            if (pieChart != null) {
-                pieChart.updateTransactions(transactions);
-            }
-            CategorySpendFragment catSpend = insightsFragment.getCategorySpendFragment();
-            if (catSpend != null) {
-                catSpend.updateTransactions(transactions);
-            }
-        }
-    }
 
     /**
      * Set view other transactions button

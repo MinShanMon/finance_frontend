@@ -45,7 +45,12 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
 
     private int totalSpendingThisMonth;
 
-    String moneyFormat;
+    private TextView foodSpendingText;
+    private TextView transportSpendingText;
+
+    private TextView othersSpendingText;
+
+    private String moneyFormat;
 
     private View view;
 
@@ -60,6 +65,9 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         moneyFormat = getString(R.string.money_format);
+        foodSpendingText = view.findViewById(R.id.food_spending);
+        transportSpendingText = view.findViewById(R.id.transport_spending);
+        othersSpendingText = view.findViewById(R.id.others_spending);
         setBudgetButton(view);
         return view;
     }
@@ -145,13 +153,12 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
     }
 
     private void setCategorySpend(View view) {
-        TextView foodSpendingText = view.findViewById(R.id.food_spending);
+
         foodSpendingText.setText("$" + String.format(moneyFormat, getCategorySpend("food")));
 
-        TextView transportSpendingText = view.findViewById(R.id.transport_spending);
+
         transportSpendingText.setText("$" + String.format(moneyFormat, getCategorySpend("transport")));
 
-        TextView othersSpendingText = view.findViewById(R.id.others_spending);
         othersSpendingText.setText("$" + String.format(moneyFormat, getCategorySpend("others")));
     }
 
