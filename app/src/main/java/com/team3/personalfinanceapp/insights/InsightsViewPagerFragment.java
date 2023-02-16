@@ -148,7 +148,7 @@ public class InsightsViewPagerFragment extends Fragment {
     }
 
     private void setForecastLine(Map<String, Float> forecastByMonth) {
-        if (forecastByMonth == null || transactions == null) {
+        if (forecastByMonth == null || transactions == null || transactions.isEmpty()) {
             return;
         }
         List<Entry> entries = new ArrayList<>();
