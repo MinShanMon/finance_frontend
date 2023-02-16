@@ -18,9 +18,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.transition.TransitionInflater;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -115,8 +118,37 @@ public class ForecastPortfolioFragment extends Fragment{
 
             }
         }
+
+        v.findViewById(R.id.backfromport).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CompareFragment compareFragment = new CompareFragment();
+                commitTransaction(compareFragment);
+            }
+        });
+        setupOnBackPressed();
         return v;
     }
+
+    private void setupOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                CompareFragment compareFragment = new CompareFragment();
+                commitTransaction(compareFragment);
+            }
+        });
+    }
+
+    private void commitTransaction(Fragment fragment) {
+        FragmentManager fm = getParentFragmentManager();
+        FragmentTransaction trans = fm.beginTransaction();
+        trans.replace(R.id.fragment_container, fragment);
+        trans.addToBackStack(null);
+        trans.commit();
+    }
+
+
 
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState)   {

@@ -5,6 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+    <LinearLayout
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="30sp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/backfromport"
+            android:text="back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:drawableLeft="@drawable/back_arrow">
+        </androidx.appcompat.widget.AppCompatButton>
+
+    </LinearLayout>
 <TextView
     android:id="@+id/header_title"
     android:layout_width="wrap_content"

@@ -2,6 +2,7 @@ package com.team3.personalfinanceapp.Fragment;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -101,10 +102,20 @@ public class EtfFragment extends Fragment {
         });
 
 
-
+        setupOnBackPressed();
         return v;
 
 
+    }
+
+    private void setupOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                ProductsFragment productsFragment = new ProductsFragment();
+                commitTransaction(productsFragment);
+            }
+        });
     }
 
     private void commitTransaction(Fragment fragment) {
