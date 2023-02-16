@@ -1,15 +1,20 @@
 package com.team3.personalfinanceapp.Fragment;
 
 import android.animation.ObjectAnimator;
+import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,6 +24,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.google.android.material.navigation.NavigationBarView;
+import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.Transaction;
 import com.team3.personalfinanceapp.utils.APIClient;
@@ -35,7 +42,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment implements SetBudgetDialogFragment.setBudgetListener {
+public class HomeFragment extends Fragment implements SetBudgetDialogFragment.setBudgetListener{
 
 
     private List<Transaction> transactions;
@@ -54,6 +61,7 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
 
     private View view;
 
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -63,18 +71,36 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         moneyFormat = getString(R.string.money_format);
         foodSpendingText = view.findViewById(R.id.food_spending);
         transportSpendingText = view.findViewById(R.id.transport_spending);
         othersSpendingText = view.findViewById(R.id.others_spending);
         setBudgetButton(view);
+
+//        setSpendingForecastButton(view);
+        setupOnBackPressed();
+
         return view;
+    }
+    private void setupOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if(isEnabled()){
+
+                    setEnabled(false);
+                    requireActivity().onBackPressed();
+                }
+            }
+        });
     }
 
     @Override
     public void onStart() {
         super.onStart();
+
         view = getView();
         pref = getActivity().getSharedPreferences("user_credentials", Context.MODE_PRIVATE);
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
@@ -117,6 +143,8 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
             }
         });
     }
+
+
 
     private void setBudgetBar(int totalSpendingThisMonth) {
         RelativeLayout budgetBarLayout = view.findViewById(R.id.budget_bar_layout);

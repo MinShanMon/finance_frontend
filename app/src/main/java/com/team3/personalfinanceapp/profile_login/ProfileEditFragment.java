@@ -2,11 +2,16 @@ package com.team3.personalfinanceapp.profile_login;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -18,6 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.team3.personalfinanceapp.Fragment.HomeFragment;
+import com.team3.personalfinanceapp.HomeNav;
 import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.RegisteredUsers;
@@ -28,11 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileEditFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ProfileEditFragment extends Fragment {
 
     TextInputEditText username;
@@ -47,6 +50,7 @@ public class ProfileEditFragment extends Fragment {
     SharedPreferences.Editor editor;
     SharedPreferences pref;
     UserApi apiInterface;
+    private ProfileFragment listener;
 
 //    ProfileFragment profileFragment = new ProfileFragment();
 
@@ -84,12 +88,13 @@ public class ProfileEditFragment extends Fragment {
         img_backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
-
+//                Intent intent = new Intent(getActivity(), MainActivity.class);
+//                startActivity(intent);
+                commitTransaction(listener);
             }
         });
 
+        setupOnBackPressed();
         return view;
     }
 
@@ -116,6 +121,29 @@ public class ProfileEditFragment extends Fragment {
             textEmailAddress.setText(pref.getString("email", ""));
             profile.setText(getString(R.string.username_email));
         }
+    }
+
+    private void setupOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                commitTransaction(listener);
+            }
+        });
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MainActivity mainActivity = (MainActivity) context;
+        listener = mainActivity.getProfileFragment();
+    }
+
+    private void commitTransaction(Fragment fragment) {
+        FragmentManager fm = getParentFragmentManager();
+        FragmentTransaction trans = fm.beginTransaction();
+        trans.replace(R.id.fragment_container, fragment);
+        trans.commit();
     }
 
     private void confirm(){

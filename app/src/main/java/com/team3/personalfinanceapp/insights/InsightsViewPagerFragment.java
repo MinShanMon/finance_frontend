@@ -2,14 +2,17 @@ package com.team3.personalfinanceapp.insights;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
@@ -29,6 +32,9 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.team3.personalfinanceapp.Fragment.HomeFragment;
+import com.team3.personalfinanceapp.HomeNav;
+import com.team3.personalfinanceapp.MainActivity;
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.adapter.InsightsViewPagerAdapter;
 import com.team3.personalfinanceapp.model.Transaction;
@@ -60,7 +66,8 @@ public class InsightsViewPagerFragment extends Fragment {
     private APIInterface apiInterface;
     private SharedPreferences pref;
     private TabLayoutMediator tabLayoutMediator;
-
+    private HomeNav homeNav;
+    private HomeFragment listener;
     private PieChartFragment pieChartFragment;
     private CategorySpendFragment categorySpendFragment;
 
@@ -76,6 +83,7 @@ public class InsightsViewPagerFragment extends Fragment {
         // Inflate the layout for this fragment
         apiInterface = APIClient.getClient().create(APIInterface.class);
         pref = this.getActivity().getSharedPreferences("user_credentials", MODE_PRIVATE);
+        setupOnBackPressed();
         return inflater.inflate(R.layout.fragment_insights_view_pager, container, false);
     }
 
@@ -230,23 +238,38 @@ public class InsightsViewPagerFragment extends Fragment {
 
     }
 
-    public List<Transaction> getTransactions() {
-        return transactions;
+    @Override
+    public void onStart(){
+        super.onStart();
+
     }
 
-    public void setPieChartFragment(PieChartFragment pieChartFragment) {
-        this.pieChartFragment = pieChartFragment;
+    private void setupOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                commitTransaction(listener);
+                homeNav();
+            }
+        });
     }
 
-    public void setCategorySpendFragment(CategorySpendFragment categorySpendFragment) {
-        this.categorySpendFragment = categorySpendFragment;
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MainActivity mainActivity = (MainActivity) context;
+        listener = mainActivity.getHomeFragment();
+        homeNav = (HomeNav) context;
     }
 
-    public PieChartFragment getPieChartFragment() {
-        return pieChartFragment;
+    private void homeNav(){homeNav.homeClicked();}
+
+    private void commitTransaction(Fragment fragment) {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction trans = fm.beginTransaction();
+        trans.replace(R.id.fragment_container, fragment);
+        trans.addToBackStack(null);
+        trans.commit();
     }
 
-    public CategorySpendFragment getCategorySpendFragment() {
-        return categorySpendFragment;
-    }
 }
