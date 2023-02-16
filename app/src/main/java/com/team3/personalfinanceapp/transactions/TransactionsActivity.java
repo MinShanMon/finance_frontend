@@ -99,7 +99,7 @@ public class TransactionsActivity extends AppCompatActivity {
 
         transactionsByDate.forEach((date, ts) -> {
             TextView dateText = new TextView(this);
-            String dateString = DateTimeFormatter.ofPattern("dd MMM yyyy").format(date);
+            String dateString = DateTimeFormatter.ofPattern("E, dd MMM yyyy").format(date);
             dateText.setText(dateString);
             dateText.setTypeface(null, Typeface.BOLD);
             dateText.setBackgroundColor(Color.parseColor("#DCDCDC"));

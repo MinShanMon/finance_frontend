@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -39,7 +40,7 @@ public class EditTransactionActivity extends AppCompatActivity implements DatePi
 
     private Button setDatePicker;
 
-    APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+    private APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
 
 
     @Override
@@ -47,6 +48,9 @@ public class EditTransactionActivity extends AppCompatActivity implements DatePi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_transaction);
         setDatePicker = findViewById(R.id.set_date_picker);
+
+        ImageView backBtn = findViewById(R.id.img_backArrow);
+        backBtn.setOnClickListener( e -> finish());
 
         Intent intent = getIntent();
         transactionId = intent.getLongExtra("transactionId", 0);
