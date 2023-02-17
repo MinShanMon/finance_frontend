@@ -7,12 +7,40 @@
     android:orientation="vertical"
     tools:context=".transactions.AddTransactionActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Transaction"
-        android:textStyle="bold"
-        android:textSize="20sp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_backArrow"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_margin="16dp"
+                android:contentDescription="@string/back"
+                android:src="@drawable/back_arrow"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:gravity="center"
+                android:text="@string/add_transaction"
+                android:textColor="@color/white" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
 
     <Spinner
         android:id="@+id/transaction_type_dropdown"
@@ -23,6 +51,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:text="Category" />
 
     <RadioGroup
@@ -67,6 +96,14 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/title_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please enter title"
+        android:textColor="@color/red"
+        android:visibility="gone" />
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -103,6 +140,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"/>
+
+        <TextView
+            android:id="@+id/amount_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please enter an amount"
+            android:textColor="@color/red"
+            android:visibility="gone" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

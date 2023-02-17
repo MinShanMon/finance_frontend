@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -149,7 +150,7 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
 
 
     private void setBudgetBar(int totalSpendingThisMonth) {
-        RelativeLayout budgetBarLayout = view.findViewById(R.id.budget_bar_layout);
+        LinearLayout budgetBarLayout = view.findViewById(R.id.budget_bar_layout);
         ProgressBar budgetBar = view.findViewById(R.id.budget_progress_bar);
         TextView budgetAmtText = view.findViewById(R.id.budget_amt_progressbar);
         TextView budgetErrorMsg = view.findViewById(R.id.budget_error);
@@ -157,8 +158,13 @@ public class HomeFragment extends Fragment implements SetBudgetDialogFragment.se
         int max = (int) budgetPref.getFloat(String.valueOf(userId), 0);
 
         if (max > 0) {
-            budgetAmtText.setText("$" + max);
+            budgetAmtText.setText("$" + totalSpendingThisMonth + " of $" + max);
             budgetBar.setMax(max);
+            if ((float) totalSpendingThisMonth / max > 0.75) {
+                budgetBar.setProgressTintList(ColorStateList.valueOf(Color.RED));
+            } else {
+                budgetBar.setProgressTintList(ColorStateList.valueOf(Color.CYAN));
+            }
             budgetBarLayout.setVisibility(View.VISIBLE);
             budgetErrorMsg.setVisibility(View.GONE);
             ObjectAnimator.ofInt(budgetBar, "progress", Math.abs(totalSpendingThisMonth))

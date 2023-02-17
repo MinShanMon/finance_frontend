@@ -38,6 +38,7 @@ import com.team3.personalfinanceapp.utils.BankAPIInterface;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -217,7 +218,8 @@ public class TransactionsFragment extends Fragment {
             amount.setText("");
             return;
         }
-        title.setText(largestTransaction.getTitle());
+        title.setText(largestTransaction.getTitle() + " "
+                + DateTimeFormatter.ofPattern("E, dd MMM").format(largestTransaction.getDate()));
         String amountStr = "$" + String.format(moneyFormat, largestTransaction.getAmount());
         amount.setText(amountStr);
     }

@@ -11,9 +11,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.team3.personalfinanceapp.R;
 import com.team3.personalfinanceapp.model.Transaction;
@@ -21,8 +23,10 @@ import com.team3.personalfinanceapp.utils.APIClient;
 import com.team3.personalfinanceapp.utils.APIInterface;
 
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,6 +42,11 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
     private String categoryChoice;
 
     private Button setDatePicker;
+    private String titleStr;
+    private String amountStr;
+
+    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd MMM yy");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +58,14 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
         Button addBtn = findViewById(R.id.add_btn);
         addBtn.setOnClickListener(v -> saveTransaction());
         RadioButton defaultChoice = findViewById(R.id.radio_food);
-        setDatePicker = findViewById(R.id.set_date_picker);
 
-        setDatePicker.setOnClickListener( e -> {
+        setDatePicker = findViewById(R.id.set_date_picker);
+        setDatePicker.setText(dateTimeFormatter.format(LocalDate.now()));
+
+        ImageView backBtn = findViewById(R.id.img_backArrow);
+        backBtn.setOnClickListener(e -> finish());
+
+        setDatePicker.setOnClickListener(e -> {
             DatePickerFragment datePickerFragment = new DatePickerFragment();
             datePickerFragment.show(getSupportFragmentManager(), "datePicker");
         });
@@ -93,19 +107,19 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
         boolean checked = ((RadioButton) view).isChecked();
 
         // Check which radio button was clicked
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.radio_food:
                 if (checked)
                     categoryChoice = "Food";
-                    break;
+                break;
             case R.id.radio_transport:
                 if (checked)
                     categoryChoice = "Transport";
-                    break;
+                break;
             case R.id.radio_others:
                 if (checked)
                     categoryChoice = "Others";
-                    break;
+                break;
             default:
                 categoryChoice = "Others";
                 break;
@@ -117,15 +131,21 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
         Transaction newTransaction = new Transaction();
 
         EditText title = findViewById(R.id.add_transaction_title);
-        newTransaction.setTitle(title.getText().toString());
-
         EditText description = findViewById(R.id.add_transaction_description);
+        EditText amountField = findViewById(R.id.add_transaction_amount);
+
+        titleStr = title.getText().toString();
+        amountStr = amountField.getText().toString();
+
+        if (!validateForm()) {
+            return;
+        }
+
+        newTransaction.setTitle(titleStr);
         newTransaction.setDescription(description.getText().toString());
 
         newTransaction.setDate(LocalDate.parse(setDatePicker.getText().toString(),
                 DateTimeFormatter.ofPattern("dd MMM yy")));
-
-        EditText amountField = findViewById(R.id.add_transaction_amount);
 
         double amount = Double.parseDouble(amountField.getText().toString());
 
@@ -136,7 +156,7 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
         newTransaction.setCategory(categoryChoice);
 
         SharedPreferences pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
-        Call<Transaction> addTransactionCall = apiInterface.addTransaction(pref.getInt("userid", 0), newTransaction, "Bearer "+ pref.getString("token" , ""));
+        Call<Transaction> addTransactionCall = apiInterface.addTransaction(pref.getInt("userid", 0), newTransaction, "Bearer " + pref.getString("token", ""));
         System.out.println(addTransactionCall.request());
         addTransactionCall.enqueue(new Callback<Transaction>() {
             @Override
@@ -145,6 +165,7 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
                     finish();
                 }
             }
+
             @Override
             public void onFailure(Call<Transaction> call, Throwable t) {
                 call.cancel();
@@ -153,11 +174,32 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
 
     }
 
-
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         LocalDate date = LocalDate.of(year, month + 1, dayOfMonth);
-        String dateString = DateTimeFormatter.ofPattern("dd MMM yy").format(date);
+        String dateString = dateTimeFormatter.format(date);
         setDatePicker.setText(dateString);
+    }
+
+    private boolean validateForm() {
+        if (titleStr.isEmpty() || amountStr.isEmpty()) {
+
+            TextView titleError = findViewById(R.id.title_error);
+            TextView amountError = findViewById(R.id.amount_error);
+
+            if (titleStr.isEmpty()) {
+                titleError.setVisibility(View.VISIBLE);
+            } else {
+                titleError.setVisibility(View.GONE);
+            }
+
+            if (amountStr.isEmpty()) {
+                amountError.setVisibility(View.VISIBLE);
+            } else {
+                amountError.setVisibility(View.GONE);
+            }
+            return false;
+        }
+        return true;
     }
 }

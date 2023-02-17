@@ -12,7 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.team3.personalfinanceapp.R;
@@ -39,7 +43,12 @@ public class EditTransactionActivity extends AppCompatActivity implements DatePi
 
     private Button setDatePicker;
 
-    APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+    private APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+
+    private String titleStr;
+    private String amountStr;
+
+    private String categoryChoice;
 
 
     @Override
@@ -47,6 +56,9 @@ public class EditTransactionActivity extends AppCompatActivity implements DatePi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_transaction);
         setDatePicker = findViewById(R.id.set_date_picker);
+
+        ImageView backBtn = findViewById(R.id.img_backArrow);
+        backBtn.setOnClickListener( e -> finish());
 
         Intent intent = getIntent();
         transactionId = intent.getLongExtra("transactionId", 0);
@@ -73,7 +85,6 @@ public class EditTransactionActivity extends AppCompatActivity implements DatePi
 
     private void updateTransactionForm(Transaction transaction) {
 
-
         if (transaction.getCategory().equalsIgnoreCase("income")) {
             transactionType = TYPE_INCOME;
         } else {
@@ -81,19 +92,31 @@ public class EditTransactionActivity extends AppCompatActivity implements DatePi
         }
         setTransactionTypeDropdown();
 
-        EditText category = findViewById(R.id.edit_transaction_category);
-        category.setText(transaction.getCategory());
+        String category = transaction.getCategory();
+
+        if (category.equalsIgnoreCase("food")) {
+            RadioButton foodRadio = findViewById(R.id.radio_food);
+            foodRadio.setChecked(true);
+        } else if (category.equalsIgnoreCase("transport")) {
+            RadioButton transportRadio = findViewById(R.id.radio_transport);
+            transportRadio.setChecked(true);
+        } else {
+            RadioButton othersRadio = findViewById(R.id.radio_others);
+            othersRadio.setChecked(true);
+        }
 
         EditText title = findViewById(R.id.edit_transaction_title);
         title.setText(transaction.getTitle());
+        titleStr = title.getText().toString();
 
         EditText description = findViewById(R.id.edit_transaction_description);
         description.setText(transaction.getDescription());
 
-        setDatePicker.setText(transaction.getDate().format(DateTimeFormatter.ofPattern("dd MMM yyy")));
+        setDatePicker.setText(transaction.getDate().format(DateTimeFormatter.ofPattern("dd MMM yy")));
 
         EditText amount = findViewById(R.id.edit_transaction_amount);
         amount.setText(Double.toString(Math.abs(transaction.getAmount())));
+        amountStr = amount.getText().toString();
 
         setSaveButton();
         setDeleteButton();
@@ -109,7 +132,7 @@ public class EditTransactionActivity extends AppCompatActivity implements DatePi
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                EditText categoryField = findViewById(R.id.edit_transaction_category);
+                RadioGroup categoryField = findViewById(R.id.edit_transaction_category);
                 if (position == 0) {
                     transactionType = TYPE_SPENDING;
                     categoryField.setVisibility(View.VISIBLE);
@@ -121,7 +144,7 @@ public class EditTransactionActivity extends AppCompatActivity implements DatePi
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                EditText categoryField = findViewById(R.id.edit_transaction_category);
+                RadioGroup categoryField = findViewById(R.id.edit_transaction_category);
                 transactionType = TYPE_SPENDING;
                 categoryField.setVisibility(View.VISIBLE);
             }
@@ -141,24 +164,28 @@ public class EditTransactionActivity extends AppCompatActivity implements DatePi
     private void saveTransaction() {
 
         EditText title = findViewById(R.id.edit_transaction_title);
-        transactionToEdit.setTitle(title.getText().toString());
-
         EditText description = findViewById(R.id.edit_transaction_description);
-        transactionToEdit.setDescription(description.getText().toString());
+        EditText amountField = findViewById(R.id.edit_transaction_amount);
+        titleStr = title.getText().toString();
+        amountStr = amountField.getText().toString();
 
+        if (!validateForm()) {
+            return;
+        }
+
+        transactionToEdit.setTitle(titleStr);
+        transactionToEdit.setDescription(description.getText().toString());
         transactionToEdit.setDate(LocalDate.parse(setDatePicker.getText().toString(),
                 DateTimeFormatter.ofPattern("dd MMM yy")));
 
-        EditText amountField = findViewById(R.id.edit_transaction_amount);
 
-        double amount = Double.parseDouble(amountField.getText().toString());
-        EditText category = findViewById(R.id.edit_transaction_category);
+        double amount = Double.parseDouble(amountStr);
 
         if (transactionType == TYPE_INCOME) {
-            category.setText("Income");
+            categoryChoice = "Income";
         }
         transactionToEdit.setAmount(amount);
-        transactionToEdit.setCategory(category.getText().toString());
+        transactionToEdit.setCategory(categoryChoice);
         pref = getSharedPreferences("user_credentials", MODE_PRIVATE);
         Call<Transaction> editTransactionCall = apiInterface.editTransaction(pref.getInt("userid", 0), transactionToEdit, "Bearer "+ pref.getString("token" , ""));
 
@@ -206,5 +233,50 @@ public class EditTransactionActivity extends AppCompatActivity implements DatePi
         LocalDate date = LocalDate.of(year, month + 1, dayOfMonth);
         String dateString = DateTimeFormatter.ofPattern("dd MMM yy").format(date);
         setDatePicker.setText(dateString);
+    }
+
+    private boolean validateForm() {
+        if (titleStr.isEmpty() || amountStr.isEmpty()) {
+
+            TextView titleError = findViewById(R.id.title_error);
+            TextView amountError = findViewById(R.id.amount_error);
+
+            if (titleStr.isEmpty()) {
+                titleError.setVisibility(View.VISIBLE);
+            } else {
+                titleError.setVisibility(View.GONE);
+            }
+            if (amountStr.isEmpty()) {
+                amountError.setVisibility(View.VISIBLE);
+            } else {
+                amountError.setVisibility(View.GONE);
+            }
+            return false;
+        }
+        return true;
+    }
+
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch (view.getId()) {
+            case R.id.radio_food:
+                if (checked)
+                    categoryChoice = "Food";
+                break;
+            case R.id.radio_transport:
+                if (checked)
+                    categoryChoice = "Transport";
+                break;
+            case R.id.radio_others:
+                if (checked)
+                    categoryChoice = "Others";
+                break;
+            default:
+                categoryChoice = "Others";
+                break;
+        }
     }
 }
