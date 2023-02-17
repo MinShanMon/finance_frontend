@@ -160,14 +160,14 @@
   <body>
     
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 text-center" href="#">Admin</a>
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 text-center" href="#" style="font-size: 20px;">Admin</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   
   <div class="navbar-nav">
     <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" href="#">Sign out</a>
+      <a class="nav-link px-3" href="/admin/logout">Sign out</a>
     </div>
   </div>
 </header>
@@ -226,16 +226,17 @@
       
         <div class="charts">
           <div class="charts-card">
-          <h3 class="chart-title">Rating</h3>
+          <h3 class="chart-title">&nbsp;&nbsp;&nbsp;&nbsp;Rating Statistics</h3>
             <div id="container" style="height: 350px;margin:0">
                 <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
-                <!-- <script type="text/javascript" src="js/echarts.min.js"></script> -->
                 <script type="text/javascript" th:inline="javascript">
                   var val5 = [[${rate5}]];
                   var val4 = [[${rate4}]];
                   var val3 = [[${rate3}]];
                   var val2 = [[${rate2}]];
                   var val1 = [[${rate1}]];
+                  var currMonth = [[${#dates.format(new java.util.Date().getTime(), 'yyyy-MM')}]]
+
 
                   var dom = document.getElementById('container');
                   var myChart = echarts.init(dom, null, {
@@ -246,9 +247,9 @@
                   var option;   
                   option = {
                 title: {
-                  text: 'Service Satisfication ',
+                  text: currMonth,
                   left: 'center'
-                },  
+                },
                 tooltip: {
                   trigger: 'item'
                 },
@@ -258,15 +259,15 @@
                 },
                 series: [
                   {
-                    name: 'Rating',
+                    name: 'Rating' ,
                     type: 'pie',
-                    radius: '60%',
+                    radius: '65%',
                     data: [
-                      { value: val5, name: '5 Stars' },
-                      { value: val4, name: '4 Stars' },
-                      { value: val3, name: '3 Stars' },
-                      { value: val2, name: '2 Stars' },
-                      { value: val1, name: '1 Star' }
+                      { value: 1048, name: '5 Stars' },
+                      { value: 735, name: '4 Stars' },
+                      { value: 580, name: '3 Stars' },
+                      { value: 484, name: '2 Stars' },
+                      { value: 300, name: '1 Star' }
                     ],
                     emphasis: {
                       itemStyle: {
@@ -285,12 +286,15 @@
                   window.addEventListener('resize', myChart.resize);
             </script>
       </div>
+
+      <!-- [[${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd hh:mm:ss')}]] -->
+
   
     <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=2> 
 
               <div class="charts">
                 <div class="charts-card">
-                  <h3 class="chart-title">Tickets</h3>
+                  <h3 class="chart-title">Tickets Statistics</h3>
                   <div id="cont1" style="height: 350px;margin:0">
         <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"></script> 
         <!-- <script type="text/javascript" src="js/echarts1.min.js"></script> -->
@@ -306,9 +310,10 @@
           var openTik = [[${openSum}]];
           var closeTik = [[${closeSum}]];
           var totalTik = [[${total}]];
+          
           option = {
             title: {
-                  text: 'Statistics Summary',
+                  text: currMonth,
                   left: 'center'
                 },  
         xAxis: {
