@@ -95,13 +95,13 @@ public class CategorySpendFragment extends Fragment {
         setBarData(othersBarChart, "Others", currMonthSpendingMap, prevMonthSpendingMap);
 
         TextView foodLabel = view.findViewById(R.id.food_barchart_label);
-        foodLabel.setText("Food Spending");
+        foodLabel.setText("Food");
 
         TextView transportLabel = view.findViewById(R.id.transport_barchart_label);
-        transportLabel.setText("Transport Spending");
+        transportLabel.setText("Transport");
 
         TextView othersLabel = view.findViewById(R.id.others_barchart_label);
-        othersLabel.setText("Others Spending");
+        othersLabel.setText("Others");
 
 
     }
