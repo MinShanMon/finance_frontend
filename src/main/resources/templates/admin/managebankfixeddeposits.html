@@ -271,13 +271,13 @@
 
         <div th:if="${param.fixededitsucc}">
           <div class="alert alert-primary mx-auto col-10 col-md-8 col-lg-6" role="alert">
-           Fixed deposists edit Successfully
+           Fixed Deposits edited successfully
           </div>
       </div>
 
       <div th:if="${param.successfb}">
         <div class="alert alert-primary mx-auto col-10 col-md-8 col-lg-6" role="alert">
-        Bank edit Successfully
+        Bank edited successfully
         </div>
     </div>
 
@@ -297,13 +297,13 @@
               <thead>
                 <tr>
 
-                  <th>Bank <button class="btn btn-primary" style="margin-left:40px"><a class="nav-link" th:href="@{'/admin/managefixeddeposits/addbank'}">add bank</a></button></th>
+                  <th>Bank <button class="btn btn-primary" style="margin-left:40px"><a class="nav-link" th:href="@{'/admin/managefixeddeposits/addbank'}">Add Bank</a></button></th>
                 </tr>
               </thead>
               <tbody>
 
                 <tr th:if="${bankList.empty}">
-                  <td colspan="6"> Not Available for this bank</td>
+                  <td colspan="6"> Not available for this bank</td>
                 </tr>
                 <div>
                   <tr th:each="bank : ${bankList}">
@@ -311,8 +311,8 @@
                       <a class="nav-link" th:href="@{'/admin/managefixeddeposits/'}+${bank.b_id}"><span th:text="${bank.bankName}"></span></a>
                   
                      
-                      <a th:href="@{'/admin/managefixeddeposits/editbank/'}+${bank.b_id}" style="text-decoration: none;">edit</a>
-                      <a th:href="@{'/admin/managefixeddeposits/deletebank/'}+${bank.b_id}" style="text-decoration: none;">delete</a>
+                      <a th:href="@{'/admin/managefixeddeposits/editbank/'}+${bank.b_id}" style="text-decoration: none;">Edit</a>
+                      <a th:href="@{'/admin/managefixeddeposits/deletebank/'}+${bank.b_id}" style="text-decoration: none;">Delete</a>
                      </td>
                    
   
@@ -334,11 +334,11 @@
               <thead>
                 <tr>
                   <th scope="col">Bank</th>
-                  <th scope="col">tenure</th>
-                  <th scope="col">minAmount</th>
-                  <th scope="col">maxAmount</th>
-                  <th scope="col">interestRate</th>
-                  <th scope="col">updateDate</th>
+                  <th scope="col">Tenure</th>
+                  <th scope="col">Minimum Amount</th>
+                  <th scope="col">Maximum Amount</th>
+                  <th scope="col">Interest Rate</th>
+                  <th scope="col">Updated Date</th>
 
 
                   <th colspan="2" style="text-align: center;"><button class="btn btn-primary" ><a class="nav-link" th:href="@{'/admin/managefixeddeposits/addfixed'}">add fixed deposists</a></button></th>
@@ -346,7 +346,7 @@
               </thead>
               <tbody>
                 <tr th:if="${fixedList.empty}">
-                  <td colspan="6"> Not Available for this bank</td>
+                  <td colspan="6"> Not available for this bank</td>
                 </tr>
                 <tr th:each="fixed : ${fixedList}">
                   <td th:text="${fixed.fd_bank.bankName}"></td>

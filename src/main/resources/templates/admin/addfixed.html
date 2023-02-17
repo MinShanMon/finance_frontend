@@ -246,7 +246,7 @@
 
     <div th:if="${param.success}">
       <div class="alert alert-primary mx-auto col-10 col-md-8 col-lg-6" role="alert">
-       Fixed deposists Add Successfully
+       Fixed Deposits Added Successfully
       </div>
   </div>
 
@@ -257,22 +257,22 @@
     <div class="mb-3">
       <label for="tenure" class="form-label">Tenure</label>
       <input type="number" th:name="tenure" required class="form-control" id="tenure" aria-describedby="tenure" min="1">
-      <div id="tenure" class="form-text">put tenure here</div>
+      <div id="tenure" class="form-text">Enter tenure here</div>
     </div>
     <div class="mb-3">
-      <label for="minAmount" class="form-label">Minium Amount</label>
+      <label for="minAmount" class="form-label">Minimum Amount</label>
       <input type="number" th:name="minAmount" required class="form-control" id="minAmount" min="1">
-      <div id="minAmount" class="form-text">put minAmount here</div>
+      <div id="minAmount" class="form-text">Enter minimum amount here</div>
     </div>
     <div class="mb-3">
-      <label for="maxAmount" class="form-label">Maxium Amount</label>
+      <label for="maxAmount" class="form-label">Maximum Amount</label>
       <input type="text" th:name="maxAmount" required class="form-control" id="maxAmount">
-      <div id="maxAmount" class="form-text">put bank link here</div>
+      <div id="maxAmount" class="form-text">Enter maximum amount here</div>
     </div>
     <div class="mb-3">
       <label for="interestRate" class="form-label">Interest Rate</label>
       <input type="text" th:name="interestRate" required class="form-control" id="interestRate">
-      <div id="banklink" class="form-text">put interest rate here</div>
+      <div id="banklink" class="form-text">Enter interest rate here</div>
     </div>
 
     <div class="mb-3">
@@ -284,7 +284,7 @@
       <div id="banklink" class="form-text">Choose Bank</div>
     </div>
     
-    <button type="submit" class="btn btn-primary">Add Fixed Deposists</button>
+    <button type="submit" class="btn btn-primary">Add Fixed Deposits</button>
   </form>
     </div>
   </div>
