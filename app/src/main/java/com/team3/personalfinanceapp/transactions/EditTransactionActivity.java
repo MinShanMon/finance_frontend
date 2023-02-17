@@ -97,12 +97,15 @@ public class EditTransactionActivity extends AppCompatActivity implements DatePi
         if (category.equalsIgnoreCase("food")) {
             RadioButton foodRadio = findViewById(R.id.radio_food);
             foodRadio.setChecked(true);
+            categoryChoice = "Food";
         } else if (category.equalsIgnoreCase("transport")) {
             RadioButton transportRadio = findViewById(R.id.radio_transport);
             transportRadio.setChecked(true);
+            categoryChoice = "Transport";
         } else {
             RadioButton othersRadio = findViewById(R.id.radio_others);
             othersRadio.setChecked(true);
+            categoryChoice = "Others";
         }
 
         EditText title = findViewById(R.id.edit_transaction_title);
@@ -194,6 +197,8 @@ public class EditTransactionActivity extends AppCompatActivity implements DatePi
             public void onResponse(Call<Transaction> call, Response<Transaction> response) {
                 if (response.isSuccessful()) {
                     finish();
+                } else {
+                    errorToast();
                 }
             }
             @Override
