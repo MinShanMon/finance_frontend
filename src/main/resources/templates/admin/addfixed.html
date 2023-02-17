@@ -237,31 +237,69 @@
 
       <!-- main section -->
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">
+        <div th:if="${param.errorn}">
+          <div class="alert alert-danger mx-auto col-10 col-md-8 col-lg-6" role="alert">
+            Bank already Exit
+           </div>
+      </div>
 
 
+    <div th:if="${param.success}">
+      <div class="alert alert-primary mx-auto col-10 col-md-8 col-lg-6" role="alert">
+       Fixed deposists Add Successfully
+      </div>
+  </div>
+
+  <div class="row align-items-center" style="height: 50vh;">
+    <div class="mx-auto col-10 col-md-8 col-lg-6">
+
+  <form th:action="@{/admin/managefixeddeposits/addfixed}" method="post">
+    <div class="mb-3">
+      <label for="tenure" class="form-label">Tenure</label>
+      <input type="number" th:name="tenure" required class="form-control" id="tenure" aria-describedby="tenure" min="1">
+      <div id="tenure" class="form-text">put tenure here</div>
+    </div>
+    <div class="mb-3">
+      <label for="minAmount" class="form-label">Minium Amount</label>
+      <input type="number" th:name="minAmount" required class="form-control" id="minAmount" min="1">
+      <div id="minAmount" class="form-text">put minAmount here</div>
+    </div>
+    <div class="mb-3">
+      <label for="maxAmount" class="form-label">Maxium Amount</label>
+      <input type="text" th:name="maxAmount" required class="form-control" id="maxAmount">
+      <div id="maxAmount" class="form-text">put bank link here</div>
+    </div>
+    <div class="mb-3">
+      <label for="interestRate" class="form-label">Interest Rate</label>
+      <input type="text" th:name="interestRate" required class="form-control" id="interestRate">
+      <div id="banklink" class="form-text">put interest rate here</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="banklink" class="form-label">Bank</label>
+      <select name="languages" id="lang" th:name="b_id" class="form-select">
+        <option selected>Choose Bank</option>
+        <option th:each="bank : ${bankList}" th:value="${bank.b_id}" th:text="${bank.bankName}"></option>
+      </select>
+      <div id="banklink" class="form-text">Choose Bank</div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Add Fixed Deposists</button>
+  </form>
+    </div>
+  </div>
 
 
-<div class="row align-items-center" style="height: 50vh;">
-<div class="mx-auto col-10 col-md-8 col-lg-6">
-
-<form th:action="@{/admin/managefixeddeposits/editbank/}" method="post">
-  <input type="hidden" th:name="id" th:value="${bank.b_id}"/>
-<div class="mb-3">
-<label for="BankName" class="form-label">Bank Name</label>
-<input type="text" th:name="name" th:value="${bank.bankName}" required class="form-control" id="bankname" aria-describedby="bankname">
-<div id="bankname" class="form-text">put bank name here</div>
-</div>
-<div class="mb-3">
-<label for="banklink" class="form-label">Bank Link</label>
-<input type="text" th:name="link" th:value="${bank.bankLink}" required class="form-control" id="banklink">
-<div id="banklink" class="form-text">put bank link here</div>
-</div>
-<button type="submit" class="btn btn-primary">Fixed Bank</button>
-</form>
-</div>
-</div>
-
-
+  <!-- <form th:action="@{/admin/managefixeddeposits/addfixed}" method="post" style="padding: 5px; text-align: center;"
+  align="center">
+  <input type="text"  />
+  <input type="text" th:name="minAmount" required />
+  <input type="text" th:name="maxAmount" required />
+  <input type="text" th:name="interestRate" required />
+ 
+  <input type="submit" value="save" />
+</form> -->
+      
 
       </main>
 

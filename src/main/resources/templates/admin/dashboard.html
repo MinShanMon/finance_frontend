@@ -122,10 +122,37 @@
         background-color: rgba(255, 255, 255, .1);
         border-color: rgba(255, 255, 255, .1);
       }
-      
       .form-control-dark:focus {
         border-color: transparent;
         box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+      }
+      div{
+        width: auto;height:auto;
+      }
+      .ticket_sum{
+        margin-top: 100px;
+      }
+      .charts1{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+        margin-top:2px;
+      }
+      .charts-card{
+        background-color: #eff3e2;
+        margin-bottom:0px;
+        padding:25px;
+        box-sizing: border-box;
+        -webkit-column-break-inside:avoid;
+        border-radius: 15px;
+        box-shadow: 0 6px 7px -4px rgba(0, 0, 0, 0.2);
+      }
+      .chart-title{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        font-weight: 400;
       }
     </style>
     
@@ -133,14 +160,18 @@
   <body>
     
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 text-center" href="#">Admin</a>
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 text-center" href="#" style="font-size: 20px;">Admin</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   
   <div class="navbar-nav">
     <div class="nav-item text-nowrap">
+<<<<<<< HEAD
       <a class="nav-link px-3" href="/admin/logout">Sign out</a>
+=======
+      <a class="nav-link px-3" href="#" style="font-size: 17px;">Sign out</a>
+>>>>>>> refs/remotes/origin/main
     </div>
   </div>
 </header>
@@ -150,24 +181,31 @@
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
+
+         
           <li class="nav-item">
             <p class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" style="font-size: 20px;">
-              <span>Dashboard</span>
+              <a class="nav-link  active" th:href="@{/admin/dashboard/}">Dashboard</a>
             </p>
           </li>
+
           <li class="nav-item">
-            <a class="nav-link active" th:href="@{/admin/enquiries/}">
-             Inbox
-            </a>
-          </li>   
-          <li class="nav-item">
-            <a class="nav-link">
-             Dashboard
-            </a>
+            <p class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted" style="font-size: 20px;">
+              <a class="nav-link" th:href="@{/admin/enquiries/}">Ticketing System</a>
+            </p>
           </li>
+
+          <li class="nav-item">
+            <p class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"
+              style="font-size: 20px;">
+              <a  class="nav-link " th:href="@{'/admin/managefixeddeposits'}">Bank Fixed Deposits</a>
+            </p>
+          </li>
+
         </ul>
       </div>
     </nav>
+
     <!-- main section -->
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">
         <style>
@@ -188,48 +226,22 @@
           </style>
           <!-- Custom styles for this template -->
           <link href="dashboard.css" rel="stylesheet">
-        </head>   
-              <h1 class="h2">Dashboard</h1>
-              <div class="btn-toolbar mb-2 mb-md-0">
-                <div class="btn-group mr-2">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-                </div>
-                <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                  <span data-feather="calendar"></span>
-                  This week
-                </button>
-              </div> 
-              <!--graphic demo from https://echarts.apache.org/examples/zh/editor.html?c=pie-simple-->
-            <div id="container" style="height: 400px"></div>
-              <!DOCTYPE html>
-              <html lang="en" style="height: 100%">
-              <head>
-                <meta charset="utf-8">
-              </head>
-              <body style="height: 100%; margin: 0">
-                <div id="container" style="height:2px"></div>
-
+        </head>
+      
+        <div class="charts">
+          <div class="charts-card">
+          <h3 class="chart-title">&nbsp;&nbsp;&nbsp;&nbsp;Rating Statistics</h3>
+            <div id="container" style="height: 350px;margin:0">
                 <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
-                <!-- Uncomment this line if you want to dataTool extension
-                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.1/dist/extension/dataTool.min.js"></script>
-                -->
-                <!-- Uncomment this line if you want to use gl extension
-                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
-                -->
-                <!-- Uncomment this line if you want to echarts-stat extension
-                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
-                -->
-                <!-- Uncomment this line if you want to use map
-                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/china.js"></script>
-                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"></script>
-                -->
-                <!-- Uncomment these two lines if you want to use bmap extension
-                <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=YOUR_API_KEY"></script>
-                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.1/dist/extension/bmap.min.js"></script>
-                -->
-                <script type="text/javascript" src="js/echarts.min.js"></script>
-                <script type="text/javascript">
+                <script type="text/javascript" th:inline="javascript">
+                  var val5 = [[${rate5}]];
+                  var val4 = [[${rate4}]];
+                  var val3 = [[${rate3}]];
+                  var val2 = [[${rate2}]];
+                  var val1 = [[${rate1}]];
+                  var currMonth = [[${#dates.format(new java.util.Date().getTime(), 'yyyy-MM')}]]
+
+
                   var dom = document.getElementById('container');
                   var myChart = echarts.init(dom, null, {
                     renderer: 'canvas',
@@ -239,8 +251,7 @@
                   var option;   
                   option = {
                 title: {
-                  text: 'Service Satisfication Report',
-                  subtext: 'Rating Summary',
+                  text: currMonth,
                   left: 'center'
                 },
                 tooltip: {
@@ -252,9 +263,9 @@
                 },
                 series: [
                   {
-                    name: 'Rating',
+                    name: 'Rating' ,
                     type: 'pie',
-                    radius: '50%',
+                    radius: '65%',
                     data: [
                       { value: 1048, name: '5 Stars' },
                       { value: 735, name: '4 Stars' },
@@ -278,39 +289,123 @@
                   }    
                   window.addEventListener('resize', myChart.resize);
             </script>
-            <h3>Pending Tickets</h3>
-            <h4>Total Amount:&nbsp;&nbsp;<th th:text="${openSum}"></th></h4>
-              <table class="table table-striped table-sm">
-                <thead>
-                    <tr>
-                      <th scope="col">ID</th>
-                      <th scope="col">Enquiry</th>
-                      <th scope="col">Sender</th>
-                      <th scope="col">Email Address</th>
-                      <th scope="col">Date Received</th>
-                      <th scope="col">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr th:each="open : ${open}">
-                      <td th:text="${open.id}"></td>
-                      <td th:text="${open.enquiryType}"></td>
-                      <td th:text="${open.name}"></td>
-                      <td th:text="${open.email}"></td>
-                      <td th:text="${#temporals.format(open.enquiry_dateTime, 'dd-MMM-yyyy  hh:mm')}"></td>
-                      <td>
-                        <div
-                        th:if="${#strings.equals(open.ticket.tikStatus, 'OPEN')}">
-                            <a th:href="@{/admin/view/}+${open.id}">OPEN</a>
-                        </div>
-                      </td>
-                    </tr>  
-                  </tbody>
-                </table>
-            </div>
-          </main>
-        </div>
       </div>
-       
+
+      <!-- [[${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd hh:mm:ss')}]] -->
+
+  
+    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="100%" color=#987cb9 SIZE=2> 
+
+              <div class="charts">
+                <div class="charts-card">
+                  <h3 class="chart-title">Tickets Statistics</h3>
+                  <div id="cont1" style="height: 350px;margin:0">
+        <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"></script> 
+        <!-- <script type="text/javascript" src="js/echarts1.min.js"></script> -->
+        <script type="text/javascript">
+          var dom = document.getElementById('cont1');
+          var myChart = echarts.init(dom, null, {
+            renderer: 'canvas',
+            useDirtyRect: false
+          });
+          var app = {};
+          var option;
+
+          var openTik = [[${openSum}]];
+          var closeTik = [[${closeSum}]];
+          var totalTik = [[${total}]];
+          
+          option = {
+            title: {
+                  text: currMonth,
+                  left: 'center'
+                },  
+        xAxis: {
+          data: ['Open Tickets', 'Closed Tickets', 'Total Tickets']
+        },
+        yAxis: {},
+        dataGroupId: '',
+        animationDurationUpdate: 500,
+        tooltip: {
+                  trigger: 'item'
+                },
+                legend: {
+                  orient: 'vertical',
+                  left: 'left'
+                },
+        series: {
+          type: 'bar',
+          id: 'tickets',
+          data: [
+            {
+              value: openTik,
+              groupId: 'open'
+            },
+            {
+              value: closeTik,
+              groupId: 'close'
+            },
+            {
+              value: totalTik,
+              groupId: 'total'
+            }
+          ],
+          universalTransition: {
+            enabled: true,
+            divideShape: 'clone'
+          }
+        }
+      };
+      myChart.on('click', function (event) {
+        if (event.data) {
+          var subData = drilldownData.find(function (data) {
+            return data.dataGroupId === event.data.groupId;
+          });
+          if (!subData) {
+            return;
+          }
+          myChart.setOption({
+            xAxis: {
+              data: subData.data.map(function (item) {
+                return item[0];
+              })
+            },
+            series: {
+              type: 'bar',
+              id: 'tickets',
+              dataGroupId: subData.dataGroupId,
+              data: subData.data.map(function (item) {
+                return item[1];
+              }),
+              universalTransition: {
+                enabled: true,
+                divideShape: 'clone'
+              }
+            },
+            graphic: [
+              {
+                type: 'text',
+                left: 50,
+                top: 20,
+                style: {
+                  text: 'Back',
+                  fontSize: 20
+                },
+                onclick: function () {
+                  myChart.setOption(option);
+                }
+              }
+            ]
+          });
+        }
+      });
+      
+          if (option && typeof option === 'object') {
+            myChart.setOption(option);
+          }
+      
+          window.addEventListener('resize', myChart.resize);
+        </script>
+</div>
 
 </html>

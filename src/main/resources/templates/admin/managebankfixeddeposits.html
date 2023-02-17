@@ -214,14 +214,14 @@
 <body>
 
   <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 text-center" href="#">Admin</a>
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 text-center" href="#" style="font-size: 20px;">Admin</a>
     <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     
     <div class="navbar-nav">
       <div class="nav-item text-nowrap">
-        <a class="nav-link px-3" href="/admin/logout">Sign out</a>
+        <a class="nav-link px-3" href="/admin/logout" style="font-size: 17px;">Sign out</a>
       </div>
     </div>
   </header>
@@ -267,13 +267,25 @@
           Manage Bank Fixed Deposits
         </h1>
 
-        <div th:if="${param.errorn}">
-          <p class="text-danger">bank is already exit</p>
+     
+
+        <div th:if="${param.fixededitsucc}">
+          <div class="alert alert-primary mx-auto col-10 col-md-8 col-lg-6" role="alert">
+           Fixed deposists edit Successfully
+          </div>
       </div>
 
-      <div th:if="${param.errorl}">
-        <p class="text-danger">link is already exit</p>
+      <div th:if="${param.successfb}">
+        <div class="alert alert-primary mx-auto col-10 col-md-8 col-lg-6" role="alert">
+        Bank edit Successfully
+        </div>
     </div>
+
+
+
+      
+
+        
 
         <br>
 
@@ -285,7 +297,7 @@
               <thead>
                 <tr>
 
-                  <th>Bank <button id="addbank">Add User</button></th>
+                  <th>Bank <button class="btn btn-primary" style="margin-left:40px"><a class="nav-link" th:href="@{'/admin/managefixeddeposits/addbank'}">add bank</a></button></th>
                 </tr>
               </thead>
               <tbody>
@@ -299,8 +311,8 @@
                       <a class="nav-link" th:href="@{'/admin/managefixeddeposits/'}+${bank.b_id}"><span th:text="${bank.bankName}"></span></a>
                   
                      
-                      <a th:href="@{'/admin/managefixeddeposits/editbank/'}+${bank.b_id}">edit</a>
-                      <a th:href="@{'/admin/managefixeddeposits/deletebank/'}+${bank.b_id}">delete</a>
+                      <a th:href="@{'/admin/managefixeddeposits/editbank/'}+${bank.b_id}" style="text-decoration: none;">edit</a>
+                      <a th:href="@{'/admin/managefixeddeposits/deletebank/'}+${bank.b_id}" style="text-decoration: none;">delete</a>
                      </td>
                    
   
@@ -329,7 +341,7 @@
                   <th scope="col">updateDate</th>
 
 
-                  <th colspan="2" style="text-align: center;"><button id="addfixed">add new fixed deposits</button></th>
+                  <th colspan="2" style="text-align: center;"><button class="btn btn-primary" ><a class="nav-link" th:href="@{'/admin/managefixeddeposits/addfixed'}">add fixed deposists</a></button></th>
                 </tr>
               </thead>
               <tbody>
@@ -337,25 +349,25 @@
                   <td colspan="6"> Not Available for this bank</td>
                 </tr>
                 <tr th:each="fixed : ${fixedList}">
-                  <th th:text="${fixed.fd_bank.bankName}"></th>
-                  <th th:text="${fixed.tenure}"></th>
-                  <th th:text="${fixed.minAmount}"></th>
-                  <th th:text="${fixed.maxAmount}"></th>
-                  <th th:text="${fixed.interestRate}"></th>
-                  <th><span th:text="${fixed.updateDate.getMonthValue}"></span> - <span
-                      th:text="${fixed.updateDate.getYear}"></span></th>
-                  <th>
-                    <a th:href="@{'/admin/managefixeddeposits/editfixed/'}+${fixed.f_id}">
+                  <td th:text="${fixed.fd_bank.bankName}"></td>
+                  <td th:text="${fixed.tenure}"></td>
+                  <td th:text="${fixed.minAmount}"></td>
+                  <td th:text="${fixed.maxAmount}"></td>
+                  <td th:text="${fixed.interestRate}"></td>
+                  <td><span th:text="${fixed.updateDate.getMonthValue}"></span> - <span
+                      th:text="${fixed.updateDate.getYear}"></span></td>
+                  <td>
+                    <a th:href="@{'/admin/managefixeddeposits/editfixed/'}+${fixed.f_id}" style="text-decoration: none;">
                       edit
                     </a>
-                  </th>
+                  </td>
 
                   <!-- /managefixeddeposits/deletefixed/{id} -->
-                  <th>
-                    <a th:href="@{'/admin/managefixeddeposits/deletefixed/'}+${fixed.f_id}">
+                  <td>
+                    <a th:href="@{'/admin/managefixeddeposits/deletefixed/'}+${fixed.f_id}" style="text-decoration: none;">
                       delete
                     </a>
-                  </th>
+                  </td>
 
 
 
@@ -369,88 +381,9 @@
   </div>
 
 
-  <div id="bankform" class="modal">
-    <!-- Modal content -->
-    <div class="modal-content">
-      <span class="close">&times;</span>
-
-
-      <form th:action="@{/admin/managefixeddeposits/addbank}" method="post" style="padding: 5px; text-align: center;"
-        align="center">
-        <input type="text" th:name="name" required />
-        <input type="text" th:name="link" required />
-        <input type="submit" value="save" />
-      </form>
-
-    </div>
-
-  </div>
-
-
-  <div id="fixedform" class="modal_f">
-    <!-- Modal content -->
-    <div class="modal-content">
-      <span class="close">&times;</span>
-
-
-      <form th:action="@{/admin/managefixeddeposits/addfixed}" method="post" style="padding: 5px; text-align: center;"
-        align="center">
-        <input type="text" th:name="tenure" required />
-        <input type="text" th:name="minAmount" required />
-        <input type="text" th:name="maxAmount" required />
-        <input type="text" th:name="interestRate" required />
-        <select name="languages" id="lang" th:name="b_id">
-          <option th:each="bank : ${bankList}" th:value="${bank.b_id}" th:text="${bank.bankName}"></option>
-        </select>
-        <input type="submit" value="save" />
-      </form>
-
-
-    </div>
-
-  </div>
-
-
-
-
 
 
 
 </body>
 
 </html>
-
-<script>
-  var modal_b = document.getElementById('bankform');
-  var addbank = document.getElementById("addbank");
-  var span = document.getElementsByClassName("close")[0];
-  addbank.onclick = function () {
-    modal_b.style.display = "block";
-  }
-  span.onclick = function () {
-    modal_b.style.display = "none";
-  }
-  window.onclick = function (event) {
-    if (event.target == modal_b) {
-      modal_b.style.display = "none";
-    }
-  }
-
-
-  var modal_f = document.getElementById('fixedform');
-  var addfixed = document.getElementById("addfixed");
-  var span = document.getElementsByClassName("close")[0];
-  addfixed.onclick = function () {
-    console.log(addfixed)
-    modal_f.style.display = "block";
-  }
-  span.onclick = function () {
-    modal_f.style.display = "none";
-  }
-  window.onclick = function (event) {
-    if (event.target == modal_f) {
-      modal_f.style.display = "none";
-    }
-  }
-
-</script>

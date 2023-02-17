@@ -39,9 +39,6 @@ public class Enquiry {
 
     private String email;
 
-    @Column(name = "contact_number")
-    private String phoneNum;
-
     private String question;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
@@ -58,12 +55,11 @@ public class Enquiry {
     private Ticket ticket;
 
     public Enquiry(EnquiryTypeEnum enquiryType, String name,String email,
-    String phoneNum,String question, LocalDateTime dateTime,int rating,String comment,Ticket ticket){ 
+    String question, LocalDateTime dateTime,int rating,String comment,Ticket ticket){ 
 
         this.enquiryType= enquiryType;
         this.name = name;
         this.email = email;
-        this.phoneNum = phoneNum;
         this.question = question;
         this.enquiry_dateTime = dateTime;
         this.rating = rating;
