@@ -1,8 +1,10 @@
 package com.personalfinanceapp.frontend.controller;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
@@ -40,26 +42,39 @@ public class AdminTicketController {
         return "redirect:/admin/dashboard";
     }
 
-
     @GetMapping("/dashboard")
-    public String view(Model model, HttpSession session) {
+    public String view(Model model,HttpSession session) {
         UserSession user =(UserSession) session.getAttribute("usersession");
         String token = user.getToken().getAccess_token();
-        List<Enquiry> enquiries = enqService.viewDashboard(token);
-        List<Enquiry> openEnquiries = enqService.getOpenEnquiry(token);
-        List<Enquiry> closedEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
-        equals(TicketStatusEnum.CLOSED)).collect(Collectors.toList());
+        LocalDateTime dt = LocalDateTime.now();
+        List<Enquiry> enquiries = enqService.viewDashboard(token).stream().filter(u -> u.getEnquiry_dateTime().getYear()== dt.getYear() &&
+        u.getEnquiry_dateTime().getMonthValue()==dt.getMonthValue()).collect(Collectors.toList());
 
-        List<Enquiry> rate5 = enquiries.stream().filter(u -> u.getRating()==5).collect(Collectors.toList());
-        List<Enquiry> rate4 = enquiries.stream().filter(u -> u.getRating()==4).collect(Collectors.toList());
-        List<Enquiry> rate3 = enquiries.stream().filter(u -> u.getRating()==3).collect(Collectors.toList());
-        List<Enquiry> rate2 = enquiries.stream().filter(u -> u.getRating()==2).collect(Collectors.toList());
-        List<Enquiry> rate1 = enquiries.stream().filter(u -> u.getRating()==1).collect(Collectors.toList());
+        List<Enquiry> openEnquiries = enqService.getOpenEnquiry(token).stream().filter(u -> u.getEnquiry_dateTime().getYear()== dt.getYear() &&
+        u.getEnquiry_dateTime().getMonthValue()==dt.getMonthValue()).collect(Collectors.toList());
+
+        List<Enquiry> closedEnquiries = enquiries.stream().filter(u -> u.getTicket().getTikStatus().
+        equals(TicketStatusEnum.CLOSED)&& u.getEnquiry_dateTime().getYear()== dt.getYear() &&
+        u.getEnquiry_dateTime().getMonthValue()==dt.getMonthValue()).collect(Collectors.toList());
+              
+        List<Enquiry> rate5 = enquiries.stream().filter(u -> u.getRating()==5 && u.getEnquiry_dateTime().getYear()== dt.getYear() &&
+        u.getEnquiry_dateTime().getMonthValue()==dt.getMonthValue()).collect(Collectors.toList());
+        List<Enquiry>rate4 = enquiries.stream().filter(u -> u.getRating()==4&& u.getEnquiry_dateTime().getYear()== dt.getYear() &&
+        u.getEnquiry_dateTime().getMonthValue() == dt.getMonthValue()).collect(Collectors.toList());
+        List<Enquiry> rate3 = enquiries.stream().filter(u -> u.getRating()==3&& u.getEnquiry_dateTime().getYear()==  dt.getYear() &&
+        u.getEnquiry_dateTime().getMonthValue()==dt.getMonthValue()).collect(Collectors.toList());
+        List<Enquiry>rate2 = enquiries.stream().filter(u -> u.getRating()==2&& u.getEnquiry_dateTime().getYear()==  dt.getYear() &&
+        u.getEnquiry_dateTime().getMonthValue()==dt.getMonthValue()).collect(Collectors.toList());
+        List<Enquiry>rate1 = enquiries.stream().filter(u -> u.getRating()==1&& u.getEnquiry_dateTime().getYear()==  dt.getYear() &&
+        u.getEnquiry_dateTime().getMonthValue()==dt.getMonthValue()).collect(Collectors.toList());
+        
+        
         model.addAttribute("rate5", rate5.size());
-        model.addAttribute("rate4", rate4.size());
+        model.addAttribute("rate4", rate4.size()); 
         model.addAttribute("rate3", rate3.size());
         model.addAttribute("rate2", rate2.size());
         model.addAttribute("rate1", rate1.size());
+        
 
         model.addAttribute("total", enquiries.size());
         model.addAttribute("openSum", openEnquiries.size());

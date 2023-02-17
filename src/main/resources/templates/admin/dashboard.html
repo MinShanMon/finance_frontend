@@ -160,14 +160,14 @@
   <body>
     
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 text-center" href="#">Admin</a>
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 text-center" href="#" style="font-size: 20px;">Admin</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   
   <div class="navbar-nav">
     <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" href="#">Sign out</a>
+      <a class="nav-link px-3" href="#" style="font-size: 17px;">Sign out</a>
     </div>
   </div>
 </header>
@@ -226,7 +226,7 @@
       
         <div class="charts">
           <div class="charts-card">
-          <h3 class="chart-title">Rating</h3>
+          <h3 class="chart-title">Rating Statistics</h3>
             <div id="container" style="height: 350px;margin:0">
                 <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
                 <!-- <script type="text/javascript" src="js/echarts.min.js"></script> -->
@@ -246,7 +246,7 @@
                   var option;   
                   option = {
                 title: {
-                  text: 'Service Satisfication ',
+                  text: 'this month',
                   left: 'center'
                 },  
                 tooltip: {
@@ -258,9 +258,9 @@
                 },
                 series: [
                   {
-                    name: 'Rating',
+                    name: 'Rating' ,
                     type: 'pie',
-                    radius: '60%',
+                    radius: '65%',
                     data: [
                       { value: val5, name: '5 Stars' },
                       { value: val4, name: '4 Stars' },
@@ -290,7 +290,7 @@
 
               <div class="charts">
                 <div class="charts-card">
-                  <h3 class="chart-title">Tickets</h3>
+                  <h3 class="chart-title">Tickets Statistics</h3>
                   <div id="cont1" style="height: 350px;margin:0">
         <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"></script> 
         <!-- <script type="text/javascript" src="js/echarts1.min.js"></script> -->
@@ -308,7 +308,7 @@
           var totalTik = [[${total}]];
           option = {
             title: {
-                  text: 'Statistics Summary',
+                  text: 'this month',
                   left: 'center'
                 },  
         xAxis: {
