@@ -66,6 +66,7 @@ public class VerifyAccountActivity extends AppCompatActivity {
             public void onClick(View v) {
                 second = 30;
                 txtGetVerify.setEnabled(false);
+                img_backArrow.setEnabled(false);
                 runTimer();
                 sendEmail(email);
             }
