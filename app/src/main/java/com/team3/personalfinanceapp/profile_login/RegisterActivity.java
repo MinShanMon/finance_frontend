@@ -124,6 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
                 edtRegisterConfirmPassword.setFocusable(false);
                 edtRegisterPassword.setFocusable(false);
                 edtRegisterUsername.setFocusable(false);
+                img_backArrow.setEnabled(false);
                 editor = pref.edit();
                 editor.clear();
                 editor.commit();
