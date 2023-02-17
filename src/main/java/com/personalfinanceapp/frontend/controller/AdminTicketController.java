@@ -68,7 +68,6 @@ public class AdminTicketController {
         List<Enquiry>rate1 = enquiries.stream().filter(u -> u.getRating()==1&& u.getEnquiry_dateTime().getYear()==  dt.getYear() &&
         u.getEnquiry_dateTime().getMonthValue()==dt.getMonthValue()).collect(Collectors.toList());
         
-        
         model.addAttribute("rate5", rate5.size());
         model.addAttribute("rate4", rate4.size()); 
         model.addAttribute("rate3", rate3.size());
