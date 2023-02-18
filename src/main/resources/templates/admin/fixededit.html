@@ -257,7 +257,7 @@
           </div>
           <div class="mb-3">
             <label for="minAmount" class="form-label">Minimum Amount</label>
-            <input type="number" th:name="minAmount" th:value="${fixed.minAmount}" required class="form-control" id="minAmount" min="1">
+            <input type="number" th:name="minAmount" th:value="${fixed.minAmount}" required class="form-control" id="minAmount" min="1" minlength="4">
             <div id="minAmount" class="form-text">Edit minimum amount here</div>
           </div>
           <div class="mb-3">

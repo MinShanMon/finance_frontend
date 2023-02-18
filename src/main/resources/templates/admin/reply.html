@@ -234,7 +234,7 @@
         <form action="#" th:action="@{/admin/update/}" method="post">
           <input type="hidden" th:name="id" th:value="${enquiry.id}" />
           <div style = "text-align: center;">
-          <textarea type="text" th:name="reply" th:value="${ticket.reply}" cols="130" rows="8" ></textarea>
+          <textarea type="text" th:name="reply" th:value="${ticket.reply}" cols="130" rows="8" required ></textarea>
         </div>
   
    <div style="text-align: center;">
